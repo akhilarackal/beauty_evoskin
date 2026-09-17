@@ -1,0 +1,372 @@
+/* ==========================================================================
+   Collection Grid Redesign — Pixel-Perfect Figma Match
+   Premium Product Grid with Filters
+   ========================================================================== */
+
+/* ==========================================================================
+   Container
+   ========================================================================== */
+.section-main-collection-product-grid .page-width,
+.collection.page-width {
+  max-width: 1280px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* ==========================================================================
+   Filter Bar
+   ========================================================================== */
+.facets-wrapper {
+  padding-bottom: 20px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.facets__form .facets__wrapper {
+  gap: 32px;
+}
+
+/* Filter label "Filter By:" */
+.facets__heading {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #6B7280;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Filter values (Skin Concern, Product Type, Ritual) */
+.facets__summary span,
+.facet-filters__label,
+.facets__selected {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #111827;
+}
+
+/* Sort dropdown */
+.facet-filters__sort .select__select,
+.collection-sortby {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #111827;
+  border: none;
+  background: transparent;
+}
+
+.facet-filters .sorting .facet-filters__label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #6B7280;
+}
+
+/* ==========================================================================
+   Product Grid
+   ========================================================================== */
+.collection .product-grid,
+#product-grid.product-grid {
+  column-gap: 32px !important;
+  row-gap: 48px !important;
+}
+
+.collection .grid--3-col-desktop .grid__item {
+  width: calc(33.333% - 22px);
+}
+
+/* ==========================================================================
+   Product Card
+   ========================================================================== */
+.collection .card-wrapper {
+  position: relative;
+}
+
+.collection .card-wrapper .card {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  overflow: visible;
+}
+
+.collection .card__inner {
+  border-radius: 8px;
+  overflow: hidden;
+  border: none;
+}
+
+/* Image */
+.collection .card__media,
+.collection .media {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #F9FAFB;
+}
+
+.collection .card__media img,
+.collection .card .media img {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.collection .card-wrapper:hover .card__media img,
+.collection .card-wrapper:hover .media img {
+  transform: scale(1.05);
+}
+
+/* Remove any card after/before effects */
+.collection .card__inner::after,
+.collection .card::after {
+  display: none;
+}
+
+/* ==========================================================================
+   Badge
+   ========================================================================== */
+.collection .card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: auto;
+  bottom: auto;
+  z-index: 3;
+}
+
+.collection .card__badge .badge,
+.collection .card__badge span {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  color: #111827;
+  border-radius: 4px;
+  padding: 4px 8px;
+  text-transform: none;
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   Product Information — Title + Price Row
+   ========================================================================== */
+.collection .card__content,
+.collection .card-information {
+  padding: 0;
+  margin-top: 16px;
+}
+
+/* Grid: title left, price right */
+.collection .card-information__wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 0 16px;
+  align-items: start;
+}
+
+/* Product Title */
+.collection .card__heading,
+.collection .card__heading a,
+.collection h3.card__heading a {
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 600 !important;
+  font-size: 18px !important;
+  line-height: 26px !important;
+  color: #111827 !important;
+  text-decoration: none !important;
+  grid-column: 1;
+  grid-row: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Price container */
+.collection .price,
+.collection .card-information .price {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex !important;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* Current price */
+.collection .price .price-item--regular,
+.collection .price .price-item--sale,
+.collection .price .money {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #111827 !important;
+}
+
+/* Compare-at price (strikethrough) */
+.collection .price s,
+.collection .price .price-item--regular s,
+.collection .price s .money,
+.collection .price del {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  color: #9CA3AF !important;
+  text-decoration: line-through !important;
+}
+
+/* Discount percentage */
+.collection .price .badge-discount,
+.collection .card__badge--discount,
+.collection .price__badge-discount,
+.collection .price .price__badge-sale {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  color: #16A34A !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Category / Vendor text below */
+.collection .card-information .caption-with-letter-spacing,
+.collection .card-information .visually-hidden + span,
+.collection .card-information__wrapper > .caption-with-letter-spacing {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: #6B7280;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin-top: 6px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ==========================================================================
+   Discover More / Pagination
+   ========================================================================== */
+.collection .pagination-wrapper,
+.collection .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+  padding-top: 16px;
+}
+
+.collection .pagination .pagination__item--current,
+.collection .pagination a {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* Custom Discover More button style */
+.collection-discover-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.collection-discover-more__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 14px 32px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid #111827;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #111827;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.collection-discover-more__btn:hover {
+  background: #111827;
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   Responsive — Tablet
+   ========================================================================== */
+@media screen and (max-width: 989px) {
+  .section-main-collection-product-grid .page-width,
+  .collection.page-width {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .collection .product-grid,
+  #product-grid.product-grid {
+    column-gap: 24px !important;
+    row-gap: 36px !important;
+  }
+}
+
+/* ==========================================================================
+   Responsive — Mobile
+   ========================================================================== */
+@media screen and (max-width: 749px) {
+  .section-main-collection-product-grid .page-width,
+  .collection.page-width {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .collection .product-grid,
+  #product-grid.product-grid {
+    column-gap: 12px !important;
+    row-gap: 28px !important;
+  }
+
+  .facets__form .facets__wrapper {
+    gap: 16px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .collection .card-information__wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .collection .price,
+  .collection .card-information .price {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: 6px;
+  }
+
+  .collection .card-information .caption-with-letter-spacing {
+    grid-row: 3;
+  }
+
+  .collection .card__heading,
+  .collection .card__heading a,
+  .collection h3.card__heading a {
+    font-size: 16px !important;
+    line-height: 22px !important;
+  }
+
+  .collection-discover-more__btn {
+    width: 100%;
+  }
+}

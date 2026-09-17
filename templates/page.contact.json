@@ -1,0 +1,78 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "contact": {
+      "type": "premium-contact",
+      "blocks": {
+        "info_email": {
+          "type": "info",
+          "settings": {
+            "icon": "mail",
+            "label": "Email",
+            "value": "hello@evoskin.com",
+            "link": "mailto:hello@evoskin.com",
+            "note": "We reply within one business day"
+          }
+        },
+        "info_phone": {
+          "type": "info",
+          "settings": {
+            "icon": "phone",
+            "label": "Phone",
+            "value": "+91 90000 00000",
+            "link": "tel:+919000000000"
+          }
+        },
+        "info_hours": {
+          "type": "info",
+          "settings": {
+            "icon": "clock",
+            "label": "Hours",
+            "value": "Mon to Sat, 10am - 6pm",
+            "note": "IST"
+          }
+        }
+      },
+      "block_order": [
+        "info_email",
+        "info_phone",
+        "info_hours"
+      ],
+      "settings": {
+        "eyebrow": "WE ARE HERE TO HELP",
+        "heading": "Get in touch",
+        "subheading": "Questions about a ritual, an order, or an ingredient? Our team is glad to help.",
+        "aside_heading": "Contact details",
+        "aside_text": "<p>Reach us any way you like. We read every message.</p>",
+        "social_heading": "Follow us",
+        "form_heading": "Send a message",
+        "form_note": "Fields marked with * are required.",
+        "button_label": "Send message",
+        "show_subject": true,
+        "subject_options": "Order enquiry, Product advice, Wholesale, Press, Something else",
+        "show_consent": true,
+        "consent_text": "I agree to be contacted about my enquiry.",
+        "success_title": "Thank you",
+        "success_text": "Your message is on its way. We usually reply within one business day.",
+        "map_embed_url": "",
+        "accent_color": "#C5A044",
+        "text_color": "#1C1A17",
+        "background_color": "#FDFBF7",
+        "panel_color": "#FFFFFF",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "contact"
+  ]
+}

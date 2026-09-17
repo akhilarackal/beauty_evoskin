@@ -1,0 +1,501 @@
+{{ 'section-premium-collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign hero_image = s.hero_image | default: collection.image
+  assign total = collection.products_count
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+-%}
+
+{%- style -%}
+  #pcol-{{ section.id }} {
+    --pcol-accent: {{ s.accent_color }};
+    --pcol-ink: {{ s.text_color }};
+    --pcol-bg: {{ s.background_color }};
+    --pcol-cols: {{ s.columns_desktop }};
+    --pcol-pad-top: {{ s.padding_top }}px;
+    --pcol-pad-bottom: {{ s.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="pcol-{{ section.id }}" class="pcol" data-pcol>
+  {%- comment -%} ===== Hero ===== {%- endcomment -%}
+  <header class="pcol__hero{% if hero_image != blank %} pcol__hero--image{% endif %}">
+    {%- if hero_image != blank -%}
+      <img
+        class="pcol__hero-bg"
+        src="{{ hero_image | image_url: width: 1800 }}"
+        srcset="{{ hero_image | image_url: width: 900 }} 900w, {{ hero_image | image_url: width: 1800 }} 1800w"
+        sizes="100vw"
+        alt="{{ hero_image.alt | default: collection.title | escape }}"
+        width="1800"
+        height="600"
+        loading="eager"
+        fetchpriority="high"
+      >
+      <span class="pcol__hero-scrim" aria-hidden="true"></span>
+    {%- endif -%}
+
+    <div class="pcol__hero-inner">
+      <nav class="pcol__crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ collection.title }}</span>
+      </nav>
+
+      {%- if s.eyebrow != blank -%}
+        <p class="pcol__eyebrow">{{ s.eyebrow }}</p>
+      {%- endif -%}
+
+      <h1 class="pcol__title">{{ collection.title }}</h1>
+
+      <span class="pcol__rule" aria-hidden="true"></span>
+
+      {%- if s.show_description and collection.description != blank -%}
+        <div class="pcol__desc">{{ collection.description | strip_html | truncate: 220 }}</div>
+      {%- endif -%}
+
+      <p class="pcol__count">{{ total }} {% if total == 1 %}product{% else %}products{% endif %}</p>
+    </div>
+  </header>
+
+  {%- paginate collection.products by s.products_per_page -%}
+    {%- comment -%} ===== Toolbar + filters (single GET form) ===== {%- endcomment -%}
+    <form
+      id="PcolForm-{{ section.id }}"
+      class="pcol__form"
+      method="get"
+      action="{{ collection.url }}"
+      data-pcol-form
+    >
+      <div class="pcol__toolbar">
+        <div class="pcol__toolbar-left">
+          {%- if s.enable_filtering and collection.filters.size > 0 -%}
+            <button
+              class="pcol__tool-btn"
+              type="button"
+              data-pcol-filter-toggle
+              aria-expanded="false"
+              aria-controls="PcolFilters-{{ section.id }}"
+            >
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M2 5h14M4.5 9h9M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <span>Filter</span>
+              <span class="pcol__tool-badge" data-pcol-active-count hidden></span>
+            </button>
+          {%- endif -%}
+
+          <p class="pcol__showing">
+            Showing <strong>{{ paginate.items }}</strong> of {{ total }}
+          </p>
+        </div>
+
+        <div class="pcol__toolbar-right">
+          {%- if s.enable_sorting -%}
+            <label class="pcol__sort">
+              <span class="pcol__sort-label">Sort</span>
+              <select name="sort_by" data-pcol-sort>
+                {%- for option in collection.sort_options -%}
+                  <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>
+                    {{ option.name }}
+                  </option>
+                {%- endfor -%}
+              </select>
+              <svg class="pcol__sort-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </label>
+          {%- endif -%}
+
+          <div class="pcol__density" role="group" aria-label="Grid density">
+            <button class="pcol__density-btn" type="button" data-pcol-density="2" aria-label="Two per row">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+            </button>
+            <button class="pcol__density-btn is-active" type="button" data-pcol-density="3" aria-label="Three per row">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="1" y="1" width="4" height="4" rx="1"/><rect x="6" y="1" width="4" height="4" rx="1"/><rect x="11" y="1" width="4" height="4" rx="1"/><rect x="1" y="6" width="4" height="4" rx="1"/><rect x="6" y="6" width="4" height="4" rx="1"/><rect x="11" y="6" width="4" height="4" rx="1"/><rect x="1" y="11" width="4" height="4" rx="1"/><rect x="6" y="11" width="4" height="4" rx="1"/><rect x="11" y="11" width="4" height="4" rx="1"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} ===== Filter panel ===== {%- endcomment -%}
+      {%- if s.enable_filtering and collection.filters.size > 0 -%}
+        <div class="pcol__filters" id="PcolFilters-{{ section.id }}" data-pcol-filters hidden>
+          <div class="pcol__filters-grid">
+            {%- for filter in collection.filters -%}
+              <div class="pcol__fgroup">
+                <p class="pcol__fgroup-title">{{ filter.label }}</p>
+
+                {%- case filter.type -%}
+                  {%- when 'price_range' -%}
+                    <div class="pcol__price">
+                      <label class="pcol__price-field">
+                        <span>Min</span>
+                        <input
+                          type="number"
+                          name="{{ filter.min_value.param_name }}"
+                          value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | replace: ',', '' }}{% endif %}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          placeholder="0"
+                          inputmode="decimal"
+                        >
+                      </label>
+                      <span class="pcol__price-dash" aria-hidden="true">&ndash;</span>
+                      <label class="pcol__price-field">
+                        <span>Max</span>
+                        <input
+                          type="number"
+                          name="{{ filter.max_value.param_name }}"
+                          value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | replace: ',', '' }}{% endif %}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          inputmode="decimal"
+                        >
+                      </label>
+                    </div>
+
+                  {%- else -%}
+                    <ul class="pcol__fopts">
+                      {%- for value in filter.values -%}
+                        <li>
+                          <label class="pcol__fopt{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                            <input
+                              type="checkbox"
+                              name="{{ value.param_name }}"
+                              value="{{ value.value }}"
+                              {% if value.active %}checked{% endif %}
+                              {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                            >
+                            <span class="pcol__fopt-box" aria-hidden="true">
+                              <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2l2.4 2.4L9.6 3.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </span>
+                            <span class="pcol__fopt-text">{{ value.label }}</span>
+                            <span class="pcol__fopt-count">{{ value.count }}</span>
+                          </label>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <div class="pcol__filters-foot">
+            <a class="pcol__clear" href="{{ collection.url }}?sort_by={{ sort_by }}">Clear all</a>
+            <button class="pcol__apply" type="submit">Apply filters</button>
+          </div>
+        </div>
+
+        {%- comment -%} Active filter chips {%- endcomment -%}
+        {%- liquid
+          assign has_active = false
+          for filter in collection.filters
+            if filter.active_values.size > 0
+              assign has_active = true
+            endif
+            if filter.type == 'price_range'
+              if filter.min_value.value != blank
+                assign has_active = true
+              endif
+              if filter.max_value.value != blank
+                assign has_active = true
+              endif
+            endif
+          endfor
+        -%}
+
+        {%- if has_active -%}
+          <div class="pcol__chips">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <a class="pcol__chip" href="{{ value.url_to_remove }}">
+                  <span>{{ value.label }}</span>
+                  <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </a>
+              {%- endfor -%}
+            {%- endfor -%}
+            <a class="pcol__chip pcol__chip--clear" href="{{ collection.url }}?sort_by={{ sort_by }}">Clear all</a>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </form>
+
+    {%- comment -%} ===== Grid ===== {%- endcomment -%}
+    {%- if collection.products.size == 0 -%}
+      <div class="pcol__empty">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <circle cx="21" cy="21" r="13" stroke="currentColor" stroke-width="2"/>
+          <path d="M31 31l9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p class="pcol__empty-title">No products match these filters</p>
+        <p class="pcol__empty-text">Try removing a filter or browse the full collection.</p>
+        <a class="pcol__empty-btn" href="{{ collection.url }}">View all products</a>
+      </div>
+    {%- else -%}
+      <ul class="pcol__grid" data-pcol-grid role="list">
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign on_sale = false
+            if product.compare_at_price > product.price
+              assign on_sale = true
+              assign save_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+            endif
+            assign single_variant = false
+            if product.variants.size == 1 and product.selected_or_first_available_variant.available
+              assign single_variant = true
+            endif
+          -%}
+          <li class="pcol-card{% if product.available == false %} is-soldout{% endif %}">
+            <div class="pcol-card__media">
+              <a class="pcol-card__media-link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+                {%- if product.featured_image != blank -%}
+                  <img
+                    class="pcol-card__img"
+                    src="{{ product.featured_image | image_url: width: 500 }}"
+                    srcset="{{ product.featured_image | image_url: width: 300 }} 300w, {{ product.featured_image | image_url: width: 500 }} 500w"
+                    sizes="(max-width: 749px) 45vw, 22vw"
+                    alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                    width="500"
+                    height="500"
+                    loading="lazy"
+                  >
+                {%- else -%}
+                  <span class="pcol-card__ph" aria-hidden="true"></span>
+                {%- endif -%}
+              </a>
+
+              <span class="pcol-card__badges">
+                {%- if product.available == false -%}
+                  <span class="pcol-card__badge pcol-card__badge--out">Sold out</span>
+                {%- elsif on_sale -%}
+                  <span class="pcol-card__badge pcol-card__badge--sale">{{ save_pct }}% off</span>
+                {%- endif -%}
+                {%- if product.tags contains 'new' or product.tags contains 'New' -%}
+                  <span class="pcol-card__badge pcol-card__badge--new">New</span>
+                {%- endif -%}
+              </span>
+
+              {%- comment -%} Quick add — circular plus on the image {%- endcomment -%}
+              {%- if s.quick_add and product.available -%}
+                {%- if single_variant -%}
+                  <button
+                    class="pcol-card__plus"
+                    type="button"
+                    data-pcol-add="{{ product.selected_or_first_available_variant.id }}"
+                    aria-label="Add {{ product.title | escape }} to cart"
+                  >
+                    <svg class="pcol-card__plus-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M8 3.2v9.6M3.2 8h9.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="pcol-card__plus-check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                {%- else -%}
+                  <a
+                    class="pcol-card__plus"
+                    href="{{ product.url }}"
+                    aria-label="Choose options for {{ product.title | escape }}"
+                  >
+                    <svg class="pcol-card__plus-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M8 3.2v9.6M3.2 8h9.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+                    </svg>
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+
+            <div class="pcol-card__body">
+              {%- if s.show_vendor and product.vendor != blank -%}
+                <p class="pcol-card__vendor">{{ product.vendor }}</p>
+              {%- endif -%}
+
+              <h3 class="pcol-card__title">
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h3>
+
+              {%- if s.show_rating and product.metafields.reviews.rating.value != blank -%}
+                {%- assign rating = product.metafields.reviews.rating.value.rating | round: 1 -%}
+                <div class="pcol-card__rating" aria-label="Rated {{ rating }} out of 5">
+                  <span class="pcol-card__stars" style="--pct: {{ rating | times: 20 }}%" aria-hidden="true">
+                    &#9733;&#9733;&#9733;&#9733;&#9733;
+                  </span>
+                  <span class="pcol-card__rating-num">{{ rating }}</span>
+                  <span class="pcol-card__rating-count">({{ product.metafields.reviews.rating_count }})</span>
+                </div>
+              {%- endif -%}
+
+              <div class="pcol-card__price">
+                <span class="pcol-card__price-now">{{ product.price | money }}</span>
+                {%- if on_sale -%}
+                  <s class="pcol-card__price-was">{{ product.compare_at_price | money }}</s>
+                {%- endif -%}
+              </div>
+
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- comment -%} ===== Pagination ===== {%- endcomment -%}
+      {%- if paginate.pages > 1 -%}
+        <nav class="pcol__pager" aria-label="Pagination">
+          {%- if paginate.previous -%}
+            <a class="pcol__pager-arrow" href="{{ paginate.previous.url }}" aria-label="Previous page">
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M7.5 2.5L4 6l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          {%- else -%}
+            <span class="pcol__pager-arrow is-disabled" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M7.5 2.5L4 6l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          {%- endif -%}
+
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a class="pcol__pager-num" href="{{ part.url }}">{{ part.title }}</a>
+            {%- elsif part.title == '&hellip;' -%}
+              <span class="pcol__pager-gap" aria-hidden="true">{{ part.title }}</span>
+            {%- else -%}
+              <span class="pcol__pager-num is-current" aria-current="page">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if paginate.next -%}
+            <a class="pcol__pager-arrow" href="{{ paginate.next.url }}" aria-label="Next page">
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          {%- else -%}
+            <span class="pcol__pager-arrow is-disabled" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+<script src="{{ 'section-premium-collection.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Premium Collection",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "THE COLLECTION"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image",
+      "info": "Falls back to the collection image. Recommended 1800 x 600px."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    { "type": "header", "content": "Grid" },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 36,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show product rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "quick_add",
+      "label": "Show add to cart on cards",
+      "default": true
+    },
+    { "type": "header", "content": "Filtering and sorting" },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    },
+    { "type": "header", "content": "Colors" },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#C5A044"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#1C1A17"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FDFBF7"
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "presets": [{ "name": "Premium Collection" }]
+}
+{% endschema %}

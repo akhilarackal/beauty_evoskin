@@ -1,0 +1,704 @@
+{{ 'hero-premium.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }} {
+    --hero-max-width: {{ section.settings.hero_max_width }}px;
+    --hero-height: {{ section.settings.hero_height }}px;
+    --hero-min-height: 400px;
+    --hero-radius: {{ section.settings.border_radius }}px;
+    --hero-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --hero-content-alignment: {{ section.settings.content_alignment }};
+    --hero-content-max-width: {{ section.settings.content_width }}px;
+    --hero-content-padding: {{ section.settings.content_padding }}px;
+    --hero-btn-radius: {{ section.settings.button_radius }}px;
+    --hero-promo-radius: {{ section.settings.promo_radius }}px;
+    --hero-image-position-x: {{ section.settings.image_position_x | default: 50 }}%;
+    --hero-image-position-y: {{ section.settings.image_position_y | default: 50 }}%;
+    --hero-mobile-image-position-x: {{ section.settings.mobile_image_position_x | default: section.settings.image_position_x | default: 50 }}%;
+    --hero-mobile-image-position-y: {{ section.settings.mobile_image_position_y | default: section.settings.image_position_y | default: 50 }}%;
+
+    --hero-color-heading: {{ section.settings.color_heading }};
+    --hero-color-description: {{ section.settings.color_description }};
+    --hero-color-tagline: {{ section.settings.color_tagline }};
+    --hero-color-promo-text: {{ section.settings.color_promo_text }};
+    --hero-color-promo-bg: {{ section.settings.color_promo_bg }};
+    --hero-color-promo-border: {{ section.settings.color_promo_border }};
+    --hero-color-promo-code-text: {{ section.settings.color_promo_code_text }};
+    --hero-color-copy-bg: {{ section.settings.color_copy_bg }};
+    --hero-color-copy-text: {{ section.settings.color_copy_text }};
+    --hero-color-copy-hover-bg: {{ section.settings.color_copy_hover_bg }};
+    --hero-color-btn-bg: {{ section.settings.color_button_bg }};
+    --hero-color-btn-text: {{ section.settings.color_button_text }};
+    --hero-color-btn-hover-bg: {{ section.settings.color_button_hover_bg }};
+    --hero-color-overlay: {{ section.settings.color_overlay }};
+    --hero-color-nav-bg: {{ section.settings.color_nav_bg }};
+    --hero-color-nav-icon: {{ section.settings.color_nav_icon }};
+    --hero-color-pagination-active: {{ section.settings.color_pagination_active }};
+    --hero-color-pagination-inactive: {{ section.settings.color_pagination_inactive }};
+  }
+
+  #shopify-section-{{ section.id }} {
+    --padding-top: {{ section.settings.padding_top }}px;
+    --padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-{{ section.id }} {
+      --hero-height: {{ section.settings.hero_height_mobile | default: section.settings.hero_height | times: 0.6 | round }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  class="hero-premium section-{{ section.id }}"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-speed="{{ section.settings.speed }}"
+  data-pause-on-focus="{{ section.settings.pause_on_focus }}"
+  data-show-nav="{{ section.settings.show_navigation }}"
+  data-show-pagination="{{ section.settings.show_pagination }}"
+  role="region"
+  aria-label="{{ section.settings.section_label | default: 'Hero slider' | escape }}"
+>
+  <div class="hero-premium__container">
+    {%- if section.blocks.size > 0 -%}
+      <div
+        class="hero-premium__track"
+        aria-live="polite"
+        aria-atomic="false"
+      >
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign is_active = false
+            if forloop.first
+              assign is_active = true
+            endif
+
+            assign fetch_priority = 'auto'
+            assign loading = 'lazy'
+            if forloop.first
+              assign fetch_priority = 'high'
+              assign loading = 'eager'
+            endif
+          -%}
+          <div
+            class="hero-premium__slide{% if is_active %} is-active{% endif %}"
+            data-slide-index="{{ forloop.index0 }}"
+            role="tabpanel"
+            id="hero-slide-{{ section.id }}-{{ forloop.index0 }}"
+            aria-hidden="{% if is_active %}false{% else %}true{% endif %}"
+            aria-label="Slide {{ forloop.index }} of {{ section.blocks.size }}"
+            {% if is_active %}aria-current="true"{% endif %}
+            tabindex="{% if is_active %}0{% else %}-1{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {%- comment -%} Background Images {%- endcomment -%}
+            {%- if block.settings.desktop_image != blank -%}
+              <div class="hero-premium__image hero-premium__image--desktop">
+                {{ block.settings.desktop_image | image_url: width: 1920 | image_tag:
+                  widths: '800, 1000, 1200, 1400, 1600, 1920',
+                  fetchpriority: fetch_priority,
+                  loading: loading,
+                  alt: block.settings.heading | escape
+                }}
+              </div>
+            {%- else -%}
+              <div class="hero-premium__image hero-premium__image--desktop hero-premium__image--placeholder">
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.mobile_image != blank -%}
+              <div class="hero-premium__image hero-premium__image--mobile">
+                {{ block.settings.mobile_image | image_url: width: 750 | image_tag:
+                  widths: '375, 550, 750',
+                  loading: loading,
+                  alt: block.settings.heading | escape
+                }}
+              </div>
+            {%- endif -%}
+
+            {%- comment -%} Overlay {%- endcomment -%}
+            <div class="hero-premium__overlay" aria-hidden="true"></div>
+
+            {%- comment -%} Content {%- endcomment -%}
+            <div class="hero-premium__content">
+              {%- if block.settings.tagline != blank -%}
+                <p class="hero-premium__tagline">&ldquo;{{ block.settings.tagline }}&rdquo;</p>
+              {%- endif -%}
+
+              {%- if block.settings.heading != blank -%}
+                <h2 class="hero-premium__heading">{{ block.settings.heading }}</h2>
+              {%- endif -%}
+
+              {%- if block.settings.description != blank -%}
+                <div class="hero-premium__description">{{ block.settings.description }}</div>
+              {%- endif -%}
+
+              {%- if block.settings.promo_text != blank -%}
+                <p class="hero-premium__promo-text">{{ block.settings.promo_text }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.promo_code != blank -%}
+                <div class="hero-premium__promo-code">
+                  <span class="hero-premium__code-display">{{ block.settings.promo_code }}</span>
+                  <button
+                    type="button"
+                    class="hero-premium__copy-btn"
+                    data-code="{{ block.settings.promo_code | escape }}"
+                    aria-label="{{ block.settings.copy_button_label | default: 'Copy promo code' | escape }}: {{ block.settings.promo_code | escape }}"
+                  >
+                    <span class="hero-premium__copy-icon" aria-hidden="true">
+                      {{- 'icon-copy.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="hero-premium__copy-text">{{ block.settings.copy_button_label | default: 'Copy Code' }}</span>
+                    <span class="hero-premium__copied-text" aria-hidden="true">Copied!</span>
+                  </button>
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.primary_button_label != blank -%}
+                <a
+                  href="{{ block.settings.primary_button_link | default: '#' }}"
+                  class="hero-premium__button"
+                  {% if block.settings.primary_button_link == blank %}aria-disabled="true"{% endif %}
+                >
+                  {{ block.settings.primary_button_label }}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Navigation {%- endcomment -%}
+      {%- if section.blocks.size > 1 -%}
+        {%- if section.settings.show_navigation or section.settings.show_pagination -%}
+          <div class="hero-premium__nav">
+            {%- if section.settings.show_navigation -%}
+              <button
+                type="button"
+                class="hero-premium__prev"
+                aria-label="Previous slide"
+                data-action="prev"
+              >
+                {{- 'icon-arrow-left.svg' | inline_asset_content -}}
+              </button>
+            {%- endif -%}
+
+            {%- if section.settings.show_pagination -%}
+              <div class="hero-premium__pagination" role="tablist" aria-label="Slide navigation">
+                {%- for block in section.blocks -%}
+                  <button
+                    type="button"
+                    class="hero-premium__indicator{% if forloop.first %} is-active{% endif %}"
+                    role="tab"
+                    id="hero-tab-{{ section.id }}-{{ forloop.index0 }}"
+                    aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                    aria-controls="hero-slide-{{ section.id }}-{{ forloop.index0 }}"
+                    aria-label="Go to slide {{ forloop.index }}"
+                    data-slide-index="{{ forloop.index0 }}"
+                    tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                  ></button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.show_navigation -%}
+              <button
+                type="button"
+                class="hero-premium__next"
+                aria-label="Next slide"
+                data-action="next"
+              >
+                {{- 'icon-arrow-right.svg' | inline_asset_content -}}
+              </button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    {%- else -%}
+      <div class="hero-premium__empty">
+        {{ 'onboarding.no_content' | t }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script src="{{ 'hero-premium.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Hero Slider Premium",
+  "tag": "section",
+  "class": "section-hero-premium",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Accessibility label",
+      "default": "Hero slider"
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Speed (seconds)",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_focus",
+      "label": "Pause on focus",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination indicators",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "hero_max_width",
+      "label": "Max width",
+      "min": 960,
+      "max": 1600,
+      "step": 10,
+      "unit": "px",
+      "default": 1270
+    },
+    {
+      "type": "range",
+      "id": "hero_height",
+      "label": "Height (desktop)",
+      "min": 300,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 470
+    },
+    {
+      "type": "range",
+      "id": "hero_height_mobile",
+      "label": "Height (mobile)",
+      "min": 250,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 360
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content max width",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "label": "Content padding",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Image position"
+    },
+    {
+      "type": "range",
+      "id": "image_position_x",
+      "label": "Desktop image horizontal position",
+      "info": "0% aligns left, 50% centers, 100% aligns right.",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "image_position_y",
+      "label": "Desktop image vertical position",
+      "info": "0% aligns top, 50% centers, 100% aligns bottom.",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_position_x",
+      "label": "Mobile image horizontal position",
+      "info": "0% aligns left, 50% centers, 100% aligns right.",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_position_y",
+      "label": "Mobile image vertical position",
+      "info": "0% aligns top, 50% centers, 100% aligns bottom.",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "promo_radius",
+      "label": "Promo box radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_tagline",
+      "label": "Tagline",
+      "default": "#C5A044"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_description",
+      "label": "Description",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "color",
+      "id": "color_promo_text",
+      "label": "Promo text",
+      "default": "#D1D5DB"
+    },
+    {
+      "type": "header",
+      "content": "Promo Box Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_promo_bg",
+      "label": "Promo box background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_promo_border",
+      "label": "Promo box border",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "color",
+      "id": "color_promo_code_text",
+      "label": "Promo code text",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "color_copy_bg",
+      "label": "Copy button background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_copy_text",
+      "label": "Copy button text",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "color_copy_hover_bg",
+      "label": "Copy button hover",
+      "default": "#F3F4F6"
+    },
+    {
+      "type": "header",
+      "content": "Primary Button Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_button_bg",
+      "label": "Button background",
+      "default": "#C5A044"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "label": "Button text",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "color_button_hover_bg",
+      "label": "Button hover background",
+      "default": "#B8922E"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_nav_bg",
+      "label": "Navigation background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_nav_icon",
+      "label": "Navigation icon",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "color_pagination_active",
+      "label": "Pagination active",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_pagination_inactive",
+      "label": "Pagination inactive",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop image",
+          "info": "1920 x 800 recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "750 x 800 recommended"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "tagline",
+          "label": "Tagline",
+          "default": "EVOLVE YOUR SKIN ELEVATE YOUR CONFIDENCE"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Deeply Nourishing for Everyday Wellbeing"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Organic body care formulated to nurture, soften, and respect your skin—naturally.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Promo"
+        },
+        {
+          "type": "text",
+          "id": "promo_text",
+          "label": "Promo text",
+          "default": "Use Promo Code MEGA50 & Get an Extra 10% Off Your First Order!"
+        },
+        {
+          "type": "text",
+          "id": "promo_code",
+          "label": "Promo code",
+          "default": "MEGA50"
+        },
+        {
+          "type": "text",
+          "id": "copy_button_label",
+          "label": "Copy button label",
+          "default": "Copy Code"
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "primary_button_label",
+          "label": "Button label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "primary_button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slider Premium",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "tagline": "EVOLVE YOUR SKIN ELEVATE YOUR CONFIDENCE",
+            "heading": "Deeply Nourishing for Everyday Wellbeing",
+            "description": "<p>Organic body care formulated to nurture, soften, and respect your skin—naturally.</p>",
+            "promo_text": "Use Promo Code MEGA50 & Get an Extra 10% Off Your First Order!",
+            "promo_code": "MEGA50",
+            "copy_button_label": "Copy Code",
+            "primary_button_label": "Shop Now"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "tagline": "NATURE MEETS SCIENCE",
+            "heading": "Discover Our Bestselling Collection",
+            "description": "<p>Handpicked essentials crafted with organic ingredients for radiant, healthy skin.</p>",
+            "promo_text": "Free Shipping on Orders Over $50",
+            "promo_code": "FREESHIP",
+            "copy_button_label": "Copy Code",
+            "primary_button_label": "Explore Now"
+          }
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

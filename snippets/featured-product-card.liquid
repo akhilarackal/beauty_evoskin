@@ -1,0 +1,202 @@
+{% comment %}
+  featured-product-card.liquid
+  Reusable product card snippet for Featured Collection Showcase.
+  
+  Expected variables (set by parent before render):
+    fcs_product           — product object (or null for demo)
+    fcs_is_demo           — boolean
+    fcs_demo_img          — string (asset filename for demo)
+    fcs_demo_title        — string
+    fcs_demo_vendor       — string
+    fcs_demo_price        — integer (cents)
+    fcs_demo_compare      — integer (cents, 0 = no compare)
+    fcs_demo_badge        — string (e.g. "-25%")
+    fcs_demo_low_stock    — boolean
+    fcs_show_inventory    — boolean
+    fcs_show_sale_badge   — boolean
+    fcs_enable_quick_add  — boolean
+    fcs_color_price       — color
+    fcs_color_compare     — color
+    fcs_color_title       — color
+    fcs_color_vendor      — color
+    fcs_card_radius       — number
+    fcs_img_radius        — number
+    fcs_forloop_index     — integer
+{% endcomment %}
+
+{%- liquid
+  if fcs_is_demo != true
+    assign fcs_p       = fcs_product
+    assign fcs_cp      = fcs_p.price
+    assign fcs_cap     = fcs_p.compare_at_price
+    assign fcs_has_cmp = false
+    if fcs_cap > fcs_cp
+      assign fcs_has_cmp = true
+    endif
+    assign fcs_disc_pct = 0
+    if fcs_has_cmp and fcs_cap > 0
+      assign fcs_disc_raw = fcs_cap | minus: fcs_cp
+      assign fcs_disc_pct = fcs_disc_raw | times: 100 | divided_by: fcs_cap
+    endif
+    assign fcs_variant    = fcs_p.selected_or_first_available_variant
+    assign fcs_variant_id = fcs_variant.id
+    assign fcs_soldout    = false
+    unless fcs_p.available
+      assign fcs_soldout = true
+    endunless
+    assign fcs_low_stock = false
+    if fcs_show_inventory and fcs_variant.inventory_management != blank
+      if fcs_variant.inventory_quantity > 0 and fcs_variant.inventory_quantity <= 10
+        assign fcs_low_stock = true
+      endif
+    endif
+    assign fcs_img_loading  = 'lazy'
+    assign fcs_img_fetchpri = 'auto'
+    if fcs_forloop_index <= 3
+      assign fcs_img_loading  = 'eager'
+      assign fcs_img_fetchpri = 'high'
+    endif
+  endif
+-%}
+
+<article
+  class="fcs-card{% if fcs_is_demo %} fcs-card--demo{% endif %}{% if fcs_soldout %} fcs-card--soldout{% endif %}"
+  itemscope
+  itemtype="https://schema.org/Product"
+  {% if fcs_is_demo %}aria-hidden="true"{% endif %}
+>
+  {%- comment -%} ── Image area ── {%- endcomment -%}
+  {%- if fcs_is_demo -%}
+    <div class="fcs-card__image-wrap">
+      <img
+        src="{{ fcs_demo_img | asset_url }}"
+        alt=""
+        aria-hidden="true"
+        width="292"
+        height="400"
+        class="fcs-card__img"
+        loading="lazy"
+        decoding="async"
+      >
+      {%- if fcs_show_sale_badge and fcs_demo_badge != blank -%}
+        <span class="fcs-card__badge" aria-hidden="true">{{ fcs_demo_badge }}</span>
+      {%- endif -%}
+      {%- if fcs_enable_quick_add -%}
+        <button
+          type="button"
+          class="fcs-card__add-btn"
+          aria-hidden="true"
+          tabindex="-1"
+          disabled
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span class="fcs-spinner" aria-hidden="true"></span>
+          <svg class="fcs-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" width="18" height="18">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </button>
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    <a
+      href="{{ fcs_p.url }}"
+      class="fcs-card__image-wrap"
+      aria-label="{{ fcs_p.title | escape }}{% if fcs_soldout %} — {{ 'products.product.sold_out' | t }}{% endif %}"
+      itemprop="url"
+      tabindex="0"
+    >
+      {%- if fcs_p.featured_image != blank -%}
+        <img
+          src="{{ fcs_p.featured_image | image_url: width: 584 }}"
+          srcset="
+            {{ fcs_p.featured_image | image_url: width: 292 }} 292w,
+            {{ fcs_p.featured_image | image_url: width: 440 }} 440w,
+            {{ fcs_p.featured_image | image_url: width: 584 }} 584w
+          "
+          sizes="(max-width: 599px) calc(100vw - 32px), (max-width: 989px) calc(50vw - 24px), 292px"
+          width="292"
+          height="400"
+          alt="{{ fcs_p.featured_image.alt | default: fcs_p.title | escape }}"
+          class="fcs-card__img"
+          loading="{{ fcs_img_loading }}"
+          fetchpriority="{{ fcs_img_fetchpri }}"
+          decoding="async"
+          itemprop="image"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'fcs-card__img' }}
+      {%- endif -%}
+
+      {%- if fcs_show_sale_badge and fcs_has_cmp and fcs_disc_pct > 0 -%}
+        <span class="fcs-card__badge" aria-label="{{ fcs_disc_pct | round }}% off">-{{ fcs_disc_pct | round }}%</span>
+      {%- endif -%}
+
+      {%- if fcs_enable_quick_add and fcs_variant_id != blank and fcs_soldout == false -%}
+        <button
+          type="button"
+          class="fcs-card__add-btn"
+          data-variant-id="{{ fcs_variant_id }}"
+          aria-label="Add {{ fcs_p.title | escape }} to cart"
+          title="Add to cart"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span class="fcs-spinner" aria-hidden="true"></span>
+          <svg class="fcs-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" width="18" height="18">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </button>
+      {%- endif -%}
+    </a>
+  {%- endif -%}
+
+  {%- comment -%} ── Card body ── {%- endcomment -%}
+  <div class="fcs-card__body">
+    <div class="fcs-card__price-row" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+      {%- if fcs_is_demo -%}
+        <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+        <span class="fcs-card__price fcs-card__price--current{% if fcs_demo_compare > 0 %} fcs-card__price--sale{% endif %}">
+          {{- fcs_demo_price | money -}}
+        </span>
+        {%- if fcs_demo_compare > 0 -%}
+          <s class="fcs-card__price fcs-card__price--compare" aria-label="Regular price {{ fcs_demo_compare | money }}">
+            {{- fcs_demo_compare | money -}}
+          </s>
+        {%- endif -%}
+      {%- else -%}
+        <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+        <meta itemprop="price" content="{{ fcs_cp | divided_by: 100.0 }}">
+        <meta itemprop="availability" content="https://schema.org/{% if fcs_soldout %}OutOfStock{% else %}InStock{% endif %}">
+        <span class="fcs-card__price fcs-card__price--current{% if fcs_has_cmp %} fcs-card__price--sale{% endif %}">
+          {{- fcs_cp | money -}}
+        </span>
+        {%- if fcs_has_cmp -%}
+          <s class="fcs-card__price fcs-card__price--compare" aria-label="Regular price {{ fcs_cap | money }}">
+            {{- fcs_cap | money -}}
+          </s>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- if fcs_is_demo -%}
+      <p class="fcs-card__vendor" aria-hidden="true">{{ fcs_demo_vendor }}</p>
+      <h3 class="fcs-card__title" aria-hidden="true">{{ fcs_demo_title }}</h3>
+      {%- if fcs_demo_low_stock -%}
+        <p class="fcs-card__inventory" aria-hidden="true">7 Last Items</p>
+      {%- endif -%}
+    {%- else -%}
+      {%- if fcs_p.vendor != blank -%}
+        <p class="fcs-card__vendor" itemprop="brand">{{ fcs_p.vendor | escape }}</p>
+      {%- endif -%}
+      <h3 class="fcs-card__title" itemprop="name">
+        <a href="{{ fcs_p.url }}" class="fcs-card__title-link" tabindex="-1">{{ fcs_p.title | escape }}</a>
+      </h3>
+      {%- if fcs_low_stock -%}
+        <p class="fcs-card__inventory">{{ fcs_variant.inventory_quantity }} Last Items</p>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</article>

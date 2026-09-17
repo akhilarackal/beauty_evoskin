@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128" fill="none">
+  <!-- Sunscreen SPF 50 – white flat lotion tube with orange cap -->
+  <rect width="96" height="128" rx="4" fill="#F3F4F6"/>
+  <!-- tube body – horizontal, standing upright on cap -->
+  <!-- Standing tube: cap at bottom, crimped end at top -->
+  <!-- cap at bottom -->
+  <rect x="36" y="96" width="24" height="16" rx="5" fill="#FF6B35"/>
+  <!-- cap highlight -->
+  <rect x="38" y="98" width="8" height="12" rx="3" fill="#FF8C5A" opacity=".4"/>
+  <!-- tube body -->
+  <rect x="32" y="30" width="32" height="68" rx="4" fill="white"/>
+  <!-- tube left border -->
+  <rect x="32" y="30" width="2" height="68" fill="#E5E7EB"/>
+  <!-- tube right border -->
+  <rect x="62" y="30" width="2" height="68" fill="#E5E7EB"/>
+  <!-- tube label main -->
+  <rect x="34" y="34" width="28" height="56" rx="2" fill="#FFF9F0"/>
+  <!-- orange top stripe -->
+  <rect x="34" y="34" width="28" height="8" rx="1" fill="#FF6B35"/>
+  <!-- SPF badge circle -->
+  <circle cx="48" cy="54" r="12" fill="#FF6B35" opacity=".12"/>
+  <circle cx="48" cy="54" r="9" fill="none" stroke="#FF6B35" stroke-width="1.5" opacity=".7"/>
+  <text x="48" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-size="6" font-weight="bold" fill="#FF6B35">SPF</text>
+  <text x="48" y="59" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="#FF6B35">50</text>
+  <!-- label lines -->
+  <rect x="36" y="70" width="24" height="2" rx="1" fill="#374151" opacity=".6"/>
+  <rect x="37" y="75" width="22" height="1.5" rx=".75" fill="#374151" opacity=".4"/>
+  <rect x="37" y="79" width="22" height="1.5" rx=".75" fill="#374151" opacity=".4"/>
+  <!-- sun icon top -->
+  <circle cx="48" cy="38" r="3" fill="white" opacity=".9"/>
+  <!-- crimped top -->
+  <rect x="34" y="27" width="28" height="5" rx="2" fill="#D1D5DB"/>
+  <rect x="38" y="28" width="20" height="3" rx="1" fill="#9CA3AF"/>
+</svg>

@@ -1,0 +1,457 @@
+{{ 'section-premium-contact.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign info_blocks = section.blocks | where: 'type', 'info'
+  assign social_blocks = section.blocks | where: 'type', 'social'
+-%}
+
+{%- style -%}
+  #pcontact-{{ section.id }} {
+    --pc-accent: {{ s.accent_color }};
+    --pc-ink: {{ s.text_color }};
+    --pc-bg: {{ s.background_color }};
+    --pc-panel: {{ s.panel_color }};
+    --pc-pad-top: {{ s.padding_top }}px;
+    --pc-pad-bottom: {{ s.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="pcontact-{{ section.id }}" class="pc" data-pcontact>
+  {%- comment -%} ===== Hero ===== {%- endcomment -%}
+  <header class="pc__hero{% if s.hero_image != blank %} pc__hero--image{% endif %}">
+    {%- if s.hero_image != blank -%}
+      <img
+        class="pc__hero-bg"
+        src="{{ s.hero_image | image_url: width: 1800 }}"
+        srcset="{{ s.hero_image | image_url: width: 900 }} 900w, {{ s.hero_image | image_url: width: 1800 }} 1800w"
+        sizes="100vw"
+        alt=""
+        width="1800"
+        height="560"
+        loading="eager"
+        fetchpriority="high"
+      >
+      <span class="pc__hero-scrim" aria-hidden="true"></span>
+    {%- endif -%}
+
+    <div class="pc__hero-inner">
+      <nav class="pc__crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ page.title | default: 'Contact' }}</span>
+      </nav>
+
+      {%- if s.eyebrow != blank -%}
+        <p class="pc__eyebrow">{{ s.eyebrow }}</p>
+      {%- endif -%}
+
+      <h1 class="pc__title">{{ s.heading | default: page.title | default: 'Get in touch' }}</h1>
+
+      <span class="pc__rule" aria-hidden="true"></span>
+
+      {%- if s.subheading != blank -%}
+        <p class="pc__sub">{{ s.subheading }}</p>
+      {%- endif -%}
+    </div>
+  </header>
+
+  <div class="pc__body">
+    {%- comment -%} ===== Left: details ===== {%- endcomment -%}
+    <aside class="pc__aside">
+      {%- if s.aside_heading != blank -%}
+        <h2 class="pc__aside-title">{{ s.aside_heading }}</h2>
+      {%- endif -%}
+
+      {%- if s.aside_text != blank -%}
+        <div class="pc__aside-text">{{ s.aside_text }}</div>
+      {%- endif -%}
+
+      {%- if info_blocks.size > 0 -%}
+        <ul class="pc__info" role="list">
+          {%- for block in info_blocks -%}
+            <li class="pc__info-item" {{ block.shopify_attributes }}>
+              <span class="pc__info-icon" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when 'mail' -%}
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M2.5 5.5L10 11l7.5-5.5" stroke-linecap="round"/></svg>
+                  {%- when 'phone' -%}
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 3H4a1 1 0 00-1 1c0 7.2 5.8 13 13 13a1 1 0 001-1v-2.5l-3.5-1.5-1.8 1.8a11 11 0 01-5-5L8 6.5 6.5 3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  {%- when 'pin' -%}
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 18s6-5.2 6-10a6 6 0 10-12 0c0 4.8 6 10 6 10z" stroke-linejoin="round"/><circle cx="10" cy="8" r="2.2"/></svg>
+                  {%- when 'clock' -%}
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.5"/><path d="M10 5.8V10l3 1.8" stroke-linecap="round"/></svg>
+                  {%- when 'chat' -%}
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 11.5A2.5 2.5 0 0114.5 14H7l-4 3V5.5A2.5 2.5 0 015.5 3h9A2.5 2.5 0 0117 5.5v6z" stroke-linejoin="round"/></svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.5"/><path d="M10 6.5v4M10 13.4h.01" stroke-linecap="round"/></svg>
+                {%- endcase -%}
+              </span>
+              <span class="pc__info-body">
+                <span class="pc__info-label">{{ block.settings.label }}</span>
+                {%- if block.settings.link != blank -%}
+                  <a class="pc__info-value" href="{{ block.settings.link }}">{{ block.settings.value }}</a>
+                {%- else -%}
+                  <span class="pc__info-value">{{ block.settings.value }}</span>
+                {%- endif -%}
+                {%- if block.settings.note != blank -%}
+                  <span class="pc__info-note">{{ block.settings.note }}</span>
+                {%- endif -%}
+              </span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if social_blocks.size > 0 -%}
+        <div class="pc__social">
+          <p class="pc__social-title">{{ s.social_heading | default: 'Follow us' }}</p>
+          <ul class="pc__social-list" role="list">
+            {%- for block in social_blocks -%}
+              <li {{ block.shopify_attributes }}>
+                <a class="pc__social-link" href="{{ block.settings.link }}" aria-label="{{ block.settings.name | escape }}">
+                  {%- case block.settings.network -%}
+                    {%- when 'instagram' -%}
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="4"/><circle cx="10" cy="10" r="3.2"/><circle cx="14.2" cy="5.8" r="0.9" fill="currentColor" stroke="none"/></svg>
+                    {%- when 'facebook' -%}
+                      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M11.5 18v-6.5h2.2l.35-2.6H11.5V7.2c0-.75.2-1.26 1.28-1.26h1.35V3.6A18 18 0 0012.16 3.5c-1.95 0-3.28 1.19-3.28 3.38v1.99H6.6v2.6h2.28V18h2.62z"/></svg>
+                    {%- when 'youtube' -%}
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5" width="15" height="10" rx="3"/><path d="M9 8.2l3.4 1.8L9 11.8V8.2z" fill="currentColor" stroke="none"/></svg>
+                    {%- when 'x' -%}
+                      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M13.6 3h2.5l-5.4 6.2L17 17h-4.3l-3.1-4-3.6 4H3.5l5.6-6.4L3.2 3h4.4l2.9 3.8L13.6 3z"/></svg>
+                    {%- else -%}
+                      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.5"/><path d="M2.5 10h15M10 2.5c2 2.2 2 12.8 0 15M10 2.5c-2 2.2-2 12.8 0 15" /></svg>
+                  {%- endcase -%}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </aside>
+
+    {%- comment -%} ===== Right: form ===== {%- endcomment -%}
+    <div class="pc__panel">
+      {%- form 'contact', id: 'PremiumContactForm', class: 'pc__form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="pc__alert pc__alert--ok" role="status" tabindex="-1" autofocus>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <circle cx="10" cy="10" r="8"/><path d="M6.4 10.4l2.4 2.4 4.8-5.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>
+              <strong>{{ s.success_title | default: 'Thank you' }}</strong>
+              {{ s.success_text | default: 'Your message is on its way. We usually reply within one business day.' }}
+            </span>
+          </div>
+        {%- elsif form.errors -%}
+          <div class="pc__alert pc__alert--err" role="alert" tabindex="-1" autofocus>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <circle cx="10" cy="10" r="8"/><path d="M10 6.3v4.4M10 13.6h.01" stroke-linecap="round"/>
+            </svg>
+            <span>
+              <strong>Something needs attention.</strong>
+              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+            </span>
+          </div>
+        {%- endif -%}
+
+        {%- unless form.posted_successfully? -%}
+          {%- if s.form_heading != blank -%}
+            <h2 class="pc__form-title">{{ s.form_heading }}</h2>
+          {%- endif -%}
+          {%- if s.form_note != blank -%}
+            <p class="pc__form-note">{{ s.form_note }}</p>
+          {%- endif -%}
+        {%- endunless -%}
+
+        <div class="pc__row">
+          <div class="pc__field">
+            <label class="pc__label" for="PcName">Name</label>
+            <input
+              class="pc__input"
+              id="PcName"
+              type="text"
+              name="contact[{{ 'templates.contact.form.name' | t }}]"
+              autocomplete="name"
+              placeholder="Your full name"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+            >
+          </div>
+
+          <div class="pc__field">
+            <label class="pc__label" for="PcEmail">
+              Email <span class="pc__req" aria-hidden="true">*</span>
+            </label>
+            <input
+              class="pc__input{% if form.errors contains 'email' %} has-error{% endif %}"
+              id="PcEmail"
+              type="email"
+              name="contact[email]"
+              autocomplete="email"
+              spellcheck="false"
+              autocapitalize="off"
+              required
+              aria-required="true"
+              placeholder="you@example.com"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="PcEmailErr"{% endif %}
+            >
+            {%- if form.errors contains 'email' -%}
+              <small class="pc__error" id="PcEmailErr">
+                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+              </small>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="pc__row">
+          <div class="pc__field">
+            <label class="pc__label" for="PcPhone">Phone</label>
+            <input
+              class="pc__input"
+              id="PcPhone"
+              type="tel"
+              name="contact[{{ 'templates.contact.form.phone' | t }}]"
+              autocomplete="tel"
+              placeholder="Optional"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+            >
+          </div>
+
+          {%- if s.show_subject -%}
+            <div class="pc__field">
+              <label class="pc__label" for="PcSubject">Subject</label>
+              <div class="pc__select">
+                <select class="pc__input" id="PcSubject" name="contact[Subject]">
+                  {%- assign subjects = s.subject_options | split: ',' -%}
+                  {%- for subject in subjects -%}
+                    <option value="{{ subject | strip | escape }}">{{ subject | strip }}</option>
+                  {%- endfor -%}
+                </select>
+                <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="pc__field">
+          <label class="pc__label" for="PcBody">Message</label>
+          <textarea
+            class="pc__input pc__textarea"
+            id="PcBody"
+            rows="6"
+            name="contact[{{ 'templates.contact.form.comment' | t }}]"
+            placeholder="How can we help?"
+          >{{ form.body }}</textarea>
+        </div>
+
+        {%- if s.show_consent -%}
+          <label class="pc__consent">
+            <input type="checkbox" name="contact[Consent]" value="Agreed" required>
+            <span class="pc__consent-box" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2l2.4 2.4L9.6 3.9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="pc__consent-text">{{ s.consent_text }}</span>
+          </label>
+        {%- endif -%}
+
+        <button class="pc__submit" type="submit">
+          <span>{{ s.button_label | default: 'Send message' }}</span>
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {%- endform -%}
+    </div>
+  </div>
+
+  {%- comment -%} ===== Map ===== {%- endcomment -%}
+  {%- if s.map_embed_url != blank -%}
+    <div class="pc__map">
+      <iframe
+        src="{{ s.map_embed_url }}"
+        title="Map"
+        width="100%"
+        height="420"
+        style="border:0"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Premium Contact",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "WE ARE HERE TO HELP" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get in touch" },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Questions about a ritual, an order, or an ingredient? Our team is glad to help."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero background image",
+      "info": "Optional. Recommended 1800 x 560px."
+    },
+    { "type": "header", "content": "Details column" },
+    { "type": "text", "id": "aside_heading", "label": "Heading", "default": "Contact details" },
+    {
+      "type": "richtext",
+      "id": "aside_text",
+      "label": "Text",
+      "default": "<p>Reach us any way you like. We read every message.</p>"
+    },
+    { "type": "text", "id": "social_heading", "label": "Social heading", "default": "Follow us" },
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Send a message" },
+    {
+      "type": "text",
+      "id": "form_note",
+      "label": "Form note",
+      "default": "Fields marked with * are required."
+    },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Send message" },
+    {
+      "type": "checkbox",
+      "id": "show_subject",
+      "label": "Show subject dropdown",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "subject_options",
+      "label": "Subject options",
+      "info": "Separate with commas.",
+      "default": "Order enquiry, Product advice, Wholesale, Press, Something else"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_consent",
+      "label": "Show consent checkbox",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "consent_text",
+      "label": "Consent text",
+      "default": "I agree to be contacted about my enquiry."
+    },
+    { "type": "text", "id": "success_title", "label": "Success title", "default": "Thank you" },
+    {
+      "type": "textarea",
+      "id": "success_text",
+      "label": "Success text",
+      "default": "Your message is on its way. We usually reply within one business day."
+    },
+    { "type": "header", "content": "Map" },
+    {
+      "type": "textarea",
+      "id": "map_embed_url",
+      "label": "Map embed URL",
+      "info": "Paste the src URL from a Google Maps embed. Leave blank to hide."
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#C5A044" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1C1A17" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#FDFBF7" },
+    { "type": "color", "id": "panel_color", "label": "Form panel", "default": "#FFFFFF" },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Contact detail",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "mail", "label": "Email" },
+            { "value": "phone", "label": "Phone" },
+            { "value": "pin", "label": "Address" },
+            { "value": "clock", "label": "Hours" },
+            { "value": "chat", "label": "Chat" }
+          ],
+          "default": "mail"
+        },
+        { "type": "text", "id": "label", "label": "Label", "default": "Email" },
+        { "type": "text", "id": "value", "label": "Value", "default": "hello@evoskin.com" },
+        { "type": "text", "id": "link", "label": "Link", "info": "Optional. e.g. mailto: or tel:" },
+        { "type": "text", "id": "note", "label": "Note", "info": "Optional small print under the value." }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social link",
+      "settings": [
+        {
+          "type": "select",
+          "id": "network",
+          "label": "Network",
+          "options": [
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "facebook", "label": "Facebook" },
+            { "value": "youtube", "label": "YouTube" },
+            { "value": "x", "label": "X" }
+          ],
+          "default": "instagram"
+        },
+        { "type": "text", "id": "name", "label": "Accessible name", "default": "Instagram" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Contact",
+      "blocks": [
+        {
+          "type": "info",
+          "settings": { "icon": "mail", "label": "Email", "value": "hello@evoskin.com", "link": "mailto:hello@evoskin.com" }
+        },
+        {
+          "type": "info",
+          "settings": { "icon": "phone", "label": "Phone", "value": "+91 90000 00000", "link": "tel:+919000000000" }
+        },
+        {
+          "type": "info",
+          "settings": { "icon": "clock", "label": "Hours", "value": "Mon to Sat, 10am - 6pm", "note": "IST" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

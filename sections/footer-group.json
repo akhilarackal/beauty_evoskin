@@ -1,0 +1,59 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer_premium.name",
+  "type": "footer",
+  "sections": {
+    "footer-premium": {
+      "type": "footer-premium",
+      "settings": {
+        "logo_width": 144,
+        "brand_description": "<p>Special thanks to <a href=\"#\">MADARA Organic Skincare</a> for generously providing us with their stunning product imagery. Kindly visit their website to make real purchases of their products.</p>",
+        "company_heading": "Company",
+        "collections_heading": "Collections",
+        "support_heading": "Customer Support",
+        "newsletter_heading": "Subscribe to Our Newsletter",
+        "newsletter_placeholder": "Enter your email",
+        "newsletter_button": "Subscribe",
+        "consent_text": "<p>By clicking on the \"Subscribe\" button, I confirm my agreement with the [privacy] and [terms].</p>",
+        "privacy_label": "Privacy Policy",
+        "terms_label": "Terms of Use",
+        "show_social": true,
+        "show_bottom_bar": true,
+        "show_country_selector": true,
+        "show_language_selector": true,
+        "show_payment": true,
+        "show_copyright": true,
+        "background_color": "#ffffff",
+        "heading_color": "#000000",
+        "text_color": "#6b7280",
+        "link_color": "#6b7280",
+        "link_hover_color": "#111827",
+        "button_bg": "#111827",
+        "button_text_color": "#ffffff",
+        "input_bg": "#ffffff",
+        "input_border": "#d1d5db",
+        "input_text_color": "#111827",
+        "icon_color": "#6b7280",
+        "divider_color": "#e5e7eb",
+        "padding_top": 64,
+        "padding_bottom": 32,
+        "padding_left": 32,
+        "padding_right": 32,
+        "column_gap": 32,
+        "row_gap": 32,
+        "container_width": 1280
+      }
+    }
+  },
+  "order": [
+    "footer-premium"
+  ]
+}

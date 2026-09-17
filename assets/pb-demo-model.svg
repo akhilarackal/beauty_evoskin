@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 420" fill="none">
+  <!-- Background transparent -->
+
+  <!-- Body / dress -->
+  <path d="M100 420 C80 380 65 320 70 270 L90 240 L160 230 L230 240 L250 270 C255 320 240 380 220 420Z" fill="#E8D5C4"/>
+
+  <!-- Skin tone - arms and shoulders -->
+  <!-- Left shoulder/arm -->
+  <path d="M90 240 C70 245 50 260 45 290 C42 310 50 330 60 340 C70 350 80 345 85 330 C90 315 88 295 90 275Z" fill="#D4A878"/>
+  <!-- Right arm holding product -->
+  <path d="M230 240 C248 248 262 265 268 288 C274 310 268 332 256 338 C244 344 236 336 232 318 C228 300 230 276 230 258Z" fill="#D4A878"/>
+
+  <!-- Neck -->
+  <ellipse cx="160" cy="228" rx="18" ry="22" fill="#D4A878"/>
+
+  <!-- Head shape -->
+  <ellipse cx="160" cy="175" rx="52" ry="58" fill="#D4A878"/>
+
+  <!-- Hair - dark, flowing -->
+  <path d="M108 160 C105 130 115 100 140 88 C155 82 170 80 185 84 C210 90 222 110 218 140 C215 160 210 175 208 185 C215 175 220 160 222 145 C226 118 215 90 195 78 C178 68 148 68 130 80 C112 92 105 120 106 148 C106 155 107 158 108 160Z" fill="#2C1810"/>
+  <!-- Hair sides -->
+  <path d="M108 160 C100 175 98 195 102 215 C106 228 115 235 120 232 C115 220 112 205 114 188 C116 172 120 160 126 152Z" fill="#2C1810"/>
+  <path d="M212 162 C220 177 222 197 218 216 C214 229 205 236 200 233 C205 221 208 206 206 189 C204 173 200 161 194 153Z" fill="#2C1810"/>
+
+  <!-- Face features -->
+  <!-- Eyes -->
+  <ellipse cx="143" cy="168" rx="8" ry="6" fill="white"/>
+  <ellipse cx="177" cy="168" rx="8" ry="6" fill="white"/>
+  <ellipse cx="145" cy="169" rx="5" ry="5" fill="#3D2314"/>
+  <ellipse cx="179" cy="169" rx="5" ry="5" fill="#3D2314"/>
+  <ellipse cx="146" cy="168" rx="2" ry="2" fill="black"/>
+  <ellipse cx="180" cy="168" rx="2" ry="2" fill="black"/>
+  <!-- Eye shine -->
+  <circle cx="148" cy="167" r="1.2" fill="white"/>
+  <circle cx="182" cy="167" r="1.2" fill="white"/>
+
+  <!-- Eyebrows -->
+  <path d="M134 158 Q143 153 152 156" stroke="#2C1810" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M168 156 Q177 153 186 158" stroke="#2C1810" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Nose -->
+  <path d="M158 175 Q156 185 160 188 Q164 185 162 175" stroke="#C4885A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Smile -->
+  <path d="M148 198 Q160 208 172 198" stroke="#C4885A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Lips -->
+  <path d="M150 196 Q160 203 170 196 Q164 192 160 192 Q156 192 150 196Z" fill="#C47070" opacity=".7"/>
+
+  <!-- Cheek blush -->
+  <ellipse cx="132" cy="188" rx="10" ry="6" fill="#E8A0A0" opacity=".35"/>
+  <ellipse cx="188" cy="188" rx="10" ry="6" fill="#E8A0A0" opacity=".35"/>
+
+  <!-- Earrings -->
+  <circle cx="108" cy="193" r="4" fill="#D4AF37"/>
+  <circle cx="212" cy="193" r="4" fill="#D4AF37"/>
+
+  <!-- Product bottle held in right hand -->
+  <!-- Hand holding bottle -->
+  <ellipse cx="248" cy="310" rx="16" ry="14" fill="#D4A878"/>
+
+  <!-- Green serum bottle -->
+  <rect x="238" y="230" width="22" height="72" rx="5" fill="#4A7C59"/>
+  <!-- bottle cap -->
+  <rect x="242" y="218" width="14" height="14" rx="3" fill="#2D5A3D"/>
+  <!-- bottle pump stem -->
+  <rect x="247" y="208" width="4" height="12" rx="1" fill="#3A6B48"/>
+  <!-- bottle pump head -->
+  <ellipse cx="249" cy="207" rx="8" ry="4" fill="#2D5A3D"/>
+  <!-- bottle label -->
+  <rect x="240" y="242" width="18" height="48" rx="2" fill="#3A6B48"/>
+  <!-- label shine -->
+  <rect x="241" y="243" width="5" height="46" rx="2" fill="white" opacity=".1"/>
+  <!-- label lines -->
+  <rect x="242" y="252" width="14" height="2" rx="1" fill="#A8D5B5" opacity=".8"/>
+  <rect x="243" y="258" width="12" height="1.5" rx=".75" fill="#A8D5B5" opacity=".6"/>
+  <rect x="243" y="263" width="12" height="1.5" rx=".75" fill="#A8D5B5" opacity=".6"/>
+  <rect x="244" y="268" width="10" height="1.5" rx=".75" fill="#A8D5B5" opacity=".4"/>
+  <!-- leaf logo -->
+  <path d="M249 275 C246 278 246 282 249 284 C252 282 252 278 249 275Z" fill="#A8D5B5" opacity=".7"/>
+
+  <!-- Dress / top detail -->
+  <path d="M120 240 C130 250 150 255 160 255 C170 255 190 250 200 240" stroke="#C9A882" stroke-width="2" fill="none"/>
+  <!-- neckline -->
+  <path d="M138 228 Q160 245 182 228" stroke="#C9A882" stroke-width="2" fill="none"/>
+</svg>

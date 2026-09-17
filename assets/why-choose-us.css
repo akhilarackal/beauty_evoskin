@@ -1,0 +1,245 @@
+/* Why Choose Us Section
+ * Premium feature cards with Playfair Display + Poppins typography
+ * Shopify Online Store 2.0
+ */
+
+.why-choose-us-section {
+  width: 100%;
+}
+
+.wcu-container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: var(--wcu-padding-top, 80px);
+  padding-bottom: var(--wcu-padding-bottom, 80px);
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.wcu-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Section Heading — centred.
+   Was max-width: 289px with no auto margin, which squeezed the heading
+   into a narrow block hugging the left edge. */
+.wcu-heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -0.8px;
+  color: #222222;
+  max-width: 34ch;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Feature Grid */
+.wcu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--wcu-grid-gap, 24px);
+}
+
+/* Feature Card */
+.wcu-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* centres both the content wrapper and the CTA, which are siblings */
+  align-items: center;
+  padding: 24px;
+  background: var(--wcu-card-bg, #FFFFFF);
+  border: 1px solid var(--wcu-border-color, #F3F4F6);
+  border-radius: var(--wcu-card-radius, 8px);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  opacity: 0;
+  transform: translateY(20px);
+  min-height: 286.5px;
+}
+
+.wcu-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hover state */
+[data-wcu-hover]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  border-color: #E5E7EB;
+}
+
+.wcu-card--visible[data-wcu-hover]:hover {
+  transform: translateY(-4px);
+}
+
+/* Card Content — centred to match the section heading */
+.wcu-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Icon */
+.wcu-card__icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 24px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wcu-card__icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.wcu-card__icon--svg svg {
+  width: 24px;
+  height: 24px;
+  color: var(--wcu-icon-color, #D4AF37);
+  fill: var(--wcu-icon-color, #D4AF37);
+}
+
+.wcu-card__icon--svg {
+  color: var(--wcu-icon-color, #D4AF37);
+}
+
+/* Title */
+.wcu-card__title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #222222;
+  margin: 0 0 16px 0;
+}
+
+/* Description */
+.wcu-card__description {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #6B7280;
+  max-width: 247px;
+  margin: 0 0 24px 0;
+}
+
+/* CTA Link */
+.wcu-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #222222;
+  text-decoration: none;
+  transition: color 300ms ease;
+}
+
+.wcu-card__cta-text {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: color 300ms ease, text-decoration-color 300ms ease;
+}
+
+.wcu-card__cta-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 300ms ease, color 300ms ease;
+  flex-shrink: 0;
+}
+
+/* CTA Hover */
+.wcu-card__cta:hover {
+  color: #D4AF37;
+}
+
+.wcu-card__cta:hover .wcu-card__cta-text {
+  color: #D4AF37;
+  text-decoration-color: #D4AF37;
+}
+
+.wcu-card__cta:hover .wcu-card__cta-arrow {
+  transform: translateX(4px);
+  color: #D4AF37;
+}
+
+/* Responsive: Laptop (< 1200px) */
+@media screen and (max-width: 1199px) {
+  .wcu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsive: Tablet (< 768px) */
+@media screen and (max-width: 767px) {
+  .wcu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wcu-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .wcu-heading {
+    font-size: 28px;
+    line-height: 36px;
+  }
+}
+
+/* Responsive: Mobile (< 576px) */
+@media screen and (max-width: 575px) {
+  .wcu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wcu-card {
+    width: 100%;
+    min-height: auto;
+    padding: 24px;
+    border-radius: 8px;
+  }
+
+  .wcu-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .wcu-heading {
+    font-size: 26px;
+    line-height: 34px;
+    max-width: 100%;
+  }
+}
+
+/* No motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .wcu-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  [data-wcu-hover]:hover {
+    transform: none;
+  }
+
+  .wcu-card__cta-arrow {
+    transition: none;
+  }
+}

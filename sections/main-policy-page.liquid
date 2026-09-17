@@ -1,0 +1,98 @@
+{%- style -%}
+  .policy-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: {{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;
+  }
+  .policy-page__title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 1.2;
+    color: #1F1B15;
+    text-align: center;
+    margin: 0 0 48px;
+  }
+  .policy-page__content {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #374151;
+  }
+  .policy-page__content h2,
+  .policy-page__content h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #1F1B15;
+    margin-top: 40px;
+    margin-bottom: 16px;
+  }
+  .policy-page__content h2 {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  .policy-page__content h3 {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .policy-page__content p {
+    margin: 0 0 16px;
+  }
+  .policy-page__content ul,
+  .policy-page__content ol {
+    padding-left: 20px;
+    margin: 0 0 16px;
+  }
+  .policy-page__content li {
+    margin-bottom: 8px;
+  }
+  .policy-page__content a {
+    color: #C5A044;
+    text-decoration: underline;
+  }
+  .policy-page__content a:hover {
+    color: #A8882E;
+  }
+  @media screen and (max-width: 749px) {
+    .policy-page { padding-left: 16px; padding-right: 16px; }
+    .policy-page__title { font-size: 32px; margin-bottom: 32px; }
+    .policy-page__content { font-size: 13px; }
+  }
+{%- endstyle -%}
+
+<div class="policy-page">
+  <h1 class="policy-page__title">{{ page.title | escape }}</h1>
+  <div class="policy-page__content rte">
+    {{ page.content }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Policy Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ]
+}
+{% endschema %}

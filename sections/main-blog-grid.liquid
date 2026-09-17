@@ -1,0 +1,79 @@
+{%- style -%}
+  .blog-grid-section {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  .blog-grid__heading {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 1.2;
+    color: #1F1B15;
+    text-align: center;
+    margin: 0 0 48px;
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: 40px 24px;
+  }
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+  .blog-card__image-wrap {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #F3F4F6;
+  }
+  .blog-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .blog-card:hover .blog-card__img {
+    transform: scale(1.03);
+  }
+  .blog-card__category {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    color: #C5A044;
+    margin-bottom: 8px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .blog-card__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #1F1B15;
+    margin: 0 0 8px;
+  }
+  .blog-card__excerpt {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #6B7280;
+    margin: 0;
+  }
+  @media screen and (max-width: 989px) {
+    .blog-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media screen and (max-width: 599px) {
+    .blog-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: 32px 16px;
+    }
+    .blog-grid__heading { font-size: 32px; margin-bottom: 32px; }
+  }
+{%- endstyle -%}

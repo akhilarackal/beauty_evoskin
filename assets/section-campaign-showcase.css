@@ -1,0 +1,517 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Campaign Showcase Section — Production-Ready
+   
+   Fonts:
+     • Playfair Display (banner headings)   — loaded globally in theme.liquid
+     • Poppins (all other text)             — loaded globally in theme.liquid
+   
+   Layout:
+     Desktop  → 2-col top row | full-width center | 2-col bottom row
+     Tablet   → 2-col top/bottom | full-width center
+     Mobile   → all banners stack vertically
+   
+   No jQuery. No external libraries.
+   Shopify Online Store 2.0 compatible.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Dawn animation suppression
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.animate--hover-3d-lift .section-campaign-showcase .cs-banner::before,
+.animate--hover-3d-lift .section-campaign-showcase .cs-banner::after {
+  display: none !important;
+  content: none !important;
+}
+
+.animate--hover-vertical-lift .section-campaign-showcase .cs-banner,
+.animate--hover-3d-lift .section-campaign-showcase .cs-banner {
+  transform: none !important;
+  transition: none !important;
+}
+
+.section-campaign-showcase,
+.section-campaign-showcase .cs-banner,
+.section-campaign-showcase .cs-row {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+.section-campaign-showcase-wrapper {
+  transition: none !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Section wrapper
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section-campaign-showcase {
+  width: 100%;
+  padding-top: var(--cs-pad-top, 64px);
+  padding-bottom: var(--cs-pad-bottom, 64px);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Inner container
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-container {
+  max-width: 1274px;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Two-column rows (top + bottom)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-row--two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Banner base — shared across all 5 banners
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-banner {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  /* GPU compositing hint */
+  will-change: transform;
+}
+
+/* Background image fills the banner */
+.cs-banner__picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cs-banner__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  display: block;
+}
+
+/* Demo image — contain instead of cover so SVG shows fully */
+.cs-banner__img--demo {
+  object-fit: contain;
+  object-position: center right;
+  opacity: 0.9;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Small banner (Banners 1, 2, 4, 5)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-banner--small {
+  min-height: 280px;
+}
+
+/* Content sits in left half, image in right half */
+.cs-banner__content {
+  position: relative;
+  z-index: 2;
+  width: 55%;
+  padding: 28px 20px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Category badge / pill
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-banner__category {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #1F3B73;
+  white-space: nowrap;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Headings
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-banner__heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  margin: 0;
+}
+
+.cs-banner__heading--small {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  color: #111827;
+}
+
+.cs-banner__heading--large {
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 40px;
+  color: #ffffff;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CTA Button
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #D4AF37;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  padding: 10px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  will-change: transform;
+  margin-top: 4px;
+}
+
+.cs-banner__btn:hover,
+.cs-banner__btn:focus-visible {
+  background: #b8922e;
+  transform: translateY(-2px);
+}
+
+.cs-banner__btn:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 3px;
+}
+
+.cs-banner__btn[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.cs-banner__btn--large {
+  align-self: flex-start;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Discount circle (Banner 1 top-right)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-banner__circle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  width: 123px;
+  height: 123px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.cs-banner__circle-top {
+  font-family: 'Nimbus Sans', 'Arial', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.cs-banner__circle-pct {
+  font-family: 'Nimbus Sans', 'Arial', sans-serif;
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 1;
+  color: #ffffff;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Large center banner (Banner 3)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-banner--large {
+  min-height: 500px;
+  width: 100%;
+  background: #c8a228; /* fallback when no image */
+}
+
+.cs-banner--large .cs-banner__img--center-demo {
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.6;
+}
+
+.cs-banner__content--large {
+  width: 50%;
+  max-width: 560px;
+  padding: 48px 40px;
+  gap: 16px;
+}
+
+/* Description */
+.cs-banner__desc {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  color: #ffffff;
+  margin: 0;
+  max-width: 400px;
+}
+
+/* Promo text above the code box */
+.cs-banner__promo-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+  margin: 0;
+  max-width: 400px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Promo code row
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-banner__promo-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cs-banner__promo-input {
+  width: 229px;
+  height: 40px;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 16px;
+  background: #ffffff;
+  color: #6B7280;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  outline: none;
+  cursor: default;
+  user-select: all;
+  flex-shrink: 0;
+}
+
+.cs-banner__copy-btn {
+  height: 40px;
+  border-radius: 4px;
+  border: none;
+  background: #ffffff;
+  color: #2563EB;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cs-banner__copy-btn:hover {
+  background: #eff6ff;
+}
+
+.cs-banner__copy-btn:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.cs-banner__copy-btn.is-copied {
+  color: #16a34a;
+}
+
+.cs-banner__copy-btn svg {
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Tablet (≤ 989px)
+   Two-column rows stay. Center banner full width. Text sizes reduce.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 989px) {
+  .cs-container {
+    padding-inline: 24px;
+  }
+
+  .cs-banner__heading--small {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .cs-banner__heading--large {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .cs-banner__content--large {
+    width: 60%;
+    padding: 36px 28px;
+  }
+
+  .cs-banner__desc {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .cs-banner__circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .cs-banner__circle-pct {
+    font-size: 30px;
+  }
+
+  .cs-banner__circle-top {
+    font-size: 12px;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Mobile (≤ 599px)
+   All banners stack vertically. Full-width. Typography scales down.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 599px) {
+  .cs-container {
+    padding-inline: 16px;
+    gap: 12px;
+  }
+
+  /* Stack both two-column rows to single column */
+  .cs-row--two-col {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Small banners: allow content to take more width on mobile */
+  .cs-banner--small {
+    min-height: 220px;
+  }
+
+  .cs-banner__content {
+    width: 60%;
+    padding: 20px 16px 20px 20px;
+    gap: 10px;
+  }
+
+  .cs-banner__heading--small {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .cs-banner__btn {
+    font-size: 14px;
+    padding: 8px 18px;
+  }
+
+  /* Center banner */
+  .cs-banner--large {
+    min-height: 420px;
+  }
+
+  .cs-banner__content--large {
+    width: 100%;
+    max-width: 100%;
+    padding: 28px 20px;
+    gap: 12px;
+  }
+
+  .cs-banner__heading--large {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  .cs-banner__desc {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .cs-banner__promo-text {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .cs-banner__promo-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cs-banner__promo-input {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  /* Hide discount circle on very small screens */
+  .cs-banner__circle {
+    width: 84px;
+    height: 84px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .cs-banner__circle-pct {
+    font-size: 24px;
+  }
+
+  .cs-banner__circle-top {
+    font-size: 10px;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Demo hint (Theme Editor only)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cs-demo-hint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  color: #1f2937;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 6px;
+  margin: 0;
+}
+
+.shopify-design-mode .cs-demo-hint {
+  display: flex;
+}

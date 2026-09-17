@@ -1,0 +1,217 @@
+/* ═══════════════════════════════════════════════════════════
+   Product Showcase — The Ritual (Application) Section
+   Pixel-perfect Figma match
+   ═══════════════════════════════════════════════════════════ */
+
+.psr-section {
+  width: 100%;
+  background: var(--psr-bg, #F8F3EA);
+}
+
+.psr-container {
+  max-width: 1274px;
+  margin: 0 auto;
+  padding: var(--psr-pad-top, 80px) 32px var(--psr-pad-bottom, 80px);
+}
+
+/* ── Header Block ── */
+.psr-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.psr-header__label {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  color: var(--psr-accent, #C5A046);
+  margin-bottom: 12px;
+}
+
+.psr-header__title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 57.6px;
+  color: #1A1A1A;
+  margin: 0 0 16px;
+}
+
+.psr-header__subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #5F5E5E;
+  max-width: 718px;
+  margin: 0 auto;
+}
+
+/* ── Steps Grid ── */
+.psr-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--psr-gap, 32px);
+  align-items: start;
+}
+
+/* ── Staggered Layout: middle card drops lower ── */
+.psr-card:nth-child(2) {
+  margin-top: 44px;
+}
+
+/* ── Step Card ── */
+.psr-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.psr-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Image ── */
+.psr-card__image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 0;
+  overflow: hidden;
+  background: #E5E7EB;
+}
+
+.psr-card__image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.psr-card:hover .psr-card__image-wrap img {
+  transform: scale(1.03);
+}
+
+/* ── Step Number (inside image, top-left) ── */
+.psr-card__step-number {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--psr-accent, #C5A046);
+  opacity: 0.7;
+  background: none;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  display: block;
+}
+
+/* ── Content Area ── */
+.psr-card__content {
+  padding: 20px 0 0;
+}
+
+.psr-card__title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #1A1A1A;
+  margin: 0 0 10px;
+}
+
+.psr-card__description {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  color: #5F5E5E;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Responsive — Tablet (≤ 989px)
+   ═══════════════════════════════════════════════════════════ */
+@media screen and (max-width: 989px) {
+  .psr-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .psr-card:nth-child(2) {
+    margin-top: 32px;
+  }
+
+  .psr-header__title {
+    font-size: 36px;
+    line-height: 44px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Responsive — Small Tablet (≤ 749px)
+   ═══════════════════════════════════════════════════════════ */
+@media screen and (max-width: 749px) {
+  .psr-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Remove stagger on mobile */
+  .psr-card:nth-child(2) {
+    margin-top: 0;
+  }
+
+  .psr-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .psr-header {
+    margin-bottom: 40px;
+  }
+
+  .psr-header__title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .psr-header__subtitle {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .psr-card__image-wrap {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Reduced motion
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .psr-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .psr-card:hover .psr-card__image-wrap img {
+    transform: none;
+  }
+}

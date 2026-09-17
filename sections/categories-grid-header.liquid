@@ -1,0 +1,91 @@
+{%- style -%}
+  #cgh-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    text-align: center;
+  }
+  .cgh-heading {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 1.2;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 12px;
+  }
+  .cgh-description {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+    color: {{ section.settings.description_color }};
+    margin: 0;
+    text-transform: uppercase;
+  }
+  @media screen and (max-width: 749px) {
+    .cgh-heading { font-size: 32px; }
+    .cgh-description { font-size: 12px; }
+  }
+{%- endstyle -%}
+
+<div id="cgh-{{ section.id }}" class="page-width">
+  {%- if section.settings.heading != blank -%}
+    <h1 class="cgh-heading">{{ section.settings.heading }}</h1>
+  {%- endif -%}
+  {%- if section.settings.description != blank -%}
+    <p class="cgh-description">{{ section.settings.description }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Categories Header",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Categories"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1F1B15"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,353 @@
+{{ 'secondary-header.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-secondary-header {
+    --sh-bg: {{ section.settings.background_color }};
+    --sh-btn-bg: {{ section.settings.button_background_color }};
+    --sh-btn-bg-hover: {{ section.settings.button_hover_background_color }};
+    --sh-btn-text: {{ section.settings.button_text_color }};
+    --sh-btn-radius: {{ section.settings.button_border_radius }}px;
+    --sh-search-bg: {{ section.settings.search_background_color }};
+    --sh-search-border: {{ section.settings.search_border_color }};
+    --sh-search-radius: {{ section.settings.search_border_radius }}px;
+    --sh-search-placeholder: {{ section.settings.search_placeholder_color }};
+    --sh-link-color: {{ section.settings.link_color }};
+    --sh-link-hover: {{ section.settings.link_hover_color }};
+    --sh-phone-label: {{ section.settings.phone_label_color }};
+    --sh-phone-number: {{ section.settings.phone_number_color }};
+    --sh-v-pad: {{ section.settings.padding_vertical }}px;
+    --sh-h-pad: {{ section.settings.padding_horizontal }}px;
+  }
+{%- endstyle -%}
+
+<div class="section-secondary-header">
+  <div class="secondary-header page-width">
+    <div class="secondary-header__inner">
+
+      {%- comment -%} LEFT: Shop All {%- endcomment -%}
+      <div class="secondary-header__left">
+        {%- if section.settings.shop_all_menu != blank -%}
+          <details class="secondary-header__shop-all" id="SecondaryHeaderShopAll">
+            <summary
+              class="secondary-header__shop-all-toggle"
+              aria-label="{{ section.settings.shop_all_label | escape }}"
+              aria-expanded="false"
+              aria-controls="SecondaryHeaderShopAll-dropdown"
+            >
+              <span class="secondary-header__hamburger" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </span>
+              {{- section.settings.shop_all_label | escape -}}
+            </summary>
+            <div class="secondary-header__dropdown" id="SecondaryHeaderShopAll-dropdown" role="menu">
+              {%- for link in section.settings.shop_all_menu.links -%}
+                <a
+                  href="{{ link.url }}"
+                  class="secondary-header__dropdown-link"
+                  role="menuitem"
+                  {% if link.current %}aria-current="page"{% endif %}
+                >
+                  {{- link.title | escape -}}
+                </a>
+              {%- endfor -%}
+            </div>
+          </details>
+        {%- else -%}
+          <span class="secondary-header__shop-all-toggle">
+            <span class="secondary-header__hamburger" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+            {{- section.settings.shop_all_label | escape -}}
+          </span>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} CENTER: Search {%- endcomment -%}
+      <div class="secondary-header__search">
+        {%- if settings.predictive_search_enabled -%}
+          <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+        {%- else -%}
+          <search-form class="search-modal__form">
+        {%- endif -%}
+          <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
+            <div class="field">
+              <input
+                class="search__input field__input"
+                id="SecondaryHeader-Search"
+                type="search"
+                name="q"
+                value="{{ search.terms | escape }}"
+                placeholder="{{ section.settings.search_placeholder | escape }}"
+                {%- if settings.predictive_search_enabled -%}
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results"
+                  aria-controls="predictive-search-results"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                {%- endif -%}
+              >
+              <label class="field__label" for="SecondaryHeader-Search">
+                {{- section.settings.search_placeholder | escape -}}
+              </label>
+              <input type="hidden" name="options[prefix]" value="last">
+              <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+                <span class="svg-wrapper">
+                  {{- 'icon-search.svg' | inline_asset_content -}}
+                </span>
+              </button>
+            </div>
+
+            {%- if settings.predictive_search_enabled -%}
+              <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+              </div>
+              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+            {%- endif -%}
+          </form>
+        {%- if settings.predictive_search_enabled -%}
+          </predictive-search>
+        {%- else -%}
+          </search-form>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} RIGHT: Quick Links + Phone {%- endcomment -%}
+      <div class="secondary-header__right">
+        <nav class="secondary-header__nav" aria-label="Quick links">
+          <ul class="secondary-header__nav-links" role="list">
+            {%- if section.settings.menu != blank -%}
+              {%- for link in section.settings.menu.links -%}
+                <li>
+                  <a
+                    href="{{ link.url }}"
+                    class="secondary-header__nav-link"
+                    {% if link.current %}aria-current="page"{% endif %}
+                  >
+                    {{- link.title | escape -}}
+                  </a>
+                </li>
+              {%- endfor -%}
+            {%- else -%}
+              <li>
+                <a href="/pages/about" class="secondary-header__nav-link">About</a>
+              </li>
+              <li>
+                <a href="/blogs/journal" class="secondary-header__nav-link">Journal</a>
+              </li>
+              <li>
+                <a href="/pages/faq" class="secondary-header__nav-link">Help center</a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </nav>
+
+        {%- if section.settings.show_phone -%}
+          <span class="secondary-header__phone">
+            <span class="secondary-header__phone-text">
+              {%- if section.settings.phone_label != blank -%}
+                <span class="secondary-header__phone-label">{{- section.settings.phone_label | escape -}}</span>
+              {%- endif -%}
+              {%- if section.settings.phone_number != blank -%}
+                <a href="tel:{{ section.settings.phone_number | remove: ' ' | remove: '+' | remove: '-' }}" class="secondary-header__phone-number">
+                  {{- section.settings.phone_number | escape -}}
+                </a>
+              {%- endif -%}
+            </span>
+          </span>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Secondary Header",
+  "class": "section-secondary-header-group",
+  "tag": "section",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Shop All Button"
+    },
+    {
+      "type": "text",
+      "id": "shop_all_label",
+      "label": "Label",
+      "default": "Shop All"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_all_menu",
+      "label": "Menu"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Background",
+      "default": "#1E3A8A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color",
+      "label": "Hover background",
+      "default": "#1E40AF"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Placeholder",
+      "default": "Search"
+    },
+    {
+      "type": "color",
+      "id": "search_background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "search_border_color",
+      "label": "Border",
+      "default": "#d1d5db"
+    },
+    {
+      "type": "range",
+      "id": "search_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "search_placeholder_color",
+      "label": "Placeholder color",
+      "default": "#9ca3af"
+    },
+    {
+      "type": "header",
+      "content": "Quick Links"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#374151"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Hover color",
+      "default": "#111827"
+    },
+    {
+      "type": "header",
+      "content": "Phone"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Label",
+      "default": "Need help? Call Us: "
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Number",
+      "default": "+84 2500 888 33"
+    },
+    {
+      "type": "color",
+      "id": "phone_label_color",
+      "label": "Label color",
+      "default": "#6b7280"
+    },
+    {
+      "type": "color",
+      "id": "phone_number_color",
+      "label": "Number color",
+      "default": "#111827"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Secondary Header"
+    }
+  ]
+}
+{% endschema %}

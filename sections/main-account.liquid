@@ -1,0 +1,358 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .account-profile {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Tabs */
+  .account-tabs {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 48px;
+    border-bottom: none;
+  }
+  .account-tabs__link {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #D1D5DB;
+    text-decoration: none;
+    padding-bottom: 4px;
+    transition: color 0.2s ease;
+  }
+  .account-tabs__link--active {
+    color: #1F1B15;
+  }
+  .account-tabs__link:hover {
+    color: #1F1B15;
+  }
+
+  /* Info section */
+  .account-section {
+    margin-bottom: 40px;
+  }
+  .account-section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .account-section__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #1F1B15;
+    margin: 0;
+  }
+  .account-section__action {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1F1B15;
+    text-decoration: none;
+    padding: 6px 16px;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+  }
+  .account-section__action:hover {
+    background: #F9FAFB;
+  }
+
+  /* Info rows */
+  .account-info {
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .account-info__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .account-info__row:last-child {
+    border-bottom: none;
+  }
+  .account-info__label {
+    font-size: 14px;
+    color: #6B7280;
+  }
+  .account-info__value {
+    font-size: 14px;
+    color: #1F1B15;
+    font-weight: 500;
+  }
+
+  /* Address card */
+  .account-address {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+  }
+  .account-address__icon {
+    width: 40px;
+    height: 40px;
+    background: #F3F4F6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .account-address__icon svg {
+    width: 20px;
+    height: 20px;
+    color: #6B7280;
+  }
+  .account-address__details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .account-address__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F1B15;
+  }
+  .account-address__badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #6B7280;
+    background: #F3F4F6;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+  .account-address__line {
+    font-size: 13px;
+    color: #6B7280;
+    margin: 0;
+  }
+
+  /* Marketing Preferences */
+  .account-prefs {
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .account-prefs__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .account-prefs__row:last-child {
+    border-bottom: none;
+  }
+  .account-prefs__label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #1F1B15;
+  }
+  .account-prefs__label svg {
+    width: 20px;
+    height: 20px;
+    color: #6B7280;
+  }
+
+  /* Toggle switch */
+  .toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: #D1D5DB;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .toggle-switch--active {
+    background: #D4AF37;
+  }
+  .toggle-switch__knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .toggle-switch--active .toggle-switch__knob {
+    transform: translateX(20px);
+  }
+
+  /* CTA Button */
+  .account-cta {
+    width: 100%;
+    padding: 16px;
+    background: #1F1B15;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 40px;
+  }
+  .account-cta:hover {
+    background: #333;
+  }
+
+  @media screen and (max-width: 749px) {
+    .account-profile { padding: 32px 16px 60px; }
+    .account-tabs { gap: 20px; margin-bottom: 32px; }
+    .account-tabs__link { font-size: 24px; }
+  }
+{%- endstyle -%}
+
+<div class="account-profile">
+
+  {%- comment -%} Tabs: Profile / Orders {%- endcomment -%}
+  <nav class="account-tabs" aria-label="Account navigation">
+    <a href="{{ routes.account_url }}" class="account-tabs__link account-tabs__link--active">Profile</a>
+    <a href="{{ routes.account_url }}" class="account-tabs__link" style="color:#D1D5DB;">Orders</a>
+  </nav>
+
+  {%- comment -%} Personal Info {%- endcomment -%}
+  <div class="account-section">
+    <div class="account-section__header">
+      <h2 class="account-section__title">{{ customer.name }}</h2>
+      <a href="{{ routes.account_addresses_url }}" class="account-section__action">Edit</a>
+    </div>
+    <div class="account-info">
+      <div class="account-info__row">
+        <span class="account-info__label">Email</span>
+        <span class="account-info__value">{{ customer.email }}</span>
+      </div>
+      {%- if customer.phone != blank -%}
+        <div class="account-info__row">
+          <span class="account-info__label">Phone</span>
+          <span class="account-info__value">{{ customer.phone }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} Address {%- endcomment -%}
+  <div class="account-section">
+    <div class="account-section__header">
+      <h2 class="account-section__title">Address</h2>
+      <a href="{{ routes.account_addresses_url }}" class="account-section__action">Add</a>
+    </div>
+
+    {%- if customer.default_address -%}
+      <div class="account-address">
+        <div class="account-address__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="account-address__details">
+          <span class="account-address__name">
+            {{ customer.default_address.first_name }}
+            <span class="account-address__badge">Default</span>
+          </span>
+          <p class="account-address__line">
+            {%- if customer.default_address.address1 != blank -%}{{ customer.default_address.address1 }}{%- endif -%}
+            {%- if customer.default_address.address2 != blank -%}, {{ customer.default_address.address2 }}{%- endif -%}
+            {%- if customer.default_address.city != blank -%}, {{ customer.default_address.city }}{%- endif -%}
+            {%- if customer.default_address.country != blank -%}, {{ customer.default_address.country }}{%- endif -%}
+          </p>
+        </div>
+      </div>
+    {%- else -%}
+      <p style="font-size:14px;color:#6B7280;">No address saved yet.</p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Marketing Preferences {%- endcomment -%}
+  <div class="account-section">
+    <div class="account-section__header">
+      <h2 class="account-section__title">Marketing Preferences</h2>
+    </div>
+    <div class="account-prefs">
+      <div class="account-prefs__row">
+        <span class="account-prefs__label">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 7l-10 7L2 7"/>
+          </svg>
+          Email
+        </span>
+        <div class="toggle-switch{% if customer.accepts_marketing %} toggle-switch--active{% endif %}" aria-label="Email marketing {{ customer.accepts_marketing | default: false }}">
+          <span class="toggle-switch__knob"></span>
+        </div>
+      </div>
+      <div class="account-prefs__row">
+        <span class="account-prefs__label">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/>
+          </svg>
+          Whatsapp
+        </span>
+        <div class="toggle-switch" aria-label="Whatsapp marketing">
+          <span class="toggle-switch__knob"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Logout Button {%- endcomment -%}
+  <a href="{{ routes.account_logout_url }}" class="account-cta" style="display:block;text-align:center;text-decoration:none;">
+    LOGOUT
+  </a>
+
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-account.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

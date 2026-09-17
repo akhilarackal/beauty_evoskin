@@ -1,0 +1,245 @@
+{%- style -%}
+  #CuratedRituals-{{ section.id }} {
+    --cr-bg: {{ section.settings.background_color }};
+    --cr-pad-top: {{ section.settings.padding_top }}px;
+    --cr-pad-bottom: {{ section.settings.padding_bottom }}px;
+    --cr-container-width: {{ section.settings.container_width }}px;
+    --cr-heading-color: {{ section.settings.heading_color | default: '#1F1B15' }};
+  }
+{%- endstyle -%}
+
+{{ 'section-curated-rituals-showcase.css' | asset_url | stylesheet_tag }}
+
+<section
+  id="CuratedRituals-{{ section.id }}"
+  class="cr"
+  aria-label="{{ section.settings.heading | default: 'Curated Rituals' | escape }}"
+  style="background-color: {{ section.settings.background_color }};"
+>
+  <div class="cr__container">
+
+    {%- if section.settings.heading != blank -%}
+      <header class="cr__header">
+        <h2 class="cr__heading">{{ section.settings.heading }}</h2>
+        <span class="cr__accent" aria-hidden="true"></span>
+      </header>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="cr__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_image = block.settings.custom_image
+            assign card_product = block.settings.product
+            if card_image == blank and card_product != blank and card_product.featured_image != blank
+              assign card_image = card_product.featured_image
+            endif
+            assign card_title = block.settings.title
+            if card_title == blank and card_product != blank
+              assign card_title = card_product.title
+            endif
+            assign card_link = block.settings.button_link
+            if card_link == blank and card_product != blank
+              assign card_link = card_product.url
+            endif
+          -%}
+
+          <article class="cr__card" {{ block.shopify_attributes }}>
+            <div class="cr__card-image-wrap">
+              {%- if card_image != blank -%}
+                <img
+                  class="cr__card-img"
+                  src="{{ card_image | image_url: width: 800 }}"
+                  srcset="
+                    {{ card_image | image_url: width: 400 }} 400w,
+                    {{ card_image | image_url: width: 600 }} 600w,
+                    {{ card_image | image_url: width: 800 }} 800w,
+                    {{ card_image | image_url: width: 1000 }} 1000w
+                  "
+                  sizes="(max-width: 749px) calc(100vw - 48px), (max-width: 989px) calc(50vw - 56px), 600px"
+                  alt="{{ card_image.alt | default: card_title | escape }}"
+                  width="{{ card_image.width | default: 800 }}"
+                  height="{{ card_image.height | default: 600 }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <div class="cr__card-placeholder">
+                  {{ 'product-1' | placeholder_svg_tag: 'cr__placeholder-svg' }}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.badge_text != blank -%}
+                <span class="cr__card-badge">{{ block.settings.badge_text }}</span>
+              {%- endif -%}
+            </div>
+
+            <div class="cr__card-body">
+              {%- if card_title != blank -%}
+                <h3 class="cr__card-title">{{ card_title | escape }}</h3>
+              {%- endif -%}
+
+              {%- if block.settings.description != blank -%}
+                <p class="cr__card-desc">{{ block.settings.description }}</p>
+              {%- endif -%}
+
+              {%- assign btn_label = block.settings.button_label | default: 'View Ritual' -%}
+              <a
+                href="{{ card_link | default: '#' }}"
+                class="cr__card-cta"
+                {% if card_link == blank %}aria-disabled="true"{% endif %}
+              >
+                {{ btn_label }}
+              </a>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Curated Rituals",
+  "tag": "div",
+  "class": "section section-curated-rituals-showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Curated Rituals"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1F1B15"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container width",
+      "min": 1000,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ritual",
+      "name": "Ritual Card",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product (optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Image",
+          "info": "Overrides product image if set."
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "default": "Night Repair"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Title",
+          "default": "Obsidian Repair",
+          "info": "Leave blank to use product title."
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Intensive overnight restoration for stressed, depleted skin."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "View Ritual"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link",
+          "info": "Leave blank to use product URL."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Curated Rituals",
+      "blocks": [
+        {
+          "type": "ritual",
+          "settings": {
+            "badge_text": "Night Repair",
+            "title": "Obsidian Repair",
+            "description": "Intensive overnight restoration for stressed, depleted skin.",
+            "button_label": "View Ritual"
+          }
+        },
+        {
+          "type": "ritual",
+          "settings": {
+            "badge_text": "Radiance",
+            "title": "Luminous Alabaster",
+            "description": "Targeted brightening protocol to even tone and unveil clarity.",
+            "button_label": "View Ritual"
+          }
+        }
+      ],
+      "settings": {
+        "heading": "Curated Rituals",
+        "background_color": "#FFFFFF",
+        "heading_color": "#1F1B15",
+        "container_width": 1280,
+        "padding_top": 80,
+        "padding_bottom": 96
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

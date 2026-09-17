@@ -1,0 +1,692 @@
+/* ========================================
+   Global Dark Mode
+   Overrides Dawn's CSS color variables
+   when html.dark is active.
+   
+   Uses CSS variables consistently.
+   No hardcoded values in component rules.
+   ======================================== */
+
+/* ========================================
+   Dark Mode Color Variables
+   Dawn uses RGB values (e.g., 255,255,255)
+   that work with rgb() and rgba() functions.
+   ======================================== */
+html.dark {
+  /* Dawn core variables */
+  --color-background: 18, 18, 24;
+  --color-background-contrast: 30, 30, 40;
+  --color-foreground: 229, 231, 235;
+  --color-foreground-light: 209, 213, 219;
+  --color-shadow: 0, 0, 0;
+  --gradient-background: #121218;
+
+  /* Dawn button variables */
+  --color-button: 197, 160, 68;
+  --color-button-text: 18, 18, 24;
+  --color-secondary-button: 30, 30, 40;
+  --color-secondary-button-text: 229, 231, 235;
+  --color-link: 197, 160, 68;
+
+  /* Dawn badge variables */
+  --color-badge-foreground: 229, 231, 235;
+  --color-badge-background: 197, 160, 68;
+  --color-badge-border: 197, 160, 68;
+
+  /* Dawn misc */
+  --payment-terms-background-color: #121218;
+  --color-base-text: 229, 231, 235;
+  --color-base-background-1: 18, 18, 24;
+  --color-base-background-2: 30, 30, 40;
+  --color-base-solid-button-labels: 18, 18, 24;
+
+  /* Focus states */
+  --focused-base-box-shadow: 0 0 0 0.3rem rgb(18, 18, 24), 0 0 0.5rem 0.4rem rgba(229, 231, 235, 0.3);
+}
+
+/* ========================================
+   Color Scheme Overrides
+   Force all color schemes to use dark mode values
+   ======================================== */
+html.dark .color-scheme-1,
+html.dark .color-scheme-2,
+html.dark .color-scheme-3,
+html.dark .color-scheme-4,
+html.dark .color-scheme-5 {
+  --color-background: 18, 18, 24;
+  --color-background-contrast: 30, 30, 40;
+  --color-foreground: 229, 231, 235;
+  --color-foreground-light: 209, 213, 219;
+  --color-shadow: 0, 0, 0;
+  --gradient-background: #121218;
+  --color-button: 197, 160, 68;
+  --color-button-text: 18, 18, 24;
+  --color-secondary-button: 30, 30, 40;
+  --color-secondary-button-text: 229, 231, 235;
+  --color-link: 197, 160, 68;
+  --color-badge-foreground: 229, 231, 235;
+  --color-badge-background: 197, 160, 68;
+  --color-badge-border: 197, 160, 68;
+}
+
+/* ========================================
+   Global Color Transitions
+   ======================================== */
+html.dark,
+html.dark body,
+html.dark .header-wrapper,
+html.dark .footer,
+html.dark .section {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+/* ========================================
+   Body & Base Elements
+   ======================================== */
+html.dark body {
+  color: rgba(var(--color-foreground), 0.75);
+  background-color: rgb(var(--color-background));
+}
+
+html.dark a,
+html.dark .link,
+html.dark a.link {
+  color: rgb(var(--color-link));
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+html.dark .button,
+html.dark .button--primary,
+html.dark .shopify-challenge__button {
+  background-color: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+  border-color: rgb(var(--color-button));
+}
+
+html.dark .button--secondary,
+html.dark .button--tertiary {
+  background-color: transparent;
+  color: rgb(var(--color-button));
+  border-color: rgb(var(--color-button));
+}
+
+html.dark .button:hover,
+html.dark .button--primary:hover {
+  filter: brightness(1.1);
+}
+
+html.dark .button--secondary:hover {
+  background-color: rgba(var(--color-button), 0.1);
+}
+
+/* ========================================
+   Forms & Inputs
+   ======================================== */
+html.dark .field__input,
+html.dark .text-area,
+html.dark select {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+  border-color: rgba(var(--color-foreground), 0.2);
+}
+
+html.dark .field__input:focus,
+html.dark .text-area:focus,
+html.dark select:focus {
+  border-color: rgb(var(--color-link));
+  box-shadow: 0 0 0 0.1rem rgb(var(--color-link));
+}
+
+html.dark .field__label,
+html.dark label {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .localization-form__select {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+  border-color: rgba(var(--color-foreground), 0.2);
+}
+
+/* ========================================
+   Cards
+   ======================================== */
+html.dark .card {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.1);
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .card__heading,
+html.dark .card__heading a {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .card__content {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+/* ========================================
+   Product Cards
+   ======================================== */
+html.dark .product-card-wrapper .card {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark .price-item {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .price-item--regular {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .price-item--sale {
+  color: rgb(239, 68, 68);
+}
+
+/* ========================================
+   Collection Cards
+   ======================================== */
+html.dark .collection-card-wrapper .card {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+/* ========================================
+   Blog Cards
+   ======================================== */
+html.dark .article-card-wrapper .card {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+/* ========================================
+   Header
+   ======================================== */
+html.dark .header-wrapper {
+  background-color: rgb(var(--color-background));
+  border-bottom-color: rgba(var(--color-foreground), 0.08);
+}
+
+html.dark .header {
+  background-color: rgb(var(--color-background));
+}
+
+html.dark .header__heading-link .h2 {
+  color: rgb(var(--color-link));
+}
+
+html.dark .header__menu-item > a,
+html.dark .header__menu-item > summary {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .header__icon {
+  color: rgb(var(--color-foreground-light));
+}
+
+html.dark .header__icon-text {
+  color: rgb(var(--color-foreground-light));
+}
+
+html.dark .header__icon-divider {
+  background-color: rgba(var(--color-foreground), 0.15);
+}
+
+html.dark .header__submenu {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark .header__submenu .header__menu-item > a {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .header__submenu .header__menu-item > a:hover {
+  background-color: rgba(var(--color-foreground), 0.05);
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Secondary Header
+   ======================================== */
+html.dark .secondary-header {
+  background-color: rgb(var(--color-background));
+  border-bottom-color: rgba(var(--color-foreground), 0.08);
+}
+
+html.dark .secondary-header__shop-all-toggle {
+  background-color: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+}
+
+html.dark .secondary-header__shop-all-toggle:hover {
+  filter: brightness(1.1);
+}
+
+html.dark .secondary-header__dropdown {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark .secondary-header__search .search__input {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+  border-color: rgba(var(--color-foreground), 0.2);
+}
+
+html.dark .secondary-header__search .search__input:focus {
+  border-color: rgb(var(--color-link));
+  box-shadow: 0 0 0 0.1rem rgb(var(--color-link));
+}
+
+html.dark .secondary-header__search .search__input::placeholder {
+  color: rgba(var(--color-foreground), 0.5);
+}
+
+html.dark .secondary-header__nav-link {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .secondary-header__nav-link:hover,
+html.dark .secondary-header__nav-link[aria-current] {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .secondary-header__phone-label {
+  color: rgba(var(--color-foreground), 0.5);
+}
+
+html.dark .secondary-header__phone-number {
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Announcement Bar
+   ======================================== */
+html.dark .announcement-bar {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+html.dark .footer {
+  background-color: rgb(var(--color-background));
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .footer__heading,
+html.dark .footer-block__heading {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .footer__list-item a,
+html.dark .footer-block__details-content .list-menu__item--link {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .footer__list-item a:hover,
+html.dark .footer-block__details-content .list-menu__item--link:hover,
+html.dark .list-menu__item--link:hover {
+  color: rgb(var(--color-link));
+}
+
+html.dark .footer-block__newsletter .field__input {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.2);
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .footer-block__newsletter .field__input:focus {
+  border-color: rgb(var(--color-link));
+  box-shadow: 0 0 0 0.1rem rgb(var(--color-link));
+}
+
+html.dark .footer__content-bottom {
+  border-top-color: rgba(var(--color-foreground), 0.08);
+}
+
+html.dark .footer__localization h2 {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .copyright__content,
+html.dark .copyright__content a {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .copyright__content a:hover {
+  color: rgb(var(--color-link));
+}
+
+html.dark .policies a {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .policies a:hover {
+  color: rgb(var(--color-link));
+}
+
+html.dark .footer-block__social-heading {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .footer-block__newsletter-subtext {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .list-social__link {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .list-social__link:hover {
+  color: rgb(var(--color-link));
+}
+
+html.dark .footer__follow-on-shop {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+/* ========================================
+   Cart Drawer
+   ======================================== */
+html.dark .drawer {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .drawer__heading {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .cart-item {
+  border-bottom-color: rgba(var(--color-foreground), 0.1);
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .cart-item__name {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .cart-item__price {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .drawer__footer {
+  border-top-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark .totals__subtotal {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .tax-note {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+/* ========================================
+   Search Modal
+   ======================================== */
+html.dark .search-modal {
+  background-color: rgb(var(--color-background));
+}
+
+html.dark .search-modal__content {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .predictive-search {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark .predictive-search__item {
+  border-bottom-color: rgba(var(--color-foreground), 0.1);
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .predictive-search__item:hover {
+  background-color: rgba(var(--color-foreground), 0.05);
+}
+
+html.dark .predictive-search__item-title {
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Product Page
+   ======================================== */
+html.dark .product__title {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .product__text {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .product__metafield {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .price--on-sale .price-item--regular {
+  color: rgba(var(--color-foreground), 0.5);
+  text-decoration: line-through;
+}
+
+html.dark .quantity__label {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .product-form__input {
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Collection Page
+   ======================================== */
+html.dark .collection-hero {
+  background-color: rgb(var(--color-background));
+}
+
+html.dark .collection-hero__title {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .collection-hero__description {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+/* ========================================
+   Blog & Article Pages
+   ======================================== */
+html.dark .article__title {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .article__content {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .blog__title {
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Account Pages
+   ======================================== */
+html.dark .customer h1,
+html.dark .customer h2 {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .customer a {
+  color: rgb(var(--color-link));
+}
+
+html.dark .order-table {
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark .order-table th {
+  background-color: rgba(var(--color-foreground), 0.05);
+  color: rgb(var(--color-foreground));
+  border-bottom-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark .order-table td {
+  color: rgba(var(--color-foreground), 0.75);
+  border-bottom-color: rgba(var(--color-foreground), 0.1);
+}
+
+/* ========================================
+   Modals & Overlays
+   ======================================== */
+html.dark .modal__close-button {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .popup {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Tables
+   ======================================== */
+html.dark table {
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark th {
+  background-color: rgba(var(--color-foreground), 0.05);
+  color: rgb(var(--color-foreground));
+}
+
+html.dark td {
+  color: rgba(var(--color-foreground), 0.75);
+  border-bottom-color: rgba(var(--color-foreground), 0.1);
+}
+
+/* ========================================
+   Breadcrumbs
+   ======================================== */
+html.dark .breadcrumb a {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .breadcrumb a:hover {
+  color: rgb(var(--color-link));
+}
+
+/* ========================================
+   Pagination
+   ======================================== */
+html.dark .pagination__item {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .pagination__item--active {
+  background-color: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+}
+
+/* ========================================
+   Tags
+   ======================================== */
+html.dark .tag {
+  background-color: rgba(var(--color-foreground), 0.05);
+  color: rgba(var(--color-foreground), 0.75);
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+/* ========================================
+   Badge
+   ======================================== */
+html.dark .badge {
+  background-color: rgb(var(--color-badge-background));
+  color: rgb(var(--color-badge-foreground));
+  border-color: rgb(var(--color-badge-border));
+}
+
+/* ========================================
+   Section Headers
+   ======================================== */
+html.dark .section-header {
+  background-color: rgb(var(--color-background));
+}
+
+/* ========================================
+   Popup
+   ======================================== */
+html.dark .popup__content {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Disclosure / Dropdowns
+   ======================================== */
+html.dark .disclosure__list-wrapper {
+  background-color: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.1);
+}
+
+html.dark .disclosure__item a {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+html.dark .disclosure__item a:hover {
+  background-color: rgba(var(--color-foreground), 0.05);
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Skip to Content
+   ======================================== */
+html.dark .skip-to-content-link {
+  background-color: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+}
+
+/* ========================================
+   Image Banner / Hero
+   ======================================== */
+html.dark .banner::after,
+html.dark .banner__media::after {
+  background: rgb(0, 0, 0);
+}
+
+/* ========================================
+   Video Section
+   ======================================== */
+html.dark .video-section__media video {
+  background: rgb(0, 0, 0);
+}
+
+/* ========================================
+   Localization Form
+   ======================================== */
+html.dark .localization-selector option {
+  background-color: rgb(var(--color-background-contrast));
+  color: rgb(var(--color-foreground));
+}
+
+/* ========================================
+   Accessibility: Reduced Motion
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  html.dark,
+  html.dark body,
+  html.dark .header-wrapper,
+  html.dark .footer,
+  html.dark .section {
+    transition: none;
+  }
+}

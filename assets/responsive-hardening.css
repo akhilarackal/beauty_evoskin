@@ -1,0 +1,176 @@
+/* ============================================================
+   Responsive hardening
+   Site-wide safety net for common mobile layout failures.
+   Loaded last so it can correct section-level slips without
+   needing to touch every section stylesheet.
+   ============================================================ */
+
+/* ── 1. Kill horizontal page scroll ──
+   A single overflowing element (wide banner, carousel track,
+   long unbroken string) otherwise shifts the whole page. */
+html {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* ── 2. Fluid media ──
+   Images, video and embeds should never exceed their container. */
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+iframe {
+  border: 0;
+}
+
+/* ── 3. Long content should wrap, not overflow ── */
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+dd,
+dt,
+blockquote,
+figcaption {
+  overflow-wrap: break-word;
+}
+
+/* Emails, URLs and SKUs are the usual offenders */
+a {
+  overflow-wrap: break-word;
+}
+
+/* ── 4. Tables get a scroll container instead of stretching ── */
+table {
+  max-width: 100%;
+}
+
+@media screen and (max-width: 749px) {
+  .rte table,
+  .shopify-policy__body table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── 5. Grid and flex children must be allowed to shrink ──
+   `minmax(0, 1fr)` is the correct fix per grid, but this
+   catches children that blow out a track via long content. */
+.pcol__grid > *,
+.pc__body > *,
+.pc__row > * {
+  min-width: 0;
+}
+
+/* ── 6. iOS zooms the page when focusing inputs under 16px ── */
+@media screen and (max-width: 749px) {
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='number'],
+  input[type='password'],
+  input[type='search'],
+  input[type='url'],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* ── 7. Comfortable tap targets on touch devices ──
+   Applies only where a section has not set its own size. */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  [role='button'],
+  a.button,
+  .button {
+    min-height: 40px;
+  }
+}
+
+/* ── 8. Respect reduced motion globally ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── 9. Clear the floating cart bar ──
+   The bar is fixed to the bottom, so the last of the page
+   content needs breathing room on small screens. */
+@media screen and (max-width: 749px) {
+  body:has(.zcart:not([hidden])) .shopify-section:last-of-type {
+    padding-bottom: 88px;
+  }
+}
+
+/* ── 10. Section container alignment ──
+   Several sections shipped with their own container widths (1274px,
+   1280px, 1444px) and 32px gutters, so their content did not line up
+   with the header or with each other. These are normalised to the
+   theme page width and the standard gutters. Loaded last so it wins
+   over the individual section stylesheets. */
+/* NOTE on the `body` prefix below: section stylesheets are linked from
+   inside the section markup, so they land in <body> and therefore come
+   AFTER this file in the <head>. At equal specificity they would win.
+   Prefixing with `body` raises specificity just enough to override
+   them without resorting to !important. */
+body .bs-container,
+body .sc-container,
+body .cs-container,
+body .nac-container,
+body .wcu-container,
+body .brs-container {
+  max-width: var(--page-width, 120rem);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  body .bs-container,
+  body .sc-container,
+  body .cs-container,
+  body .nac-container,
+  body .wcu-container,
+  body .brs-container {
+    padding-inline: 5rem;
+  }
+}
+
+/* ── 11. Product card images ──
+   These carousels used object-fit: contain, which letterboxes each
+   photo by a different amount depending on its aspect ratio. The
+   result was products rendering at visibly different sizes and sitting
+   inset from the card edge. cover makes every card fill its square
+   identically. Placeholder and demo SVGs keep contain, since those
+   need to be shown whole. */
+body .bs-card__img:not(.bs-card__img--placeholder):not(.bs-card__img--demo),
+body .sc-card__img,
+body .nac-card__img,
+body .fcs-card__img {
+  object-fit: cover;
+  object-position: center;
+}

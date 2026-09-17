@@ -1,0 +1,303 @@
+{%- liquid
+  assign meta_routine_products = product.metafields.custom.routine_products.value
+  if meta_routine_products != blank and meta_routine_products.size > 0
+    assign ctr_product = meta_routine_products[0]
+  else
+    assign ctr_product = section.settings.routine_product
+  endif
+
+  assign has_routine_data = false
+  if ctr_product != blank
+    assign has_routine_data = true
+  endif
+-%}
+
+{%- if has_routine_data -%}
+{{ 'section-complete-the-routine.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #ctr-{{ section.id }} {
+    --ctr-bg: {{ section.settings.background_color }};
+    --ctr-featured-bg: {{ section.settings.featured_bg_color }};
+    --ctr-accent: {{ section.settings.accent_color }};
+    --ctr-gap: {{ section.settings.column_gap }}px;
+    --ctr-pad-top: {{ section.settings.padding_top }}px;
+    --ctr-pad-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="ctr-{{ section.id }}"
+  class="section-ctr"
+  aria-label="{{ section.settings.section_heading | default: 'Complete the Routine' | escape }}"
+  data-section-type="complete-the-routine"
+  data-no-animate="true"
+>
+  <div class="ctr-container">
+
+    {%- if section.settings.section_heading != blank -%}
+      <h2 class="ctr-heading">{{ section.settings.section_heading }}</h2>
+    {%- endif -%}
+
+    <div class="ctr-layout">
+
+      {%- comment -%} ═══ LEFT: Featured Block ═══ {%- endcomment -%}
+      <div class="ctr-featured">
+        <div class="ctr-featured__text">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="ctr-featured__eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.featured_heading != blank -%}
+            <h3 class="ctr-featured__name">{{ section.settings.featured_heading }}</h3>
+          {%- endif -%}
+
+          {%- if section.settings.featured_description != blank -%}
+            <p class="ctr-featured__desc">{{ section.settings.featured_description }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.button_text != blank -%}
+            <a
+              href="{{ section.settings.button_link | default: '#' }}"
+              class="ctr-featured__btn"
+              {% if section.settings.button_link == blank %}aria-disabled="true"{% endif %}
+            >{{ section.settings.button_text }}</a>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.featured_image != blank -%}
+          <div class="ctr-featured__image">
+            <img
+              src="{{ section.settings.featured_image | image_url: width: 842 }}"
+              srcset="{{ section.settings.featured_image | image_url: width: 421 }} 421w, {{ section.settings.featured_image | image_url: width: 842 }} 842w"
+              sizes="(max-width: 749px) 100vw, 421px"
+              alt="{{ section.settings.featured_image.alt | default: section.settings.featured_heading | escape }}"
+              width="421"
+              height="432"
+              loading="lazy"
+            >
+          </div>
+        {%- endif -%}
+      </div>
+      {%- comment -%} ═══ END Featured ═══ {%- endcomment -%}
+
+      {%- comment -%} ═══ RIGHT: Product Card ═══ {%- endcomment -%}
+      <div class="ctr-card">
+
+        {%- if ctr_product != blank and ctr_product.featured_image != blank -%}
+          <div class="ctr-card__image">
+            <img
+              src="{{ ctr_product.featured_image | image_url: width: 710 }}"
+              srcset="{{ ctr_product.featured_image | image_url: width: 355 }} 355w, {{ ctr_product.featured_image | image_url: width: 710 }} 710w"
+              sizes="(max-width: 749px) 100vw, 355px"
+              alt="{{ ctr_product.featured_image.alt | default: ctr_product.title | escape }}"
+              width="355"
+              height="291"
+              loading="lazy"
+            >
+          </div>
+        {%- endif -%}
+
+        {%- if ctr_product != blank -%}
+          <h4 class="ctr-card__title">{{ ctr_product.title }}</h4>
+        {%- endif -%}
+
+        <p class="ctr-card__desc">
+          {%- if section.settings.card_description != blank -%}
+            {{ section.settings.card_description }}
+          {%- elsif ctr_product != blank -%}
+            {{ ctr_product.description | strip_html | truncate: 120 }}
+          {%- endif -%}
+        </p>
+
+        <div class="ctr-card__bottom">
+          <span class="ctr-card__price">
+            {%- if ctr_product != blank -%}
+              {{ ctr_product.price | money }}
+            {%- endif -%}
+          </span>
+
+          {%- if section.settings.show_cart_icon -%}
+            {%- if ctr_product != blank -%}
+              <form action="/cart/add" method="post" class="ctr-card__form" data-ctr-form>
+                <input type="hidden" name="id" value="{{ ctr_product.selected_or_first_available_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="ctr-card__cart-btn" data-ctr-add-btn aria-label="Add {{ ctr_product.title }} to cart"{% unless ctr_product.available %} disabled{% endunless %}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+                  </svg>
+                </button>
+              </form>
+              <script>
+                (function() {
+                  var form = document.querySelector('#ctr-{{ section.id }} [data-ctr-form]');
+                  if (!form) return;
+                  form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var btn = form.querySelector('[data-ctr-add-btn]');
+                    if (!btn || btn.disabled) return;
+                    btn.disabled = true;
+                    var variantId = form.querySelector('[name="id"]').value;
+                    fetch((window.Shopify && Shopify.routes ? Shopify.routes.root : '/') + 'cart/add.js', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                      body: JSON.stringify({ id: parseInt(variantId, 10), quantity: 1 })
+                    })
+                    .then(function(r) { if (!r.ok) throw new Error('Add failed'); return r.json(); })
+                    .then(function() {
+                      if (window.SmoorCart) { window.SmoorCart.updateBadge(); window.SmoorCart.openDrawer(); }
+                      if (window.publish && window.PUB_SUB_EVENTS) { window.publish(window.PUB_SUB_EVENTS.cartUpdate, { source: 'complete-the-routine', productVariantId: variantId, cartData: null }); }
+                      btn.disabled = false;
+                    })
+                    .catch(function() { btn.disabled = false; });
+                  });
+                })();
+              </script>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+
+      </div>
+      {%- comment -%} ═══ END Card ═══ {%- endcomment -%}
+
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Complete the Routine",
+  "tag": "section",
+  "class": "section section-ctr-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section heading",
+      "default": "Complete the Routine"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color (gold)",
+      "default": "#C5A046"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Featured Block (Left)"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "THE NIGHT INFUSION"
+    },
+    {
+      "type": "text",
+      "id": "featured_heading",
+      "label": "Featured heading",
+      "default": "Alabaster Night Cream"
+    },
+    {
+      "type": "textarea",
+      "id": "featured_description",
+      "label": "Featured description",
+      "default": "The ultimate companion to the Cellular Gold Serum. A rich, restorative overnight treatment that repairs the lipid barrier while you sleep."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "EXPLORE RITUAL"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "featured_image",
+      "label": "Featured image",
+      "info": "Recommended: 421 × 432 px"
+    },
+    {
+      "type": "color",
+      "id": "featured_bg_color",
+      "label": "Featured block background",
+      "default": "#F2EBE1"
+    },
+    {
+      "type": "header",
+      "content": "Routine Product (Right)"
+    },
+    {
+      "type": "product",
+      "id": "routine_product",
+      "label": "Product",
+      "info": "Select a product. Image, title, and price load automatically."
+    },
+    {
+      "type": "textarea",
+      "id": "card_description",
+      "label": "Custom description (optional)",
+      "info": "Overrides the product's default description if provided."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_icon",
+      "label": "Show add-to-cart icon",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Complete the Routine"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

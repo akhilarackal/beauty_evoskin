@@ -1,0 +1,463 @@
+{{ 'section-promo-banner-carousel.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign pbc_pad_top    = section.settings.padding_top
+  assign pbc_pad_bottom = section.settings.padding_bottom
+  assign pbc_section_bg = section.settings.section_bg
+  assign pbc_gap        = section.settings.banner_gap
+  assign pbc_autoplay   = section.settings.autoplay
+  assign pbc_speed      = section.settings.autoplay_speed
+  assign pbc_infinite   = section.settings.infinite_loop
+  assign pbc_show_nav   = section.settings.show_navigation
+  assign pbc_show_mobile = section.settings.show_on_mobile
+
+  assign pbc_has_blocks = false
+  if section.blocks.size > 0
+    assign pbc_has_blocks = true
+  endif
+-%}
+
+{%- style -%}
+  #promo-banner-carousel-{{ section.id }} {
+    --pbc-pad-top    : {{ pbc_pad_top }}px;
+    --pbc-pad-bottom : {{ pbc_pad_bottom }}px;
+    --pbc-section-bg : {{ pbc_section_bg }};
+    --pbc-gap        : {{ pbc_gap }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="promo-banner-carousel-{{ section.id }}"
+  class="section-promo-banner-carousel{% unless pbc_show_mobile %} pbc-hide-mobile{% endunless %}"
+  aria-label="Promotional Banner Carousel"
+  data-section-type="promo-banner-carousel"
+  data-pbc-autoplay="{{ pbc_autoplay }}"
+  data-pbc-speed="{{ pbc_speed }}"
+  data-pbc-infinite="{{ pbc_infinite }}"
+  data-pbc-cols-desktop="2"
+  data-no-animate="true"
+>
+  <div class="pbc-container">
+
+    {%- comment -%} ── Top row: nav arrows flush right ── {%- endcomment -%}
+    {%- if pbc_show_nav -%}
+      <div class="pbc-header" role="group" aria-label="Carousel navigation">
+        <div class="pbc-nav" aria-label="Slide controls">
+          <button
+            type="button"
+            class="pbc-nav__btn"
+            data-pbc-action="prev"
+            aria-label="Previous banner"
+            {% if pbc_infinite == false %}disabled{% endif %}
+          >
+            <span class="pbc-visually-hidden">Previous</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="pbc-nav__btn"
+            data-pbc-action="next"
+            aria-label="Next banner"
+          >
+            <span class="pbc-visually-hidden">Next</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="pbc-header">
+        <div class="pbc-nav pbc-nav--hidden" aria-hidden="true">
+          <button type="button" class="pbc-nav__btn" data-pbc-action="prev" tabindex="-1" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button type="button" class="pbc-nav__btn" data-pbc-action="next" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Carousel ── {%- endcomment -%}
+    {%- if pbc_has_blocks -%}
+
+      <div class="pbc-slider" role="region" aria-label="Promotional banners">
+        <ul
+          class="pbc-track"
+          role="list"
+          aria-live="polite"
+          aria-atomic="false"
+        >
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign blk_image         = block.settings.banner_image
+              assign blk_mobile_image  = block.settings.mobile_image
+              assign blk_heading       = block.settings.heading
+              assign blk_desc          = block.settings.description
+              assign blk_btn_label     = block.settings.button_label
+              assign blk_btn_link      = block.settings.button_link
+              assign blk_overlay_op    = block.settings.overlay_opacity
+              assign blk_overlay_color = block.settings.overlay_color
+              assign blk_text_align    = block.settings.text_alignment
+              assign blk_vert_align    = block.settings.vertical_alignment
+
+              assign img_loading   = 'lazy'
+              assign img_fetchpri  = 'auto'
+              if forloop.index <= 2
+                assign img_loading  = 'eager'
+                assign img_fetchpri = 'high'
+              endif
+
+              assign overlay_r = blk_overlay_color | color_extract: 'red'
+              assign overlay_g = blk_overlay_color | color_extract: 'green'
+              assign overlay_b = blk_overlay_color | color_extract: 'blue'
+              assign overlay_alpha = blk_overlay_op | divided_by: 100.0
+            -%}
+
+            <li
+              class="pbc-slide"
+              {{ block.shopify_attributes }}
+            >
+              <article
+                class="pbc-banner"
+                aria-label="{{ blk_heading | default: 'Promotional Banner' | escape }}"
+                style="--pbc-banner-overlay: linear-gradient(to top, rgba({{ overlay_r }}, {{ overlay_g }}, {{ overlay_b }}, {{ overlay_alpha }}) 0%, rgba({{ overlay_r }}, {{ overlay_g }}, {{ overlay_b }}, {{ overlay_alpha | times: 0.6 }}) 40%, rgba({{ overlay_r }}, {{ overlay_g }}, {{ overlay_b }}, 0) 70%);"
+              >
+
+                {%- comment -%} Background image {%- endcomment -%}
+                {%- if blk_image != blank -%}
+                  <picture class="pbc-banner__picture">
+                    {%- if blk_mobile_image != blank -%}
+                      <source
+                        media="(max-width: 767px)"
+                        srcset="
+                          {{ blk_mobile_image | image_url: width: 480 }} 480w,
+                          {{ blk_mobile_image | image_url: width: 768 }} 768w
+                        "
+                        sizes="100vw"
+                      >
+                    {%- endif -%}
+                    <img
+                      src="{{ blk_image | image_url: width: 627 }}"
+                      srcset="
+                        {{ blk_image | image_url: width: 400  }} 400w,
+                        {{ blk_image | image_url: width: 627  }} 627w,
+                        {{ blk_image | image_url: width: 900  }} 900w,
+                        {{ blk_image | image_url: width: 1254 }} 1254w
+                      "
+                      sizes="(max-width: 767px) 100vw, (max-width: 1199px) 66vw, 627px"
+                      width="627"
+                      height="627"
+                      alt="{{ blk_image.alt | default: blk_heading | escape }}"
+                      class="pbc-banner__img"
+                      loading="{{ img_loading }}"
+                      fetchpriority="{{ img_fetchpri }}"
+                      decoding="async"
+                    >
+                  </picture>
+                {%- else -%}
+                  {%- assign demo_images = 'lifestyle-1,lifestyle-2' | split: ',' -%}
+                  {%- assign demo_idx = forloop.index0 | modulo: 2 -%}
+                  {{ 'lifestyle-' | append: forloop.index | placeholder_svg_tag: 'pbc-banner__img pbc-banner__img--placeholder' }}
+                {%- endif -%}
+
+                {%- comment -%} Gradient overlay {%- endcomment -%}
+                <div class="pbc-banner__overlay" aria-hidden="true"></div>
+
+                {%- comment -%} Content overlay {%- endcomment -%}
+                <div class="pbc-banner__content pbc-banner__content--{{ blk_text_align }} pbc-banner__content--{{ blk_vert_align }}">
+
+                  {%- if blk_heading != blank -%}
+                    <h2 class="pbc-banner__heading">{{ blk_heading | escape }}</h2>
+                  {%- endif -%}
+
+                  {%- if blk_desc != blank -%}
+                    <p class="pbc-banner__desc">{{ blk_desc | escape }}</p>
+                  {%- endif -%}
+
+                  {%- if blk_btn_label != blank -%}
+                    <a
+                      href="{{ blk_btn_link | default: '#' }}"
+                      class="pbc-banner__btn"
+                      {% if blk_btn_link == blank %}aria-disabled="true"{% endif %}
+                      {% if blk_btn_link != blank %}aria-label="{{ blk_btn_label | escape }} — {{ blk_heading | escape }}"{% endif %}
+                    >{{ blk_btn_label | escape }}</a>
+                  {%- endif -%}
+
+                </div>
+                {%- comment -%} ── END content ── {%- endcomment -%}
+
+              </article>
+            </li>
+
+          {%- endfor -%}
+        </ul>
+      </div>
+
+    {%- else -%}
+
+      {%- comment -%} ── Empty state — shown in Theme Editor when no blocks added ── {%- endcomment -%}
+      <div class="pbc-empty-state" role="status">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <path d="M3 9h18M9 21V9"/>
+        </svg>
+        <p>Add banner blocks from the sidebar to get started.</p>
+      </div>
+
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script src="{{ 'section-promo-banner-carousel.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Promo Banner Carousel",
+  "tag": "section",
+  "class": "section section-promo-banner-carousel-wrapper",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Carousel Behaviour"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed (seconds)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4,
+      "info": "Only applies when Autoplay is enabled."
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite_loop",
+      "label": "Infinite loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "Show on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "banner_gap",
+      "label": "Gap between banners",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Banner image",
+          "info": "Recommended: 627 × 627 px minimum. Square ratio works best."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image (optional)",
+          "info": "Leave blank to use the desktop image on mobile."
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Absolute Favorites from Care Cosmetics"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Most-loved skincare and beauty essentials, trusted by customers."
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Overlay"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Overlay opacity",
+          "min": 0,
+          "max": 90,
+          "step": 5,
+          "unit": "%",
+          "default": 50,
+          "info": "Controls how dark the gradient overlay appears over the image."
+        },
+        {
+          "type": "header",
+          "content": "Text Layout"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            { "value": "left",   "label": "Left"   },
+            { "value": "center", "label": "Center" },
+            { "value": "right",  "label": "Right"  }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Vertical alignment",
+          "options": [
+            { "value": "bottom", "label": "Bottom" },
+            { "value": "middle", "label": "Middle" },
+            { "value": "top",    "label": "Top"    }
+          ],
+          "default": "bottom"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Banner Carousel",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "infinite_loop": true,
+        "show_navigation": true,
+        "show_on_mobile": true,
+        "banner_gap": 24,
+        "padding_top": 80,
+        "padding_bottom": 80
+      },
+      "blocks": [
+        {
+          "type": "banner",
+          "settings": {
+            "heading": "Absolute Favorites from Care Cosmetics",
+            "description": "Most-loved skincare and beauty essentials, trusted by customers.",
+            "button_label": "Shop Now",
+            "overlay_color": "#000000",
+            "overlay_opacity": 50,
+            "text_alignment": "left",
+            "vertical_alignment": "bottom"
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "heading": "Stylish Clips for Every Occasion",
+            "description": "Discover stylish clips for every look, from minimalist designs to bold statement pieces.",
+            "button_label": "Shop Now",
+            "overlay_color": "#000000",
+            "overlay_opacity": 50,
+            "text_alignment": "left",
+            "vertical_alignment": "bottom"
+          }
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

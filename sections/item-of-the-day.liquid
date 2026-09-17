@@ -1,0 +1,624 @@
+{{ 'section-item-of-the-day.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign iotd_product      = section.settings.featured_product
+  assign iotd_heading      = section.settings.heading
+  assign iotd_bg_color     = section.settings.background_color
+  assign iotd_pad_top      = section.settings.padding_top
+  assign iotd_pad_bottom   = section.settings.padding_bottom
+  assign show_compare      = section.settings.show_compare_price
+  assign show_inventory    = section.settings.show_inventory
+  assign show_shipping     = section.settings.show_shipping_text
+  assign show_share        = section.settings.show_share_button
+  assign show_details      = section.settings.show_view_details
+  assign enable_badges     = section.settings.enable_badges
+  assign badge_label_1     = section.settings.badge_label_1
+  assign badge_color_1     = section.settings.badge_color_1
+  assign badge_label_2     = section.settings.badge_label_2
+  assign badge_color_2     = section.settings.badge_color_2
+
+  if iotd_product != blank
+    assign current_variant = iotd_product.selected_or_first_available_variant
+    assign gallery_images  = iotd_product.images
+    assign thumb_image     = gallery_images[0]
+    assign main_image      = gallery_images[1] | default: gallery_images[0]
+  endif
+-%}
+
+{%- style -%}
+  #iotd-{{ section.id }} {
+    --iotd-pad-top    : {{ iotd_pad_top }}px;
+    --iotd-pad-bottom : {{ iotd_pad_bottom }}px;
+    --iotd-bg         : {{ iotd_bg_color }};
+  }
+{%- endstyle -%}
+
+<section
+  id="iotd-{{ section.id }}"
+  class="section-iotd"
+  data-section-id="{{ section.id }}"
+  data-section-type="item-of-the-day"
+  aria-label="{{ iotd_heading | default: 'Item of the Day' | escape }}"
+>
+  <div class="iotd-container">
+
+    {%- comment -%} ── Section Heading ── {%- endcomment -%}
+    {%- if iotd_heading != blank -%}
+      <h2 class="iotd-heading">{{ iotd_heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- comment -%} ── Product Card ── {%- endcomment -%}
+    {%- if iotd_product != blank -%}
+      {%- form 'product', iotd_product, id: 'iotd-form-product-{{ section.id }}', class: 'iotd-product-form', novalidate: 'novalidate' -%}
+
+        <div class="iotd-card">
+          <div class="iotd-card__inner">
+
+            {%- comment -%} ══ LEFT: Image Gallery ══ {%- endcomment -%}
+            <div class="iotd-gallery" data-iotd-gallery>
+
+              {%- comment -%} Thumbnail column {%- endcomment -%}
+              <div class="iotd-gallery__thumb-wrap">
+                {%- if thumb_image != blank -%}
+                  <div class="iotd-gallery__thumb" data-iotd-thumb>
+                    {%- if enable_badges -%}
+                      <div class="iotd-badges">
+                        {%- if badge_label_1 != blank -%}
+                          <span
+                            class="iotd-badge"
+                            style="background-color: {{ badge_color_1 }};"
+                          >{{ badge_label_1 | escape }}</span>
+                        {%- endif -%}
+                        {%- if badge_label_2 != blank -%}
+                          <span
+                            class="iotd-badge iotd-badge--secondary"
+                            style="background-color: {{ badge_color_2 }};"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                            {{ badge_label_2 | escape }}
+                          </span>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                    <img
+                      src="{{ thumb_image | image_url: width: 544 }}"
+                      srcset="{{ thumb_image | image_url: width: 272 }} 272w, {{ thumb_image | image_url: width: 544 }} 544w"
+                      sizes="272px"
+                      width="272"
+                      height="250"
+                      alt="{{ thumb_image.alt | default: iotd_product.title | escape }}"
+                      class="iotd-gallery__img iotd-gallery__img--thumb"
+                      loading="lazy"
+                      decoding="async"
+                      data-iotd-thumb-img
+                    >
+                  </div>
+                {%- else -%}
+                  <div class="iotd-gallery__thumb iotd-gallery__thumb--placeholder">
+                    {{ 'product-1' | placeholder_svg_tag: 'iotd-gallery__placeholder' }}
+                  </div>
+                {%- endif -%}
+              </div>
+
+              {%- comment -%} Main image column {%- endcomment -%}
+              <div class="iotd-gallery__main-wrap">
+                <div class="iotd-gallery__main" data-iotd-main>
+                  {%- if main_image != blank -%}
+                    <img
+                      src="{{ main_image | image_url: width: 544 }}"
+                      srcset="{{ main_image | image_url: width: 272 }} 272w, {{ main_image | image_url: width: 544 }} 544w"
+                      sizes="272px"
+                      width="272"
+                      height="250"
+                      alt="{{ main_image.alt | default: iotd_product.title | escape }}"
+                      class="iotd-gallery__img iotd-gallery__img--main"
+                      id="iotd-main-image-{{ section.id }}"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  {%- else -%}
+                    {{ 'product-2' | placeholder_svg_tag: 'iotd-gallery__placeholder' }}
+                  {%- endif -%}
+                </div>
+              </div>
+
+            </div>
+            {%- comment -%} ══ END LEFT ══ {%- endcomment -%}
+
+            {%- comment -%} ══ RIGHT: Product Details ══ {%- endcomment -%}
+            <div class="iotd-details">
+
+              {%- comment -%} Brand / Vendor {%- endcomment -%}
+              {%- if iotd_product.vendor != blank -%}
+                <p class="iotd-details__vendor">{{ iotd_product.vendor | escape }}</p>
+              {%- endif -%}
+
+              {%- comment -%} Product Title {%- endcomment -%}
+              <h3 class="iotd-details__title">{{ iotd_product.title | escape }}</h3>
+
+              {%- comment -%} Pricing {%- endcomment -%}
+              <div class="iotd-details__pricing" data-iotd-pricing>
+                <span class="iotd-price iotd-price--current" data-iotd-price>
+                  {{ current_variant.price | money }}
+                </span>
+                {%- if show_compare and current_variant.compare_at_price > current_variant.price -%}
+                  <span class="iotd-price iotd-price--compare" data-iotd-compare-price>
+                    {{ current_variant.compare_at_price | money }}
+                  </span>
+                {%- endif -%}
+              </div>
+
+              {%- comment -%} Shipping text {%- endcomment -%}
+              {%- if show_shipping -%}
+                <p class="iotd-details__shipping">
+                  <a href="/policies/shipping-policy" class="iotd-details__shipping-link">Shipping</a>
+                  calculated at checkout.
+                </p>
+              {%- endif -%}
+
+              {%- comment -%} Variant selectors — dynamically rendered per option {%- endcomment -%}
+              {%- unless iotd_product.has_only_default_variant -%}
+                {%- for option in iotd_product.options_with_values -%}
+                  {%- assign option_name_downcase = option.name | downcase -%}
+
+                  <div class="iotd-option" data-option-index="{{ forloop.index0 }}">
+
+                    {%- comment -%} Option label {%- endcomment -%}
+                    <p class="iotd-option__label">
+                      {{ option.name | escape }}:
+                      <span class="iotd-option__selected-value" data-option-value-display="{{ forloop.index0 }}">
+                        {{ option.selected_value | escape }}
+                      </span>
+                    </p>
+
+                    {%- comment -%} COLOR swatches {%- endcomment -%}
+                    {%- if option_name_downcase == 'color' or option_name_downcase == 'colour' -%}
+                      <div class="iotd-swatches" role="radiogroup" aria-label="{{ option.name | escape }}">
+                        {%- for value in option.values -%}
+                          {%- assign swatch_color = value | downcase | replace: ' ', '' -%}
+                          <label
+                            class="iotd-swatch{% if option.selected_value == value %} is-selected{% endif %}"
+                            title="{{ value | escape }}"
+                            aria-label="{{ value | escape }}"
+                          >
+                            <input
+                              type="radio"
+                              name="option{{ forloop.parentloop.index }}"
+                              value="{{ value | escape }}"
+                              {% if option.selected_value == value %}checked{% endif %}
+                              class="iotd-swatch__input"
+                              data-option-index="{{ forloop.parentloop.index0 }}"
+                            >
+                            <span
+                              class="iotd-swatch__dot"
+                              style="background-color: {{ swatch_color }};"
+                              aria-hidden="true"
+                            ></span>
+                          </label>
+                        {%- endfor -%}
+                      </div>
+
+                    {%- comment -%} SIZE / other button selectors {%- endcomment -%}
+                    {%- else -%}
+                      <div class="iotd-size-btns" role="radiogroup" aria-label="{{ option.name | escape }}">
+                        {%- for value in option.values -%}
+                          <label
+                            class="iotd-size-btn{% if option.selected_value == value %} is-selected{% endif %}"
+                            aria-label="{{ value | escape }}"
+                          >
+                            <input
+                              type="radio"
+                              name="option{{ forloop.parentloop.index }}"
+                              value="{{ value | escape }}"
+                              {% if option.selected_value == value %}checked{% endif %}
+                              class="iotd-size-btn__input"
+                              data-option-index="{{ forloop.parentloop.index0 }}"
+                            >
+                            <span class="iotd-size-btn__label">{{ value | escape }}</span>
+                          </label>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+
+                  </div>
+                {%- endfor -%}
+              {%- endunless -%}
+
+              {%- comment -%} Hidden variant selector (required for native Shopify ATC) {%- endcomment -%}
+              <select
+                name="id"
+                id="iotd-variant-select-{{ section.id }}"
+                class="iotd-variant-select"
+                aria-label="Product variant"
+                data-iotd-variant-select
+              >
+                {%- for variant in iotd_product.variants -%}
+                  <option
+                    value="{{ variant.id }}"
+                    {% if variant == current_variant %}selected{% endif %}
+                    {% unless variant.available %}disabled{% endunless %}
+                    data-variant-id="{{ variant.id }}"
+                    data-price="{{ variant.price }}"
+                    data-compare-price="{{ variant.compare_at_price }}"
+                    data-inventory="{{ variant.inventory_quantity }}"
+                    data-inventory-policy="{{ variant.inventory_management }}"
+                    data-option1="{{ variant.option1 }}"
+                    data-option2="{{ variant.option2 }}"
+                    data-option3="{{ variant.option3 }}"
+                  >
+                    {{ variant.title }}
+                  </option>
+                {%- endfor -%}
+              </select>
+
+              {%- comment -%} Inventory notice {%- endcomment -%}
+              {%- if show_inventory -%}
+                {%- if current_variant.inventory_management == 'shopify' and current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= 10 -%}
+                  <p class="iotd-inventory" data-iotd-inventory>
+                    <span class="iotd-inventory__dot" aria-hidden="true">•</span>
+                    {{ current_variant.inventory_quantity }} Last Items
+                  </p>
+                {%- else -%}
+                  <p class="iotd-inventory iotd-inventory--hidden" data-iotd-inventory aria-hidden="true">
+                    <span class="iotd-inventory__dot" aria-hidden="true">•</span>
+                    <span data-iotd-inventory-text></span>
+                  </p>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- comment -%} Quantity + Add to Cart row {%- endcomment -%}
+              <div class="iotd-atc-row">
+                <div class="iotd-qty" role="group" aria-label="Quantity">
+                  <button
+                    type="button"
+                    class="iotd-qty__btn iotd-qty__btn--minus"
+                    aria-label="Decrease quantity"
+                    data-iotd-qty-minus
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" focusable="false"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <input
+                    type="number"
+                    name="quantity"
+                    id="iotd-qty-{{ section.id }}"
+                    class="iotd-qty__input"
+                    value="1"
+                    min="1"
+                    aria-label="Quantity"
+                    data-iotd-qty-input
+                  >
+                  <button
+                    type="button"
+                    class="iotd-qty__btn iotd-qty__btn--plus"
+                    aria-label="Increase quantity"
+                    data-iotd-qty-plus
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" focusable="false"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                </div>
+
+                <button
+                  type="submit"
+                  name="add"
+                  class="iotd-atc-btn"
+                  data-iotd-atc
+                  {% unless current_variant.available %}disabled aria-disabled="true"{% endunless %}
+                >
+                  <span class="iotd-atc-btn__label">
+                    {%- if current_variant.available -%}
+                      Add to Cart
+                    {%- else -%}
+                      Sold Out
+                    {%- endif -%}
+                  </span>
+                </button>
+              </div>
+
+              {%- comment -%} Buy it now — checkout with just this product {%- endcomment -%}
+              {%- if current_variant.available -%}
+                <button
+                  type="button"
+                  class="iotd-buy-btn"
+                  data-iotd-buy
+                  aria-label="Buy it now"
+                >
+                  Buy it now
+                </button>
+              {%- endif -%}
+
+              {%- comment -%} Bottom actions: Share + View Full Details {%- endcomment -%}
+              <div class="iotd-bottom-actions">
+                {%- if show_share -%}
+                  <button
+                    type="button"
+                    class="iotd-action-link iotd-action-link--share"
+                    data-iotd-share="{{ iotd_product.url | within: collections.all }}"
+                    aria-label="Share this product"
+                  >
+                    Share
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                  </button>
+                {%- endif -%}
+                {%- if show_details -%}
+                  <a
+                    href="{{ iotd_product.url }}"
+                    class="iotd-action-link iotd-action-link--details"
+                    aria-label="View full details for {{ iotd_product.title | escape }}"
+                  >
+                    View Full Details
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+                {%- endif -%}
+              </div>
+
+            </div>
+            {%- comment -%} ══ END RIGHT ══ {%- endcomment -%}
+
+          </div>{%- comment -%} /.iotd-card__inner {%- endcomment -%}
+        </div>{%- comment -%} /.iotd-card {%- endcomment -%}
+
+      {%- endform -%}
+
+    {%- else -%}
+
+      {%- comment -%} ── Demo / placeholder card (no product selected) ── {%- endcomment -%}
+      <div class="iotd-card iotd-card--demo">
+        <div class="iotd-card__inner">
+
+          {%- comment -%} LEFT: placeholder gallery {%- endcomment -%}
+          <div class="iotd-gallery">
+            <div class="iotd-gallery__thumb-wrap">
+              <div class="iotd-gallery__thumb">
+                {%- if enable_badges -%}
+                  <div class="iotd-badges">
+                    {%- if badge_label_1 != blank -%}
+                      <span class="iotd-badge" style="background-color: {{ badge_color_1 }};">{{ badge_label_1 | escape }}</span>
+                    {%- endif -%}
+                    {%- if badge_label_2 != blank -%}
+                      <span class="iotd-badge iotd-badge--secondary" style="background-color: {{ badge_color_2 }};">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                        {{ badge_label_2 | escape }}
+                      </span>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+                {{ 'product-1' | placeholder_svg_tag: 'iotd-gallery__placeholder' }}
+              </div>
+            </div>
+            <div class="iotd-gallery__main-wrap">
+              <div class="iotd-gallery__main">
+                {{ 'product-2' | placeholder_svg_tag: 'iotd-gallery__placeholder' }}
+              </div>
+            </div>
+          </div>
+
+          {%- comment -%} RIGHT: placeholder details {%- endcomment -%}
+          <div class="iotd-details">
+            <p class="iotd-details__vendor">Brand Name</p>
+            <h3 class="iotd-details__title">Your Featured Product Title</h3>
+
+            <div class="iotd-details__pricing">
+              <span class="iotd-price iotd-price--current">₹20.00</span>
+              {%- if show_compare -%}
+                <span class="iotd-price iotd-price--compare">₹25.00</span>
+              {%- endif -%}
+            </div>
+
+            {%- if show_shipping -%}
+              <p class="iotd-details__shipping">
+                <span class="iotd-details__shipping-link">Shipping</span> calculated at checkout.
+              </p>
+            {%- endif -%}
+
+            <div class="iotd-option">
+              <p class="iotd-option__label">Color: <span class="iotd-option__selected-value">White</span></p>
+              <div class="iotd-swatches">
+                <label class="iotd-swatch is-selected" title="White"><span class="iotd-swatch__dot" style="background-color:#ffffff;"></span></label>
+                <label class="iotd-swatch" title="Blue"><span class="iotd-swatch__dot" style="background-color:#93c5fd;"></span></label>
+                <label class="iotd-swatch" title="Pink"><span class="iotd-swatch__dot" style="background-color:#f9a8d4;"></span></label>
+                <label class="iotd-swatch" title="Yellow"><span class="iotd-swatch__dot" style="background-color:#fde047;"></span></label>
+              </div>
+            </div>
+
+            <div class="iotd-option">
+              <p class="iotd-option__label">Size: <span class="iotd-option__selected-value">50 ml</span></p>
+              <div class="iotd-size-btns">
+                <label class="iotd-size-btn is-selected"><span class="iotd-size-btn__label">50 ml</span></label>
+                <label class="iotd-size-btn"><span class="iotd-size-btn__label">100 ml</span></label>
+                <label class="iotd-size-btn"><span class="iotd-size-btn__label">200 ml</span></label>
+              </div>
+            </div>
+
+            {%- if show_inventory -%}
+              <p class="iotd-inventory">
+                <span class="iotd-inventory__dot" aria-hidden="true">•</span>
+                6 Last Items
+              </p>
+            {%- endif -%}
+
+            <div class="iotd-atc-row">
+              <div class="iotd-qty">
+                <button type="button" class="iotd-qty__btn" aria-label="Decrease quantity">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <span class="iotd-qty__input" style="display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:#111827;">1</span>
+                <button type="button" class="iotd-qty__btn" aria-label="Increase quantity">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+              </div>
+              <button type="button" class="iotd-atc-btn" disabled>Add to Cart</button>
+            </div>
+
+            <div class="iotd-bottom-actions">
+              {%- if show_share -%}
+                <span class="iotd-action-link">
+                  Share
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                </span>
+              {%- endif -%}
+              {%- if show_details -%}
+                <span class="iotd-action-link">
+                  View Full Details
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              {%- endif -%}
+            </div>
+
+            <p class="iotd-demo-notice">
+              ℹ Select a product in the section settings to show live product data.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    {%- endif -%}
+
+  </div>{%- comment -%} /.iotd-container {%- endcomment -%}
+</section>
+
+<script src="{{ 'section-item-of-the-day.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Item of the Day",
+  "tag": "section",
+  "class": "section section-iotd-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Item of the Day"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Featured Product"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Display Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare_price",
+      "label": "Show Compare Price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_inventory",
+      "label": "Show Inventory",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_text",
+      "label": "Show Shipping Text",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share_button",
+      "label": "Show Share Button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_details",
+      "label": "Show View Details Button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Promotional Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_badges",
+      "label": "Enable Badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_label_1",
+      "label": "Badge 1 Label",
+      "default": "-20%",
+      "info": "Leave blank to hide."
+    },
+    {
+      "type": "color",
+      "id": "badge_color_1",
+      "label": "Badge 1 Color",
+      "default": "#EC4899"
+    },
+    {
+      "type": "text",
+      "id": "badge_label_2",
+      "label": "Badge 2 Label",
+      "default": "Best Price",
+      "info": "Leave blank to hide. A star icon is prepended automatically."
+    },
+    {
+      "type": "color",
+      "id": "badge_color_2",
+      "label": "Badge 2 Color",
+      "default": "#2563EB"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Item of the Day",
+      "settings": {
+        "heading": "Item of the Day",
+        "show_compare_price": true,
+        "show_inventory": true,
+        "show_shipping_text": true,
+        "show_share_button": true,
+        "show_view_details": true,
+        "enable_badges": true,
+        "badge_label_1": "-20%",
+        "badge_color_1": "#EC4899",
+        "badge_label_2": "Best Price",
+        "badge_color_2": "#2563EB",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

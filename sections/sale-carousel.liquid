@@ -1,0 +1,674 @@
+{{ 'section-sale-carousel.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sc_heading        = section.settings.heading
+  assign sc_collection     = section.settings.collection
+  assign sc_count          = section.settings.products_to_show
+  assign sc_show_all       = section.settings.show_shop_all
+  assign sc_all_label      = section.settings.shop_all_label
+  assign sc_all_url        = section.settings.shop_all_url
+  assign sc_slider         = section.settings.enable_slider
+  assign sc_autoplay       = section.settings.enable_autoplay
+  assign sc_autoplay_speed = section.settings.autoplay_speed
+  assign sc_infinite       = section.settings.infinite_loop
+  assign sc_show_nav       = section.settings.show_navigation
+  assign sc_show_pag       = section.settings.show_pagination
+  assign sc_drag           = section.settings.drag_enabled
+  assign sc_card_radius    = section.settings.card_radius
+  assign sc_img_radius     = section.settings.image_radius
+  assign sc_show_inventory = section.settings.show_inventory_label
+  assign sc_ajax_cart      = section.settings.enable_ajax_cart
+  assign sc_heading_color  = section.settings.heading_color
+  assign sc_price_color    = section.settings.price_color
+  assign sc_badge_bg       = section.settings.badge_bg_color
+  assign sc_badge_text     = section.settings.badge_text_color
+  assign sc_nav_color      = section.settings.nav_color
+  assign sc_add_btn_color  = section.settings.quick_add_color
+  assign sc_cols_desktop   = section.settings.desktop_columns
+  assign sc_cols_tablet    = section.settings.tablet_columns
+  assign sc_cols_mobile    = section.settings.mobile_columns
+  assign sc_gap            = section.settings.gap
+  assign sc_pad_top        = section.settings.padding_top
+  assign sc_pad_bottom     = section.settings.padding_bottom
+-%}
+
+{%- liquid
+  assign sc_href = '/collections/all'
+  if sc_collection != blank and sc_collection.url != blank
+    assign sc_href = sc_collection.url
+  endif
+  if sc_all_url != blank
+    assign sc_href = sc_all_url
+  endif
+
+  assign sc_mode = 'demo'
+  if sc_collection != blank
+    if sc_collection.products_count > 0
+      assign sc_mode = 'live'
+    else
+      assign sc_mode = 'empty'
+    endif
+  endif
+-%}
+
+{%- style -%}
+  #sale-carousel-{{ section.id }} {
+    --sc-pad-top       : {{ sc_pad_top }}px;
+    --sc-pad-bottom    : {{ sc_pad_bottom }}px;
+    --sc-card-radius   : {{ sc_card_radius }}px;
+    --sc-img-radius    : {{ sc_img_radius }}px;
+    --sc-gap           : {{ sc_gap }}px;
+    --sc-cols          : {{ sc_cols_desktop }};
+    --sc-cols-tablet   : {{ sc_cols_tablet }};
+    --sc-cols-mobile   : {{ sc_cols_mobile }};
+    --sc-heading-color : {{ sc_heading_color }};
+    --sc-price-color   : {{ sc_price_color }};
+    --sc-badge-bg      : {{ sc_badge_bg }};
+    --sc-badge-text    : {{ sc_badge_text }};
+  }
+{%- endstyle -%}
+
+<section
+  id="sale-carousel-{{ section.id }}"
+  class="section-sale-carousel"
+  aria-label="{{ sc_heading | default: 'Sale Up To 30%' | escape }}"
+  data-section-type="sale-carousel"
+  data-sc-autoplay="{{ sc_autoplay }}"
+  data-sc-speed="{{ sc_autoplay_speed | default: 4 }}"
+  data-sc-infinite="{{ sc_infinite }}"
+  data-sc-drag-enabled="{{ sc_drag }}"
+  data-sc-show-pagination="{{ sc_show_pag }}"
+  data-sc-ajax-cart="{{ sc_ajax_cart }}"
+  data-sc-cols-desktop="{{ sc_cols_desktop }}"
+  data-sc-cols-tablet="{{ sc_cols_tablet }}"
+  data-sc-cols-mobile="{{ sc_cols_mobile }}"
+  data-sc-cols-mobile-sm="1"
+  data-no-animate="true"
+>
+  <div class="sc-container">
+
+
+    {%- comment -%}── Section Header ──{%- endcomment -%}
+    <header class="sc-header">
+      <div class="sc-header__left">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sc-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+
+        {%- if sc_heading != blank -%}
+          <h2 class="sc-heading">{{ sc_heading | escape }}</h2>
+        {%- endif -%}
+
+        <span class="sc-rule" aria-hidden="true"></span>
+
+        {%- if section.settings.subheading != blank -%}
+          <p class="sc-subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="sc-header__right">
+        {%- if sc_show_all -%}
+          <a
+            href="{{ sc_href }}"
+            class="sc-shop-all"
+            aria-label="{{ sc_all_label | default: 'Shop All' | escape }} — {{ sc_heading | escape }}"
+          >
+            <span>{{ sc_all_label | default: 'Shop All' | escape }}</span>
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+              <path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        {%- if sc_slider and sc_show_nav -%}
+          <nav class="sc-nav" aria-label="{{ sc_heading | default: 'Sale' | escape }} carousel navigation">
+            <button
+              type="button"
+              class="sc-nav__btn"
+              data-sc-action="prev"
+              aria-label="Previous products"
+              disabled
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12.5 15l-5-5 5-5"/>
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="sc-nav__btn"
+              data-sc-action="next"
+              aria-label="Next products"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 5l5 5-5 5"/>
+              </svg>
+            </button>
+          </nav>
+        {%- elsif sc_slider -%}
+          <nav class="sc-nav sc-nav--hidden" aria-hidden="true">
+            <button type="button" class="sc-nav__btn" disabled aria-hidden="true"></button>
+            <button type="button" class="sc-nav__btn" aria-hidden="true"></button>
+          </nav>
+        {%- endif -%}
+      </div>
+    </header>
+    {%- comment -%}── END Header ──{%- endcomment -%}
+
+
+    {%- comment -%}── LIVE MODE: collection with products ──{%- endcomment -%}
+    {%- if sc_mode == 'live' -%}
+      <div class="sc-slider" role="region" aria-label="{{ sc_heading | default: 'Sale' | escape }} product carousel">
+        <ul class="sc-track" role="list">
+
+          {%- for product in sc_collection.products limit: sc_count -%}
+            {%- liquid
+              assign cp          = product.price
+              assign cap         = product.compare_at_price
+              assign has_compare = false
+              if cap > cp
+                assign has_compare = true
+              endif
+              assign discount_pct = 0
+              if has_compare and cap > 0
+                assign discount_raw = cap | minus: cp
+                assign discount_pct = discount_raw | times: 100 | divided_by: cap
+              endif
+              assign variant    = product.selected_or_first_available_variant
+              assign variant_id = variant.id
+              assign is_soldout = false
+              unless product.available
+                assign is_soldout = true
+              endunless
+              assign img_loading  = 'lazy'
+              assign img_fetchpri = 'auto'
+              if forloop.index <= sc_cols_desktop
+                assign img_loading  = 'eager'
+                assign img_fetchpri = 'high'
+              endif
+              assign low_stock = false
+              if sc_show_inventory and variant.inventory_management != blank
+                if variant.inventory_quantity > 0 and variant.inventory_quantity <= 10
+                  assign low_stock = true
+                endif
+              endif
+            -%}
+
+            <li class="sc-slide" role="listitem">
+              <article class="sc-card" itemscope itemtype="https://schema.org/Product">
+
+                <a
+                  href="{{ product.url }}"
+                  class="sc-card__image-wrap"
+                  aria-label="{{ product.title | escape }}"
+                  itemprop="url"
+                  tabindex="0"
+                >
+                  {%- if product.featured_image != blank -%}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 512 }}"
+                      srcset="
+                        {{ product.featured_image | image_url: width: 256 }} 256w,
+                        {{ product.featured_image | image_url: width: 384 }} 384w,
+                        {{ product.featured_image | image_url: width: 512 }} 512w,
+                        {{ product.featured_image | image_url: width: 768 }} 768w
+                      "
+                      sizes="(max-width: 389px) calc(100vw - 32px), (max-width: 599px) calc(50vw - 24px), (max-width: 989px) calc(33.333vw - 32px), 256px"
+                      width="256"
+                      height="341"
+                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                      class="sc-card__img"
+                      loading="{{ img_loading }}"
+                      fetchpriority="{{ img_fetchpri }}"
+                      decoding="async"
+                      itemprop="image"
+                    >
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'sc-card__img' }}
+                  {%- endif -%}
+
+                  {%- if has_compare and discount_pct > 0 -%}
+                    <span class="sc-card__badge" aria-label="{{ discount_pct | round }}% off">-{{ discount_pct | round }}%</span>
+                  {%- endif -%}
+
+                  {%- if sc_ajax_cart and variant_id != blank and is_soldout == false -%}
+                    <button
+                      type="button"
+                      class="sc-card__add-btn"
+                      data-variant-id="{{ variant_id }}"
+                      aria-label="Add {{ product.title | escape }} to cart"
+                      title="Add to cart"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                      </svg>
+                      <span class="sc-spinner" aria-hidden="true"></span>
+                      <svg class="sc-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" width="18" height="18">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </button>
+                  {%- endif -%}
+                </a>
+
+                <div class="sc-card__body">
+                  <div class="sc-card__price-row" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+                    <meta itemprop="price" content="{{ cp | divided_by: 100.0 }}">
+                    <span class="sc-card__price sc-card__price--current">{{ cp | money }}</span>
+                    {%- if has_compare -%}
+                      <s class="sc-card__price sc-card__price--compare" aria-label="Regular price {{ cap | money }}">{{ cap | money }}</s>
+                    {%- endif -%}
+                  </div>
+                  {%- if product.vendor != blank -%}
+                    <p class="sc-card__vendor" itemprop="brand">{{ product.vendor | escape }}</p>
+                  {%- endif -%}
+                  <h3 class="sc-card__title" itemprop="name">{{ product.title | escape }}</h3>
+                  {%- if low_stock -%}
+                    <p class="sc-card__inventory">{{ variant.inventory_quantity }} Last Items</p>
+                  {%- endif -%}
+                </div>
+
+              </article>
+            </li>
+
+          {%- endfor -%}
+
+        </ul>
+      </div>
+      {%- if sc_show_pag -%}
+        <div class="sc-pagination" role="tablist" aria-label="Carousel pages"></div>
+      {%- endif -%}
+
+
+    {%- comment -%}── EMPTY MODE ──{%- endcomment -%}
+    {%- elsif sc_mode == 'empty' -%}
+      <div class="sc-empty-state" role="status" aria-live="polite">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+        </svg>
+        <p>This collection doesn&rsquo;t have any products yet.</p>
+      </div>
+
+    {%- comment -%}── DEMO MODE ──{%- endcomment -%}
+    {%- else -%}
+      {%- assign _demos = "bs-demo-2.svg|Botiga|Anti-Fatigue Eye Rescue Cream|2900|4500|-36%,bs-demo-3.svg|Bernhard|After Shave Serum|2290|3200|-42%,bs-demo-4.svg|Endure|After Sun Lotion|2600|4500|-38%,bs-demo-5.svg|Endure|Plum Plum Lip Perfection Balm|1600|2600|-38%,bs-demo-6.svg|Endure|Plum Plum Lip Perfection Balm|1800|2600|-38%,bs-demo-7.svg|Luminae|Brightening Night Cream|7500|9900|-24%,bs-demo-8.svg|Aqua Leaf|Aloe Vera Gel|1490|2400|-38%,bs-demo-9.svg|Evoskin|Clay Face Mask|4200|5500|-24%,bs-demo-10.svg|Ilon|Beard Growth Oil|3800|5200|-27%,bs-demo-12.svg|Botiga|Herbal Body Lotion|2200|3200|-31%" | split: "," -%}
+
+      <div class="sc-slider" role="region" aria-label="Sale carousel demo preview" aria-hidden="true">
+        <ul class="sc-track" role="list">
+
+          {%- for _entry in _demos limit: sc_count -%}
+            {%- assign _p     = _entry | split: "|" -%}
+            {%- assign _img   = _p[0] | strip -%}
+            {%- assign _vend  = _p[1] | strip -%}
+            {%- assign _title = _p[2] | strip -%}
+            {%- assign _price = _p[3] | strip | times: 1 -%}
+            {%- assign _cap   = _p[4] | strip | times: 1 -%}
+            {%- assign _badge = _p[5] | strip -%}
+            {%- assign _low   = false -%}
+            {%- if forloop.index == 2 -%}{%- assign _low = true -%}{%- endif -%}
+
+            <li class="sc-slide" role="presentation">
+              <article class="sc-card sc-card--demo">
+                <div class="sc-card__image-wrap">
+                  <img
+                    src="{{ _img | asset_url }}"
+                    alt=""
+                    aria-hidden="true"
+                    width="256"
+                    height="341"
+                    class="sc-card__img"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                  <span class="sc-card__badge" aria-hidden="true">{{ _badge }}</span>
+                  {%- if sc_ajax_cart -%}
+                    <button type="button" class="sc-card__add-btn" aria-hidden="true" tabindex="-1" disabled>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                      </svg>
+                      <span class="sc-spinner" aria-hidden="true"></span>
+                      <svg class="sc-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" width="18" height="18">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </button>
+                  {%- endif -%}
+                </div>
+                <div class="sc-card__body">
+                  <div class="sc-card__price-row">
+                    <span class="sc-card__price sc-card__price--current">{{ _price | money }}</span>
+                    <s class="sc-card__price sc-card__price--compare">{{ _cap | money }}</s>
+                  </div>
+                  <p class="sc-card__vendor">{{ _vend }}</p>
+                  <h3 class="sc-card__title">{{ _title }}</h3>
+                  {%- if _low -%}
+                    <p class="sc-card__inventory" aria-hidden="true">7 Last Items</p>
+                  {%- endif -%}
+                </div>
+              </article>
+            </li>
+
+          {%- endfor -%}
+
+        </ul>
+      </div>
+      {%- if sc_show_pag -%}
+        <div class="sc-pagination" role="tablist" aria-label="Carousel pages"></div>
+      {%- endif -%}
+
+      <p class="sc-demo-hint" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"/>
+        </svg>
+        Demo preview — select a sale collection in the sidebar to display your real products.
+      </p>
+
+    {%- endif -%}
+    {%- comment -%}── END mode switch ──{%- endcomment -%}
+
+  </div>
+  {%- comment -%}── END sc-container ──{%- endcomment -%}
+
+</section>
+
+<script src="{{ 'section-sale-carousel.js' | asset_url }}" defer></script>
+
+
+{% schema %}
+{
+  "name": "Sale Carousel",
+  "tag": "section",
+  "class": "section section-sale-carousel-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "info": "Small label above the heading. Leave blank to hide."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sale Up To 30%"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "info": "Optional line under the heading."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Sale Collection",
+      "info": "Products render automatically from this collection. A demo preview shows until a collection is selected."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Shop All Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop_all",
+      "label": "Show Shop All link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shop_all_label",
+      "label": "Link label",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "shop_all_url",
+      "label": "Custom link URL",
+      "info": "Leave blank to auto-link to the selected collection."
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Enable Slider",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite_loop",
+      "label": "Infinite Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show Navigation Arrows",
+      "default": true,
+      "info": "Only visible when slider is enabled."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show Pagination Dots",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "drag_enabled",
+      "label": "Enable Drag / Touch Swipe",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Border Radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_inventory_label",
+      "label": "Show Low-Stock Label",
+      "default": true,
+      "info": "Shows '• X Last Items' when stock is ≤ 10."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_ajax_cart",
+      "label": "Enable AJAX Add-to-Cart",
+      "default": true,
+      "info": "Adds product to cart without a page reload."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Sale Price",
+      "default": "#E91E63"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background",
+      "default": "#E91E63"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Navigation Buttons",
+      "default": "#374151"
+    },
+    {
+      "type": "color",
+      "id": "quick_add_color",
+      "label": "Quick Add Button",
+      "default": "#1F2937"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "label": "Desktop Columns",
+      "options": [
+        { "value": "4", "label": "4 cards" },
+        { "value": "5", "label": "5 cards" },
+        { "value": "6", "label": "6 cards" }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "select",
+      "id": "tablet_columns",
+      "label": "Tablet Columns",
+      "options": [
+        { "value": "2", "label": "2 cards" },
+        { "value": "3", "label": "3 cards" },
+        { "value": "4", "label": "4 cards" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile Columns",
+      "options": [
+        { "value": "1", "label": "1 card" },
+        { "value": "2", "label": "2 cards" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Card Gap",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sale Carousel",
+      "settings": {
+        "heading": "Sale Up To 30%",
+        "products_to_show": 10,
+        "show_shop_all": true,
+        "shop_all_label": "Shop All",
+        "enable_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 4,
+        "infinite_loop": true,
+        "show_navigation": true,
+        "show_pagination": false,
+        "drag_enabled": true,
+        "card_radius": 8,
+        "image_radius": 8,
+        "show_inventory_label": true,
+        "enable_ajax_cart": true,
+        "heading_color": "#222222",
+        "price_color": "#E91E63",
+        "badge_bg_color": "#E91E63",
+        "badge_text_color": "#ffffff",
+        "nav_color": "#374151",
+        "quick_add_color": "#1F2937",
+        "desktop_columns": "5",
+        "tablet_columns": "3",
+        "mobile_columns": "2",
+        "gap": 16,
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

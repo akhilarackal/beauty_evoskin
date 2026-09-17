@@ -1,0 +1,238 @@
+{{ 'product-showcase-featured.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign product = section.settings.product
+-%}
+
+{%- style -%}
+  #psf-{{ section.id }} {
+    --psf-bg: {{ section.settings.background_color }};
+    --psf-card-bg: {{ section.settings.card_bg_color }};
+    --psf-heading-color: {{ section.settings.heading_color }};
+    --psf-btn-bg: {{ section.settings.button_bg_color }};
+    --psf-btn-text: {{ section.settings.button_text_color }};
+    --psf-pad-top: {{ section.settings.padding_top }}px;
+    --psf-pad-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="psf-{{ section.id }}" class="psf-section" aria-label="{{ section.settings.section_heading | default: 'Featured Product' | escape }}">
+  <div class="psf-container">
+
+    {%- if section.settings.section_label != blank or section.settings.section_heading != blank -%}
+      <header class="psf-header">
+        {%- if section.settings.section_label != blank -%}
+          <p class="psf-header__label">{{ section.settings.section_label }}</p>
+        {%- endif -%}
+        {%- if section.settings.section_heading != blank -%}
+          <h2 class="psf-header__title">{{ section.settings.section_heading }}</h2>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <div class="psf-layout">
+
+      {%- comment -%} ── Image ── {%- endcomment -%}
+      <div class="psf-image{% unless product != blank and product.featured_image != blank %} psf-image--placeholder{% endunless %}">
+        {%- if product != blank and product.featured_image != blank -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 800 }}"
+            srcset="{{ product.featured_image | image_url: width: 500 }} 500w, {{ product.featured_image | image_url: width: 800 }} 800w"
+            sizes="(max-width: 749px) 100vw, 55vw"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            width="800"
+            height="600"
+            loading="lazy"
+          >
+        {%- elsif section.settings.custom_image != blank -%}
+          <img
+            src="{{ section.settings.custom_image | image_url: width: 800 }}"
+            srcset="{{ section.settings.custom_image | image_url: width: 500 }} 500w, {{ section.settings.custom_image | image_url: width: 800 }} 800w"
+            sizes="(max-width: 749px) 100vw, 55vw"
+            alt="{{ section.settings.custom_image.alt | default: 'Featured product' | escape }}"
+            width="800"
+            height="600"
+            loading="lazy"
+          >
+        {%- else -%}
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M1 5.25A2.25 2.25 0 013.25 3h13.5A2.25 2.25 0 0119 5.25v9.5A2.25 2.25 0 0116.75 17H3.25A2.25 2.25 0 011 14.75v-9.5zm1.5 5.81v3.69c0 .414.336.75.75.75h13.5a.75.75 0 00.75-.75v-2.69l-2.22-2.219a.75.75 0 00-1.06 0l-1.91 1.909-4.97-4.969a.75.75 0 00-1.06 0L2.5 11.06z" clip-rule="evenodd"/>
+          </svg>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ── Content ── {%- endcomment -%}
+      <div class="psf-content">
+        <h3 class="psf-content__name">
+          {%- if product != blank -%}
+            {{ product.title }}
+          {%- else -%}
+            {{ section.settings.custom_title | default: 'Goldwave Night Cream' }}
+          {%- endif -%}
+        </h3>
+
+        <div class="psf-content__price-wrap">
+          {%- if product != blank -%}
+            {%- if product.compare_at_price > product.price -%}
+              <span class="psf-content__price psf-content__price--compare">{{ product.compare_at_price | money }}</span>
+            {%- endif -%}
+            <span class="psf-content__price">{{ product.price | money }}</span>
+          {%- else -%}
+            <span class="psf-content__price">{{ section.settings.custom_price | default: '$65.00' }}</span>
+          {%- endif -%}
+        </div>
+
+        <p class="psf-content__description">
+          {%- if product != blank -%}
+            {{ product.description | strip_html | truncate: 200 }}
+          {%- else -%}
+            {{ section.settings.custom_description | default: 'A rich night cream that works while you sleep to deeply nourish, repair, and rejuvenate your skin with gold-infused peptides.' }}
+          {%- endif -%}
+        </p>
+
+        {%- if product != blank -%}
+          <a href="{{ product.url }}" class="psf-content__btn">{{ section.settings.button_text | default: 'Shop Now' }}</a>
+        {%- else -%}
+          <a href="{{ section.settings.button_link | default: '#' }}" class="psf-content__btn"{% if section.settings.button_link == blank %} aria-disabled="true"{% endif %}>{{ section.settings.button_text | default: 'Shop Now' }}</a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Showcase Featured Product",
+  "tag": "section",
+  "class": "product-showcase-featured",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Section label",
+      "default": "Loved by Insiders"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section heading",
+      "default": "Goldwave Night Cream"
+    },
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Custom Content (if no product selected)"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Custom image"
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Custom title",
+      "default": "Goldwave Night Cream"
+    },
+    {
+      "type": "text",
+      "id": "custom_price",
+      "label": "Custom price",
+      "default": "$65.00"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_description",
+      "label": "Custom description",
+      "default": "A rich night cream that works while you sleep to deeply nourish, repair, and rejuvenate your skin with gold-infused peptides."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#C5A044"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Showcase Featured Product"
+    }
+  ]
+}
+{% endschema %}

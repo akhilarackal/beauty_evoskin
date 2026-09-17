@@ -1,0 +1,667 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner": {
+      "type": "hero-premium",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "desktop_image": "shopify://shop_images/8cf91dab1d80160bfa92c6385b93981120ef70d8.png",
+            "mobile_image": "shopify://shop_images/8cf91dab1d80160bfa92c6385b93981120ef70d8.png",
+            "tagline": "",
+            "heading": "Deeply Nourishing for Everyday Wellbeing",
+            "description": "<p>Organic body care formulated to nurture, soften, and respect your skin—naturally.</p>",
+            "promo_text": "Use Promo Code MEGA50 & Get an Extra 10% Off Your First Order!",
+            "promo_code": "MEGA50",
+            "copy_button_label": "Copy Code",
+            "primary_button_label": "Shop Now",
+            "primary_button_link": "/collections/all"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "desktop_image": "shopify://shop_images/8cf91dab1d80160bfa92c6385b93981120ef70d8.png",
+            "mobile_image": "shopify://shop_images/8cf91dab1d80160bfa92c6385b93981120ef70d8.png",
+            "tagline": "",
+            "heading": "Discover Our Bestselling Collection",
+            "description": "<p>Handpicked essentials crafted with organic ingredients for radiant, healthy skin.</p>",
+            "promo_text": "Free Shipping on Orders Over $50",
+            "promo_code": "",
+            "copy_button_label": "Copy Code",
+            "primary_button_label": "Explore Now",
+            "primary_button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
+      "settings": {
+        "section_label": "Hero slider",
+        "autoplay": true,
+        "speed": 5,
+        "pause_on_focus": true,
+        "show_navigation": true,
+        "show_pagination": true,
+        "hero_max_width": 1270,
+        "hero_height": 520,
+        "hero_height_mobile": 360,
+        "content_width": 600,
+        "content_padding": 60,
+        "border_radius": 16,
+        "image_position_x": 50,
+        "image_position_y": 50,
+        "mobile_image_position_x": 50,
+        "mobile_image_position_y": 50,
+        "button_radius": 8,
+        "promo_radius": 8,
+        "content_alignment": "left",
+        "color_overlay": "#000000",
+        "overlay_opacity": 80,
+        "color_tagline": "#c5a044",
+        "color_heading": "#ffffff",
+        "color_description": "#e5e7eb",
+        "color_promo_text": "#d1d5db",
+        "color_promo_bg": "#ffffff",
+        "color_promo_border": "#e5e7eb",
+        "color_promo_code_text": "#111827",
+        "color_copy_bg": "#ffffff",
+        "color_copy_text": "#111827",
+        "color_copy_hover_bg": "#f3f4f6",
+        "color_button_bg": "#c5a044",
+        "color_button_text": "#ffffff",
+        "color_button_hover_bg": "#b8922e",
+        "color_nav_bg": "#ffffff",
+        "color_nav_icon": "#111827",
+        "color_pagination_active": "#ffffff",
+        "color_pagination_inactive": "#ffffff",
+        "padding_top": 20,
+        "padding_bottom": 0
+      }
+    },
+    "collection_carousel": {
+      "type": "collection-carousel",
+      "blocks": {
+        "c1": {
+          "type": "collection",
+          "settings": {
+            "collection": "hair",
+            "title": "Face Care"
+          }
+        },
+        "c2": {
+          "type": "collection",
+          "settings": {
+            "collection": "skin-care",
+            "title": "Body Care"
+          }
+        },
+        "c3": {
+          "type": "collection",
+          "settings": {
+            "collection": "skin-care",
+            "title": "Hair Care"
+          }
+        },
+        "c4": {
+          "type": "collection",
+          "settings": {
+            "collection": "hair",
+            "title": "Women"
+          }
+        },
+        "c5": {
+          "type": "collection",
+          "settings": {
+            "collection": "skin-care",
+            "title": "Men"
+          }
+        },
+        "c6": {
+          "type": "collection",
+          "settings": {
+            "collection": "skin-care",
+            "title": "Accessories"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ],
+      "settings": {
+        "heading": "Shop by Collections",
+        "background_color": "#ffffff",
+        "padding_top": 24,
+        "padding_bottom": 0,
+        "show_arrows": true,
+        "autoplay": false,
+        "autoplay_speed": 5
+      }
+    },
+    "bestsellers": {
+      "type": "bestsellers",
+      "settings": {
+        "heading": "Bestsellers",
+        "collection": "hair",
+        "products_to_show": 12,
+        "show_shop_all": true,
+        "shop_all_label": "Shop All",
+        "shop_all_url": "/collections/all",
+        "columns_desktop": "3",
+        "columns_mobile": "1",
+        "card_border_radius": 8,
+        "card_border_color": "#e5e7eb",
+        "card_bg_color": "#ffffff",
+        "image_bg_color": "#f3f4f6",
+        "enable_hover": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "promotional_banner": {
+      "type": "promotional-banner",
+      "settings": {
+        "badge_text": "BLACK FRIDAY",
+        "heading": "Tick-Tock! Sale Ends Soon!",
+        "button_text": "Shop Now",
+        "button_link": "/collections/all",
+        "desktop_image": "shopify://shop_images/73e5a7c93d43c1c3a88930614dd56c3edc7e3fd8.png",
+        "countdown_enable": true,
+        "countdown_end_date": "2030-12-31",
+        "countdown_end_time": "23:59:59",
+        "countdown_timezone": "UTC",
+        "countdown_expired": "hide",
+        "countdown_expired_message": "Sale has ended. Check back soon!",
+        "marquee_enable": true,
+        "marquee_text": "SALE UP TO 50%",
+        "marquee_speed": 20,
+        "marquee_direction": "left",
+        "banner_bg_color": "#6d7fd8",
+        "badge_bg_color": "#ffffff",
+        "badge_text_color": "#3b82f6",
+        "heading_color": "#ffffff",
+        "button_bg_color": "#d4af37",
+        "button_text_color": "#ffffff",
+        "timer_bg_color": "#d4af37",
+        "timer_text_color": "#ffffff",
+        "marquee_bg_color": "#d4af37",
+        "marquee_text_color": "#1f2937",
+        "border_radius": 16,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "flash_deals": {
+      "type": "flash-deals",
+      "settings": {
+        "heading": "Flash Deals",
+        "subtitle": "Discover your best deal with unbeatable flash offers.",
+        "collection": "skin-care",
+        "products_to_show": 2,
+        "banner_desktop_image": "shopify://shop_images/17c3b4bbaafddffbb259d6345730f675a6ec60f8.jpg",
+        "banner_tag_text": "FACE CARE",
+        "banner_heading": "Youthful Glow Starts with the Right Facial Care",
+        "banner_description": "Give your skin the care it deserves and let your natural beauty shine.",
+        "banner_button_text": "Shop Now",
+        "banner_button_link": "/collections/all",
+        "banner_overlay_align": "left",
+        "heading_color": "#222222",
+        "subtitle_color": "#6b7280",
+        "price_color": "#ec4899",
+        "sale_badge_color": "#ec4899",
+        "banner_button_bg": "#2563eb",
+        "banner_button_text_color": "#ffffff",
+        "face_care_badge_bg": "#ffffff",
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "card_radius": 8,
+        "banner_radius": 8,
+        "gap": 24,
+        "enable_slider": false,
+        "enable_autoplay": false,
+        "autoplay_speed": 4,
+        "show_navigation": true,
+        "show_inventory_label": true,
+        "enable_ajax_cart": true
+      }
+    },
+    "sale_carousel": {
+      "type": "sale-carousel",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Sale Up To 30%",
+        "subheading": "",
+        "collection": "hair",
+        "products_to_show": 10,
+        "show_shop_all": true,
+        "shop_all_label": "Shop All",
+        "shop_all_url": "",
+        "enable_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 4,
+        "infinite_loop": true,
+        "show_navigation": true,
+        "show_pagination": false,
+        "drag_enabled": true,
+        "card_radius": 8,
+        "image_radius": 8,
+        "show_inventory_label": true,
+        "enable_ajax_cart": true,
+        "heading_color": "#222222",
+        "price_color": "#e91e63",
+        "badge_bg_color": "#e91e63",
+        "badge_text_color": "#ffffff",
+        "nav_color": "#374151",
+        "quick_add_color": "#1f2937",
+        "desktop_columns": "5",
+        "tablet_columns": "3",
+        "mobile_columns": "2",
+        "gap": 16,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "campaign_showcase": {
+      "type": "campaign-showcase",
+      "settings": {
+        "b1_category": "FACE CARE",
+        "b1_heading": "Glow for Less – Special Offers on Facial Care!",
+        "b1_btn_text": "Shop Now",
+        "b1_btn_link": "/collections/all",
+        "b1_bg_color": "#e2e8f4",
+        "b1_desktop_image": "shopify://shop_images/64024fd0ddb4365f64e384a9efce2a3a6c622bbd.png",
+        "b1_discount_percent": "5",
+        "b1_circle_color": "#60a5fa",
+        "b2_category": "NEW IN",
+        "b2_heading": "Skincare Made Simple – Everything You Need",
+        "b2_btn_text": "Shop Now",
+        "b2_btn_link": "/collections/all",
+        "b2_bg_color": "#64b4b5",
+        "b2_desktop_image": "shopify://shop_images/0d502f9f090108e4646de9167b15dd5f7e64def5.png",
+        "b3_badge": "SALE",
+        "b3_heading": "Must-Have Makeup & Skincare – Now on Sale",
+        "b3_description": "Refresh your beauty collection with top picks at special prices.",
+        "b3_promo_text": "Apply Promo Code MEGA50 for an Extra 10% Off Your First Order!",
+        "b3_promo_code": "MEGA50",
+        "b3_copy_label": "Copy Code",
+        "b3_btn_text": "Shop Now",
+        "b3_btn_link": "/collections/all",
+        "b3_desktop_image": "shopify://shop_images/92abc9508cce8cd13c746b19d66b2550731f0c00.png",
+        "b4_category": "BODY CARE",
+        "b4_heading": "Ageless Beauty Begins with Superior Skincare",
+        "b4_btn_text": "Shop Now",
+        "b4_btn_link": "/collections/all",
+        "b4_bg_color": "#eee1f6",
+        "b4_desktop_image": "shopify://shop_images/b0061b24e63e07b444c8a9f5e18690baa6521bff.png",
+        "b5_category": "MEN",
+        "b5_heading": "Men's Grooming Essentials Await",
+        "b5_btn_text": "Shop Now",
+        "b5_btn_link": "/collections/all",
+        "b5_bg_color": "#eeeeee",
+        "b5_desktop_image": "shopify://shop_images/ab45c0cb492cecbd7511df651f12476b224fe655.png",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "item_of_the_day": {
+      "type": "item-of-the-day",
+      "settings": {
+        "heading": "Item of the Day",
+        "featured_product": "36-herbs-hair-cleanser",
+        "background_color": "#ffffff",
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "show_compare_price": true,
+        "show_inventory": true,
+        "show_shipping_text": true,
+        "show_share_button": true,
+        "show_view_details": true,
+        "enable_badges": true,
+        "badge_label_1": "-20%",
+        "badge_color_1": "#ec4899",
+        "badge_label_2": "Best Price",
+        "badge_color_2": "#2563eb"
+      }
+    },
+    "featured_collection_showcase": {
+      "type": "featured-collection-showcase",
+      "settings": {
+        "heading": "Featured Collection",
+        "collection": "skin-care",
+        "products_to_show": 9,
+        "show_navigation": true,
+        "enable_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 4,
+        "hero_desktop_image": "shopify://shop_images/PU3.png",
+        "hero_category": "FACE CARE",
+        "hero_heading": "The Best Products for Dry Skin",
+        "hero_button_text": "Shop Now",
+        "hero_button_link": "",
+        "image_ratio": "portrait",
+        "card_border_radius": 8,
+        "enable_quick_add": "icon",
+        "show_inventory_label": true,
+        "show_sale_badge": true,
+        "color_heading": "#222222",
+        "color_hero_text": "#ffffff",
+        "color_badge_bg": "#ffffff",
+        "color_badge_text": "#ffffff",
+        "color_price": "#ec4899",
+        "color_compare": "#6b7280",
+        "color_title": "#111827",
+        "color_vendor": "#6b7280",
+        "color_button_bg": "#d4af37",
+        "color_button_text": "#ffffff",
+        "desktop_products_visible": "2",
+        "tablet_products_visible": "2",
+        "mobile_products_visible": "1",
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "gap": 24
+      }
+    },
+    "promo_banner_carousel": {
+      "type": "promo-banner-carousel",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "banner_image": "shopify://shop_images/73e5a7c93d43c1c3a88930614dd56c3edc7e3fd8.png",
+            "heading": "Absolute Favorites from Care Cosmetics",
+            "description": "Most-loved skincare and beauty essentials, trusted by customers.",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "overlay_color": "#000000",
+            "overlay_opacity": 50,
+            "text_alignment": "left",
+            "vertical_alignment": "bottom"
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "banner_image": "shopify://shop_images/17c3b4bbaafddffbb259d6345730f675a6ec60f8.jpg",
+            "heading": "Stylish Clips for Every Occasion",
+            "description": "Discover stylish clips for every look, from minimalist designs to bold statement pieces.",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "overlay_color": "#000000",
+            "overlay_opacity": 50,
+            "text_alignment": "left",
+            "vertical_alignment": "bottom"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2"
+      ],
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "infinite_loop": true,
+        "show_navigation": true,
+        "show_on_mobile": true,
+        "banner_gap": 24,
+        "section_bg": "#ffffff",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "new_arrivals_carousel": {
+      "type": "new-arrivals-carousel",
+      "blocks": {
+        "tab_1": {
+          "type": "category_tab",
+          "settings": {
+            "tab_label": "All New",
+            "collection": "hair",
+            "show_tab": true,
+            "default_active": true
+          }
+        },
+        "tab_2": {
+          "type": "category_tab",
+          "settings": {
+            "tab_label": "Bestsellers",
+            "collection": "skin-care",
+            "show_tab": true,
+            "default_active": false
+          }
+        },
+        "tab_3": {
+          "type": "category_tab",
+          "settings": {
+            "tab_label": "Accessories",
+            "collection": "hair",
+            "show_tab": true,
+            "default_active": false
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3"
+      ],
+      "settings": {
+        "heading": "New In",
+        "show_navigation": true,
+        "enable_slider": true,
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "card_border_radius": 8,
+        "image_background": "#f3f4f6",
+        "show_vendor": true,
+        "show_inventory": true,
+        "show_sale_badge": true,
+        "quick_add_button": true,
+        "color_heading": "#222222",
+        "color_active_tab": "#2563eb",
+        "color_active_border": "#2563eb",
+        "color_inactive_tab": "#1f2937",
+        "color_card_background": "#ffffff",
+        "color_sale_badge": "#e81c7f",
+        "color_price": "#e81c7f",
+        "color_compare_price": "#9ca3af",
+        "color_vendor": "#9ca3af",
+        "color_product_title": "#1f2937",
+        "products_per_desktop": "4",
+        "products_per_tablet": "2",
+        "products_per_mobile": "1",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "beauty_hero_banner": {
+      "type": "beauty-hero-banner",
+      "settings": {
+        "label": "SEASONAL SALE",
+        "heading": "ON YOUR LIGHT",
+        "show_description": false,
+        "description": "Discover our curated beauty essentials for a radiant glow.",
+        "button_text": "",
+        "button_link": "",
+        "desktop_image": "shopify://shop_images/103012adcda2074dccd478e060dd47d452d108f5.jpg",
+        "image_position": "center",
+        "enable_overlay": true,
+        "overlay_color": "#000000",
+        "overlay_opacity": 25,
+        "content_alignment": "center",
+        "banner_height": 400,
+        "border_radius": 16,
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "label_color": "#ffffff",
+        "heading_color": "#ffffff",
+        "description_color": "#ffffff",
+        "button_bg_color": "#d4af37",
+        "button_text_color": "#ffffff"
+      }
+    },
+    "why_choose_us": {
+      "type": "why-choose-us",
+      "blocks": {
+        "feature_1": {
+          "type": "feature_card",
+          "settings": {
+            "icon_svg": "",
+            "heading": "Worldwide Shipping",
+            "description": "No matter where you are, we've got you covered. Enjoy fast, reliable delivery across the globe—shop with peace of mind.",
+            "cta_label": "View Shipping Info",
+            "cta_link": "/pages/shipping-policy"
+          }
+        },
+        "feature_2": {
+          "type": "feature_card",
+          "settings": {
+            "icon_svg": "",
+            "heading": "30-Days Free Returns",
+            "description": "Experience worry-free shopping with our 30-day free returns policy. Love it or send it back, absolutely free.",
+            "cta_label": "View Return Policy",
+            "cta_link": "/pages/refund-policy"
+          }
+        },
+        "feature_3": {
+          "type": "feature_card",
+          "settings": {
+            "icon_svg": "",
+            "heading": "Secure Online Payment",
+            "description": "Our state-of-the-art encryption technology keeps your payment details safe, so you can shop with peace of mind every time.",
+            "cta_label": "View Payment Info",
+            "cta_link": "/pages/payment-info"
+          }
+        },
+        "feature_4": {
+          "type": "feature_card",
+          "settings": {
+            "icon_svg": "",
+            "heading": "24/7 Friendly Support",
+            "description": "Our dedicated support team is available around the clock to answer your questions and resolve issues—day or night.",
+            "cta_label": "Ask Support",
+            "cta_link": "/pages/contact-us"
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ],
+      "settings": {
+        "heading": "Why More than 10k Customers Choose Us Every Day",
+        "background_color": "#ffffff",
+        "card_background": "#ffffff",
+        "border_color": "#f3f4f6",
+        "icon_color": "#d4af37",
+        "card_radius": 8,
+        "grid_gap": 24,
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "enable_hover": true
+      }
+    },
+    "brand_showcase": {
+      "type": "brand-showcase",
+      "blocks": {
+        "brand_1": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "180 BH&M",
+            "brand_url": "",
+            "open_new_tab": false
+          }
+        },
+        "brand_2": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Alga Skin",
+            "brand_url": "",
+            "open_new_tab": false
+          }
+        },
+        "brand_3": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Bart®",
+            "brand_url": "",
+            "open_new_tab": false
+          }
+        },
+        "brand_4": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "spaceo.",
+            "brand_url": "",
+            "open_new_tab": false
+          }
+        },
+        "brand_5": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Day & Night",
+            "brand_url": "",
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "brand_1",
+        "brand_2",
+        "brand_3",
+        "brand_4",
+        "brand_5"
+      ],
+      "settings": {
+        "heading": "Brands",
+        "subtitle": "Discover top beauty brands, from iconic classics to emerging favorites. Find the perfect match for your skincare and makeup needs.",
+        "columns_desktop": 5,
+        "columns_tablet": 3,
+        "columns_mobile": 2,
+        "gap": 16,
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "card_bg_color": "#f5f5f5",
+        "card_border_radius": 2,
+        "enable_hover": true,
+        "logo_max_height": 40,
+        "heading_color": "#222222",
+        "subtitle_color": "#6b7280"
+      }
+    }
+  },
+  "order": [
+    "image_banner",
+    "collection_carousel",
+    "bestsellers",
+    "promotional_banner",
+    "flash_deals",
+    "sale_carousel",
+    "campaign_showcase",
+    "item_of_the_day",
+    "featured_collection_showcase",
+    "promo_banner_carousel",
+    "new_arrivals_carousel",
+    "beauty_hero_banner",
+    "why_choose_us",
+    "brand_showcase"
+  ]
+}

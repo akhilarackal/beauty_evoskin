@@ -1,0 +1,181 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "luxury_hero": {
+      "type": "luxury-product-hero",
+      "blocks": {
+        "trust_1": {
+          "type": "trust_badge",
+          "settings": { "icon": "shipping", "text": "Complimentary Shipping" }
+        },
+        "trust_2": {
+          "type": "trust_badge",
+          "settings": { "icon": "return", "text": "30-Day Ritual Return" }
+        }
+      },
+      "block_order": [
+        "trust_1", "trust_2"
+      ],
+      "settings": {
+        "enable_zoom": true,
+        "show_breadcrumb": true,
+        "show_vendor": false,
+        "show_discount": true,
+        "show_inventory": true,
+        "show_description": true,
+        "show_benefits": true,
+        "add_to_bag_text": "ADD TO BAG",
+        "button_color": "#D4AF37",
+        "button_radius": 8,
+        "background_color": "#ffffff",
+        "accent_color": "#C5A044",
+        "gap": 48,
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
+    },
+    "showcase_ritual": {
+      "type": "product-showcase-ritual",
+      "settings": {
+        "label": "APPLICATION",
+        "heading": "The Ritual",
+        "subtitle": "",
+        "background_color": "#F8F3EA",
+        "heading_color": "#1A1A1A",
+        "accent_color": "#C5A046",
+        "columns": 3,
+        "card_radius": 0,
+        "gap": 32,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "showcase_ingredients": {
+      "type": "ingredients-spotlight",
+      "settings": {
+        "label": "SCIENTIFIC PURITY",
+        "heading": "Ingredients Spotlight",
+        "background_color": "#ffffff",
+        "accent_color": "#C5A046",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "showcase_testimonial": {
+      "type": "transformation-testimonial",
+      "settings": {
+        "quote": "",
+        "author": "",
+        "star_count": 5,
+        "before_label": "Before",
+        "after_label": "After",
+        "background_color": "#1A1A1A",
+        "card_background": "#262626",
+        "accent_color": "#C5A046",
+        "gap": 64,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "showcase_featured": {
+      "type": "complete-the-routine",
+      "settings": {
+        "section_heading": "Complete the Routine",
+        "background_color": "#ffffff",
+        "accent_color": "#C5A046",
+        "column_gap": 48,
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "eyebrow": "",
+        "featured_heading": "",
+        "featured_description": "",
+        "button_text": "",
+        "featured_bg_color": "#F2EBE1",
+        "show_cart_icon": true
+      }
+    },
+    "showcase_related": {
+      "type": "product-showcase-related",
+      "settings": {
+        "heading": "Related Products",
+        "products_to_show": 10,
+        "columns": 5,
+        "background_color": "#ffffff",
+        "heading_color": "#222222",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "showcase_why_choose": {
+      "type": "why-choose-us",
+      "blocks": {
+        "feature_1": {
+          "type": "feature_card",
+          "settings": {
+            "heading": "Worldwide Shipping",
+            "description": "No matter where you are, we've got you covered. Enjoy fast, reliable delivery across the globe.",
+            "cta_label": "View Shipping Info",
+            "cta_link": "/pages/shipping-policy"
+          }
+        },
+        "feature_2": {
+          "type": "feature_card",
+          "settings": {
+            "heading": "30-Days Free Returns",
+            "description": "Experience worry-free shopping with our 30-day free returns policy.",
+            "cta_label": "View Return Policy",
+            "cta_link": "/pages/refund-policy"
+          }
+        },
+        "feature_3": {
+          "type": "feature_card",
+          "settings": {
+            "heading": "Secure Payment",
+            "description": "State-of-the-art encryption keeps your payment details safe.",
+            "cta_label": "View Payment Info",
+            "cta_link": "/pages/payment-info"
+          }
+        },
+        "feature_4": {
+          "type": "feature_card",
+          "settings": {
+            "heading": "24/7 Support",
+            "description": "Our dedicated support team is available around the clock.",
+            "cta_label": "Ask Support",
+            "cta_link": "/pages/contact-us"
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"],
+      "settings": {
+        "heading": "Why More than 10k Customers Choose Us Every Day",
+        "background_color": "#FFFFFF",
+        "card_background": "#FFFFFF",
+        "border_color": "#F3F4F6",
+        "icon_color": "#D4AF37",
+        "card_radius": 8,
+        "grid_gap": 24,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "enable_hover": true
+      }
+    }
+  },
+  "order": [
+    "luxury_hero",
+    "showcase_ritual",
+    "showcase_ingredients",
+    "showcase_testimonial",
+    "showcase_featured",
+    "showcase_related",
+    "showcase_why_choose"
+  ]
+}

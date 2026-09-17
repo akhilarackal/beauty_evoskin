@@ -1,0 +1,202 @@
+/* ==========================================================================
+   Curated Rituals Showcase — BEM Scoped
+   ========================================================================== */
+
+.cr {
+  padding-top: var(--cr-pad-top, 80px);
+  padding-bottom: var(--cr-pad-bottom, 96px);
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.cr__container {
+  max-width: var(--cr-container-width, 1280px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.cr__header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.cr__heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 41.6px;
+  color: var(--cr-heading-color, #1F1B15);
+  margin: 0;
+}
+
+.cr__accent {
+  display: block;
+  width: 36px;
+  height: 2px;
+  background: #C5A046;
+  margin: 12px auto 0;
+  border-radius: 9999px;
+}
+
+/* ==========================================================================
+   Grid
+   ========================================================================== */
+.cr__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+@media screen and (max-width: 749px) {
+  .cr__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* ==========================================================================
+   Card
+   ========================================================================== */
+.cr__card {
+  transition: transform 0.35s ease;
+}
+
+.cr__card:hover {
+  transform: translateY(-6px);
+}
+
+/* Image Wrapper */
+.cr__card-image-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #F2EBE1;
+  padding: 32px;
+}
+
+.cr__card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.cr__card:hover .cr__card-img {
+  transform: scale(1.03);
+}
+
+.cr__card-placeholder {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cr__placeholder-svg {
+  width: 50%;
+  height: auto;
+  opacity: 0.3;
+}
+
+/* Badge */
+.cr__card-badge {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  padding: 4px 12px;
+  background: #FFFFFF;
+  border: 1px solid #C5A046;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #C5A046;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* Body */
+.cr__card-body {
+  padding-top: 24px;
+}
+
+.cr__card-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 41.6px;
+  color: #1F1B15;
+  margin: 0;
+}
+
+.cr__card-desc {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25.6px;
+  color: #4D4637;
+  margin: 8px 0 0;
+}
+
+/* CTA */
+.cr__card-cta {
+  display: inline-block;
+  margin-top: 20px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.7px;
+  color: #1F1B15;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.25s;
+}
+
+.cr__card-cta:hover {
+  opacity: 0.75;
+}
+
+.cr__card-cta[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   Responsive — Mobile
+   ========================================================================== */
+@media screen and (max-width: 749px) {
+  .cr {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .cr__card-image-wrap {
+    padding: 20px;
+  }
+
+  .cr__card-badge {
+    top: 20px;
+    right: 20px;
+    font-size: 12px;
+    padding: 3px 10px;
+  }
+
+  .cr__card-title {
+    font-size: 26px;
+    line-height: 33.8px;
+  }
+
+  .cr__card-desc {
+    font-size: 15px;
+    line-height: 24px;
+  }
+}

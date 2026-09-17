@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128" fill="none">
+  <!-- Clay Face Mask – wide brown cream jar, matte black lid -->
+  <rect width="96" height="128" rx="4" fill="#F3F4F6"/>
+  <!-- jar shadow -->
+  <ellipse cx="48" cy="104" rx="25" ry="4" fill="#3D2314" opacity=".15"/>
+  <!-- jar body – wide squat shape -->
+  <rect x="16" y="70" width="64" height="34" rx="10" fill="url(#clay-grad)"/>
+  <defs>
+    <linearGradient id="clay-grad" x1="16" y1="70" x2="80" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A0522D"/>
+      <stop offset="100%" stop-color="#6B3A1F"/>
+    </linearGradient>
+  </defs>
+  <!-- sheen -->
+  <rect x="18" y="72" width="12" height="30" rx="5" fill="white" opacity=".12"/>
+  <!-- label -->
+  <rect x="20" y="75" width="56" height="26" rx="3" fill="#7C3A1A" opacity=".6"/>
+  <!-- clay texture dots -->
+  <circle cx="30" cy="83" r="1.5" fill="#A0522D" opacity=".5"/>
+  <circle cx="38" cy="80" r="1" fill="#A0522D" opacity=".4"/>
+  <circle cx="58" cy="85" r="1.5" fill="#A0522D" opacity=".5"/>
+  <circle cx="66" cy="79" r="1" fill="#A0522D" opacity=".4"/>
+  <!-- label text lines -->
+  <rect x="24" y="79" width="48" height="2.5" rx="1" fill="#F5DEB3" opacity=".9"/>
+  <rect x="26" y="85" width="44" height="1.5" rx=".75" fill="#F5DEB3" opacity=".6"/>
+  <rect x="28" y="89" width="40" height="1.5" rx=".75" fill="#F5DEB3" opacity=".5"/>
+  <!-- lid – black matte -->
+  <ellipse cx="48" cy="70" rx="32" ry="8" fill="#1A1A1A"/>
+  <!-- lid top face -->
+  <ellipse cx="48" cy="63" rx="30" ry="7" fill="#2C2C2C"/>
+  <!-- lid sheen -->
+  <ellipse cx="36" cy="61" rx="10" ry="3.5" fill="white" opacity=".1"/>
+  <!-- lid center indentation -->
+  <ellipse cx="48" cy="62" rx="12" ry="4" fill="#1A1A1A" opacity=".5"/>
+  <!-- brand mark -->
+  <rect x="43" y="60" width="10" height="4" rx="1" fill="#8B5E3C" opacity=".8"/>
+</svg>

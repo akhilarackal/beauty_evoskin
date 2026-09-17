@@ -1,0 +1,255 @@
+{%- liquid
+  assign meta_ingredients_check = product.metafields.custom.ingredients.value
+  assign has_ingredients_data = false
+  if meta_ingredients_check != blank and meta_ingredients_check.size > 0
+    assign has_ingredients_data = true
+  elsif section.blocks.size > 0
+    assign has_ingredients_data = true
+  endif
+-%}
+
+{%- if has_ingredients_data -%}
+{{ 'section-ingredients-spotlight.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #is-{{ section.id }} {
+    --is-bg: {{ section.settings.background_color }};
+    --is-accent: {{ section.settings.accent_color }};
+    --is-pad-top: {{ section.settings.padding_top }}px;
+    --is-pad-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="is-{{ section.id }}"
+  class="section-is"
+  aria-label="{{ section.settings.heading | default: 'Ingredients Spotlight' | escape }}"
+  data-section-type="ingredients-spotlight"
+  data-no-animate="true"
+>
+  <div class="is-container">
+    <div class="is-layout">
+
+      {%- comment -%} ═══ LEFT: Text Content ═══ {%- endcomment -%}
+      <div class="is-content">
+
+        {%- if section.settings.label != blank -%}
+          <span class="is-label">{{ section.settings.label }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="is-heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        <div class="is-ingredients">
+          {%- assign meta_ingredients = product.metafields.custom.ingredients.value -%}
+          {%- if meta_ingredients != blank and meta_ingredients.size > 0 -%}
+            {%- for ingredient in meta_ingredients -%}
+              <div class="is-ingredient">
+                <div class="is-ingredient__header">
+                  <h3 class="is-ingredient__title">{{ ingredient.title }}</h3>
+                  <span class="is-ingredient__divider" aria-hidden="true"></span>
+                </div>
+                {%- if ingredient.description != blank -%}
+                  <p class="is-ingredient__desc">{{ ingredient.description }}</p>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for block in section.blocks -%}
+              <div class="is-ingredient" {{ block.shopify_attributes }}>
+                <div class="is-ingredient__header">
+                  <h3 class="is-ingredient__title">{{ block.settings.title }}</h3>
+                  <span class="is-ingredient__divider" aria-hidden="true"></span>
+                </div>
+                {%- if block.settings.description != blank -%}
+                  <p class="is-ingredient__desc">{{ block.settings.description }}</p>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+      </div>
+
+      {%- comment -%} ═══ RIGHT: Editorial Images ═══ {%- endcomment -%}
+      {%- if section.settings.image_1 != blank or section.settings.image_2 != blank -%}
+        <div class="is-images">
+
+          {%- if section.settings.image_1 != blank -%}
+            <div class="is-images__item">
+              <img
+                src="{{ section.settings.image_1 | image_url: width: 600 }}"
+                srcset="{{ section.settings.image_1 | image_url: width: 300 }} 300w, {{ section.settings.image_1 | image_url: width: 450 }} 450w, {{ section.settings.image_1 | image_url: width: 600 }} 600w"
+                sizes="(max-width: 749px) 45vw, 295px"
+                alt="{{ section.settings.image_1_alt | default: 'Ingredient image' | escape }}"
+                width="295"
+                height="341"
+                loading="lazy"
+              >
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.image_2 != blank -%}
+            <div class="is-images__item">
+              <img
+                src="{{ section.settings.image_2 | image_url: width: 600 }}"
+                srcset="{{ section.settings.image_2 | image_url: width: 300 }} 300w, {{ section.settings.image_2 | image_url: width: 450 }} 450w, {{ section.settings.image_2 | image_url: width: 600 }} 600w"
+                sizes="(max-width: 749px) 45vw, 295px"
+                alt="{{ section.settings.image_2_alt | default: 'Ingredient image' | escape }}"
+                width="295"
+                height="341"
+                loading="lazy"
+              >
+            </div>
+          {%- endif -%}
+
+        </div>
+      {%- endif -%}
+      {%- comment -%} ═══ END Images ═══ {%- endcomment -%}
+
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Ingredients Spotlight",
+  "tag": "section",
+  "class": "section section-is-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Small label",
+      "default": "SCIENTIFIC PURITY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ingredients Spotlight"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1 (left)"
+    },
+    {
+      "type": "text",
+      "id": "image_1_alt",
+      "label": "Image 1 alt text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2 (right)"
+    },
+    {
+      "type": "text",
+      "id": "image_2_alt",
+      "label": "Image 2 alt text"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color (gold)",
+      "default": "#C5A046"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Ingredient title",
+          "default": "Obsidian Extract"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Sourced from the volcanic depths of the Swiss Alps, this mineral-rich extract detoxifies cells and provides powerful antioxidant protection against environmental stressors."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ingredients Spotlight",
+      "blocks": [
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Obsidian Extract",
+            "description": "Sourced from the volcanic depths of the Swiss Alps, this mineral-rich extract detoxifies cells and provides powerful antioxidant protection against environmental stressors."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Swiss Lipid Technology",
+            "description": "A proprietary bio-mimetic lipid complex that replicates the skin's natural moisture barrier, ensuring deep-tissue delivery of active nutrients."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Colloidal Gold",
+            "description": "Micro-particulate gold enhances blood circulation and stimulates collagen production, resulting in an immediate and lasting luminous glow."
+          }
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

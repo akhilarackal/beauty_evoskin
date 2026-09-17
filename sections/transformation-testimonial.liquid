@@ -1,0 +1,274 @@
+{%- liquid
+  comment
+    Data Resolution:
+    1. Product metafield: custom.testimonial (single Metaobject reference)
+    2. Fallback: section settings (Theme Editor configured defaults)
+    3. If neither has content: render nothing
+  endcomment
+
+  assign testimonial_ref = product.metafields.custom.testimonial.value
+  assign has_testimonial = false
+
+  if testimonial_ref != blank and testimonial_ref.quote != blank
+    assign has_testimonial = true
+    assign tt_quote = testimonial_ref.quote
+    assign tt_author = testimonial_ref.author
+    assign tt_location = testimonial_ref.location
+    assign tt_stars = testimonial_ref.rating | default: 5
+    assign tt_author_img = testimonial_ref.author_image
+    assign tt_before_img = testimonial_ref.before_image
+    assign tt_after_img = testimonial_ref.after_image
+    assign tt_before_label = testimonial_ref.before_label | default: 'Before'
+    assign tt_after_label = testimonial_ref.after_label | default: 'After'
+  elsif section.settings.quote != blank
+    assign has_testimonial = true
+    assign tt_quote = section.settings.quote
+    assign tt_author = section.settings.author
+    assign tt_location = ''
+    assign tt_stars = section.settings.star_count | default: 5
+    assign tt_author_img = blank
+    assign tt_before_img = section.settings.before_image
+    assign tt_after_img = section.settings.after_image
+    assign tt_before_label = section.settings.before_label | default: 'Before'
+    assign tt_after_label = section.settings.after_label | default: 'After'
+  endif
+
+  assign show_before_after = false
+  if tt_before_img != blank and tt_after_img != blank
+    assign show_before_after = true
+  endif
+-%}
+
+{%- if has_testimonial -%}
+{{ 'section-transformation-testimonial.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #tt-{{ section.id }} {
+    --tt-bg: {{ section.settings.background_color }};
+    --tt-card-bg: {{ section.settings.card_background }};
+    --tt-accent: {{ section.settings.accent_color }};
+    --tt-gap: {{ section.settings.gap }}px;
+    --tt-pad-top: {{ section.settings.padding_top }}px;
+    --tt-pad-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="tt-{{ section.id }}"
+  class="section-tt"
+  aria-label="Customer testimonial"
+  data-section-type="transformation-testimonial"
+  data-no-animate="true"
+>
+  <div class="tt-container">
+
+    {%- comment -%} ═══ LEFT: Testimonial Card ═══ {%- endcomment -%}
+    <div class="tt-card">
+
+      {%- comment -%} Stars {%- endcomment -%}
+      <div class="tt-stars" aria-label="{{ tt_stars }} out of 5 stars">
+        {%- for i in (1..5) -%}
+          {%- if i <= tt_stars -%}
+            <svg width="20" height="19" viewBox="0 0 20 19" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3.825 19L5.45 11.975L0 7.25L7.2 6.625L10 0L12.8 6.625L20 7.25L14.55 11.975L16.175 19L10 15.275L3.825 19Z" fill="#C5A046"/>
+            </svg>
+          {%- else -%}
+            <svg width="20" height="19" viewBox="0 0 20 19" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3.825 19L5.45 11.975L0 7.25L7.2 6.625L10 0L12.8 6.625L20 7.25L14.55 11.975L16.175 19L10 15.275L3.825 19Z" fill="#4A4A4A"/>
+            </svg>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Quote {%- endcomment -%}
+      <blockquote class="tt-quote">
+        "{{ tt_quote }}"
+      </blockquote>
+
+      {%- comment -%} Author + Location {%- endcomment -%}
+      <p class="tt-author">— {{ tt_author | escape }}{%- if tt_location != blank %}, {{ tt_location | escape }}{%- endif -%}</p>
+
+      {%- comment -%} Author Image (optional) {%- endcomment -%}
+      {%- if tt_author_img != blank -%}
+        <img
+          class="tt-author-img"
+          src="{{ tt_author_img | image_url: width: 80 }}"
+          alt="{{ tt_author | escape }}"
+          width="40"
+          height="40"
+          loading="lazy"
+        >
+      {%- endif -%}
+
+    </div>
+    {%- comment -%} ═══ END Card ═══ {%- endcomment -%}
+
+    {%- comment -%} ═══ RIGHT: Before / After Images (only if BOTH exist) ═══ {%- endcomment -%}
+    {%- if show_before_after -%}
+      <div class="tt-images">
+        <div class="tt-images__item">
+          <img
+            src="{{ tt_before_img | image_url: width: 600 }}"
+            srcset="{{ tt_before_img | image_url: width: 300 }} 300w, {{ tt_before_img | image_url: width: 450 }} 450w, {{ tt_before_img | image_url: width: 600 }} 600w"
+            sizes="(max-width: 749px) 45vw, 295px"
+            alt="{{ tt_before_label | escape }} — {{ tt_author | escape }}"
+            width="295"
+            height="320"
+            loading="lazy"
+          >
+          {%- if tt_before_label != blank -%}
+            <span class="tt-images__badge">{{ tt_before_label }}</span>
+          {%- endif -%}
+        </div>
+
+        <div class="tt-images__item">
+          <img
+            src="{{ tt_after_img | image_url: width: 600 }}"
+            srcset="{{ tt_after_img | image_url: width: 300 }} 300w, {{ tt_after_img | image_url: width: 450 }} 450w, {{ tt_after_img | image_url: width: 600 }} 600w"
+            sizes="(max-width: 749px) 45vw, 295px"
+            alt="{{ tt_after_label | escape }} — {{ tt_author | escape }}"
+            width="295"
+            height="320"
+            loading="lazy"
+          >
+          {%- if tt_after_label != blank -%}
+            <span class="tt-images__badge">{{ tt_after_label }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Testimonial Before After",
+  "tag": "section",
+  "class": "section section-tt-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Testimonial"
+    },
+    {
+      "type": "paragraph",
+      "content": "Product metafield (custom.testimonial) takes priority. These settings serve as default content when no metafield is assigned."
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote"
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": "Author"
+    },
+    {
+      "type": "range",
+      "id": "star_count",
+      "label": "Star rating",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Before Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_image",
+      "label": "Before image"
+    },
+    {
+      "type": "text",
+      "id": "before_label",
+      "label": "Before badge label",
+      "default": "Before"
+    },
+    {
+      "type": "header",
+      "content": "After Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "after_image",
+      "label": "After image"
+    },
+    {
+      "type": "text",
+      "id": "after_label",
+      "label": "After badge label",
+      "default": "After"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#262626"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color (gold)",
+      "default": "#C5A046"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between columns",
+      "min": 24,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Transformation Testimonial"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

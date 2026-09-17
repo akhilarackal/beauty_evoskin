@@ -1,0 +1,493 @@
+/* =============================================================
+   Footer Premium — 5-Column Premium Skincare Footer
+   ============================================================= */
+
+/* ---- CSS Custom Properties (overridable via inline style) ---- */
+.footer-premium {
+  /* Plain defaults, not var(--same-name, x) — a custom property that
+     references itself is invalid, so those defaults never applied. The
+     section's inline style overrides these with the real settings. */
+  --fp-bg: var(--fp-bg-color, #ffffff);
+  --fp-heading-color: #000000;
+  --fp-text-color: #6b7280;
+  --fp-link-color: #6b7280;
+  --fp-link-hover: var(--fp-link-hover-color, #111827);
+  --fp-divider: var(--fp-divider-color, #e5e7eb);
+  --fp-icon-color: #6b7280;
+  --fp-btn-bg: var(--fp-btn-bg-color, #111827);
+  --fp-btn-text: var(--fp-btn-text-color, #ffffff);
+  --fp-input-bg: var(--fp-input-bg-color, #ffffff);
+  --fp-input-border: var(--fp-input-border-color, #d1d5db);
+  --fp-input-text: var(--fp-input-text-color, #111827);
+  --fp-pad-top: var(--fp-padding-top, 64px);
+  --fp-pad-bottom: var(--fp-padding-bottom, 32px);
+  --fp-pad-left: var(--fp-padding-left, 32px);
+  --fp-pad-right: var(--fp-padding-right, 32px);
+  --fp-col-gap: var(--fp-column-gap, 32px);
+  /* --fp-row-gap is set by the section. It must not be redefined here:
+     `--fp-row-gap: var(--fp-row-gap, 32px)` is self-referential and
+     therefore invalid, so the 32px default never applied. The fallback
+     now lives at each point of use instead. */
+  --fp-container-width: var(--fp-max-width, 1280px);
+  --fp-logo-width: 144px;
+  --fp-radius: 8px;
+  --fp-transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Main Footer ---- */
+.footer-premium {
+  background-color: var(--fp-bg);
+  padding-top: var(--fp-pad-top);
+  padding-bottom: var(--fp-pad-bottom);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.footer-premium__container {
+  max-width: var(--fp-container-width);
+  margin: 0 auto;
+  padding-left: var(--fp-pad-left);
+  padding-right: var(--fp-pad-right);
+}
+
+/* ---- 5-Column Grid ---- */
+.footer-premium__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--fp-row-gap, 32px);
+}
+
+/* Tablet: 2 columns, brand spans full width */
+@media screen and (min-width: 750px) {
+  .footer-premium__grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--fp-col-gap);
+    row-gap: var(--fp-row-gap, 32px);
+  }
+  .footer-premium__col--brand {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Desktop: 5 columns — brand (1.4) | 3 menus (1) | newsletter (1.6) */
+@media screen and (min-width: 990px) {
+  .footer-premium__grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1.6fr;
+    column-gap: var(--fp-col-gap);
+    align-items: start;
+  }
+  .footer-premium__col--brand {
+    grid-column: auto;
+  }
+}
+
+/* ---- Headings ---- */
+.footer-premium__heading {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  color: var(--fp-heading-color);
+  margin: 0 0 18px 0;
+}
+
+/* ---- Brand Column ---- */
+.footer-premium__brand-logo {
+  display: inline-block;
+  margin-bottom: 18px;
+  line-height: 0;
+}
+
+.footer-premium__brand-logo img {
+  width: var(--fp-logo-width);
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.footer-premium__brand-logo--text {
+  line-height: 1.2;
+}
+
+.footer-premium__shop-name {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--fp-heading-color);
+}
+
+.footer-premium__brand-description {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24.38px;
+  color: var(--fp-text-color);
+  margin: 0;
+  max-width: 420px;
+}
+
+.footer-premium__brand-description a {
+  color: var(--fp-link-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--fp-transition);
+}
+
+.footer-premium__brand-description a:hover {
+  color: var(--fp-link-hover);
+}
+
+/* ---- Menu Link Lists ---- */
+.footer-premium__menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-premium__menu-list li {
+  margin-bottom: 11px;
+}
+
+.footer-premium__menu-list li:last-child {
+  margin-bottom: 0;
+}
+
+.footer-premium__menu-link {
+  display: inline-block;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--fp-link-color);
+  text-decoration: none;
+  transition: color var(--fp-transition), transform var(--fp-transition);
+}
+
+.footer-premium__menu-link:hover {
+  color: var(--fp-link-hover);
+  transform: translateX(2px);
+}
+
+/* ---- Newsletter Column ---- */
+.footer-premium__newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Input and button are stacked full width. The previous joined
+   pill (input with border-right removed, split border radius) broke
+   apart in the narrow footer column, leaving the two elements looking
+   like one mis-drawn box. Stacked is robust at every width. */
+.footer-premium__newsletter-form .field {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.footer-premium__newsletter-input {
+  width: 100%;
+  min-width: 0;
+  height: 50px;
+  padding: 0 16px;
+  border: 1px solid var(--fp-input-border);
+  border-radius: var(--fp-radius);
+  background-color: var(--fp-input-bg);
+  color: var(--fp-input-text);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 20px;
+  outline: none;
+  transition: border-color var(--fp-transition), box-shadow var(--fp-transition);
+}
+
+.footer-premium__newsletter-input::placeholder {
+  color: #9ca3af;
+}
+
+.footer-premium__newsletter-input:focus {
+  border-color: var(--fp-heading-color);
+  box-shadow: 0 0 0 3px rgba(197, 160, 68, 0.18);
+}
+
+.footer-premium__newsletter-button {
+  display: inline-flex;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  border: none;
+  border-radius: var(--fp-radius);
+  background-color: var(--fp-btn-bg);
+  color: var(--fp-btn-text);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--fp-transition), transform var(--fp-transition);
+}
+
+.footer-premium__newsletter-button:hover {
+  background-color: #000;
+}
+
+.footer-premium__newsletter-button:active {
+  transform: translateY(1px);
+}
+
+.footer-premium__consent {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--fp-text-color);
+  opacity: 0.72;
+  max-width: 42ch;
+  margin: 12px 0 0 0;
+}
+
+.footer-premium__consent a {
+  color: var(--fp-link-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--fp-transition);
+}
+
+.footer-premium__consent a:hover {
+  color: var(--fp-link-hover);
+}
+
+/* ---- Social Icons ---- */
+.footer-premium__social-heading {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--fp-heading-color);
+  margin: 24px 0 14px 0;
+}
+
+.footer-premium__social-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-premium__social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  color: var(--fp-icon-color);
+  border-radius: 50%;
+  transition: color var(--fp-transition), transform var(--fp-transition),
+    background-color var(--fp-transition);
+}
+
+.footer-premium__social-icons a:hover {
+  color: var(--fp-link-hover);
+  transform: translateY(-2px);
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.footer-premium__social-icons a svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---- Success / Error Messages ---- */
+.footer-premium__form-message {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  margin-top: 10px;
+}
+
+.footer-premium__form-message--success {
+  color: #16a34a;
+}
+
+.footer-premium__form-message--error {
+  color: #dc2626;
+}
+
+/* ---- Bottom Bar ---- */
+.footer-premium__bottom {
+  margin-top: 48px;
+  border-top: 1px solid var(--fp-divider);
+  padding-top: 24px;
+}
+
+.footer-premium__bottom-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+@media screen and (min-width: 750px) {
+  .footer-premium__bottom-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+}
+
+/* Localization selectors */
+.footer-premium__localization {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.footer-premium__localization .localization-form {
+  display: inline-flex;
+}
+
+.footer-premium__localization .disclosure__button {
+  color: var(--fp-text-color);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+}
+
+/* Payment icons */
+.footer-premium__payment {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-premium__payment .icon--full-color {
+  height: 24px;
+  width: auto;
+}
+
+/* Copyright */
+.footer-premium__copyright {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--fp-text-color);
+  text-align: center;
+}
+
+.footer-premium__copyright a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--fp-transition);
+}
+
+.footer-premium__copyright a:hover {
+  color: var(--fp-link-hover);
+}
+
+/* ---- Focus-Visible (Accessibility) ---- */
+.footer-premium a:focus-visible,
+.footer-premium__menu-link:focus-visible,
+.footer-premium__brand-logo:focus-visible,
+.footer-premium__social-icons a:focus-visible,
+.footer-premium__copyright a:focus-visible {
+  outline: 2px solid var(--fp-heading-color);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.footer-premium__newsletter-input:focus-visible,
+.footer-premium__newsletter-button:focus-visible {
+  outline: 2px solid var(--fp-heading-color);
+  outline-offset: 2px;
+}
+
+.footer-premium__social-icons a:focus-visible {
+  outline-offset: 2px;
+}
+
+/* ---- Dark Mode ---- */
+.dark .footer-premium,
+.footer-premium.dark {
+  --fp-bg: #111827;
+  --fp-heading-color: #f9fafb;
+  --fp-text-color: #9ca3af;
+  --fp-link-color: #d1d5db;
+  --fp-link-hover: #ffffff;
+  --fp-divider: #374151;
+  --fp-icon-color: #9ca3af;
+  --fp-btn-bg: #f9fafb;
+  --fp-btn-text: #111827;
+  --fp-input-bg: #1f2937;
+  --fp-input-border: #374151;
+  --fp-input-text: #f9fafb;
+}
+
+.dark .footer-premium__social-icons a:hover,
+.footer-premium.dark .footer-premium__social-icons a:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ---- Responsive Overrides ---- */
+@media screen and (max-width: 749px) {
+  .footer-premium {
+    padding-top: 40px;
+    padding-bottom: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Newsletter is stacked at every width now, so no override needed */
+
+  .footer-premium__localization {
+    justify-content: center;
+  }
+
+  .footer-premium__bottom {
+    margin-top: 32px;
+  }
+
+  /* On mobile, menus and menus share equal columns */
+  .footer-premium__menu-link {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .footer-premium {
+    padding-top: 48px;
+    padding-bottom: 24px;
+  }
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .footer-premium *,
+  .footer-premium *::before,
+  .footer-premium *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ---- High Contrast Mode (Windows) ---- */
+@media screen and (-ms-high-contrast: active) {
+  .footer-premium__menu-link,
+  .footer-premium__newsletter-button {
+    border: 1px solid windowText;
+  }
+}

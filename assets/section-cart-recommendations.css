@@ -1,0 +1,236 @@
+/* ============================================================
+   Cart Recommendations — "Complete your ritual"
+   ============================================================ */
+
+.crecs {
+  --crecs-line: rgba(28, 26, 23, 0.11);
+  --crecs-muted: rgba(28, 26, 23, 0.58);
+  padding-top: var(--crecs-pad-top, 24px);
+  padding-bottom: var(--crecs-pad-bottom, 72px);
+  background: var(--crecs-bg, #fdfbf7);
+  color: var(--crecs-ink, #1c1a17);
+}
+
+.crecs *,
+.crecs *::before,
+.crecs *::after {
+  box-sizing: border-box;
+}
+
+.crecs__inner {
+  max-width: var(--page-width, 120rem);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Header ── */
+.crecs__head {
+  padding-top: 28px;
+  border-top: 1px solid var(--crecs-line);
+}
+
+.crecs__eyebrow {
+  margin: 0 0 9px;
+  color: var(--crecs-accent, #c5a044);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.crecs__title {
+  margin: 0;
+  font-family: var(--font-heading-family, 'Poppins', sans-serif);
+  font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.crecs__rule {
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 15px 0 0;
+  background: var(--crecs-accent, #c5a044);
+}
+
+.crecs__sub {
+  margin: 12px 0 0;
+  max-width: 52ch;
+  color: var(--crecs-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* ── Grid ── */
+.crecs__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 12px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media screen and (min-width: 750px) {
+  .crecs__inner {
+    padding: 0 5rem;
+  }
+
+  .crecs__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 30px 20px;
+  }
+}
+
+/* ── Card ── */
+.crecs-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.crecs-card__media {
+  position: relative;
+  border-radius: 10px;
+  background: #f3ece2;
+}
+
+.crecs-card__link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+}
+
+.crecs-card__link img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.crecs-card__ph {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(197, 160, 68, 0.16), transparent 60%), #f3ece2;
+}
+
+.crecs-card__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #a3341f;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Quick add */
+.crecs-card__plus {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid rgba(28, 26, 23, 0.1);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--crecs-ink, #1c1a17);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(28, 26, 23, 0.14);
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.crecs-card__plus:hover {
+  border-color: var(--crecs-accent, #c5a044);
+  background: var(--crecs-accent, #c5a044);
+  color: #fff;
+}
+
+.crecs-card__plus:focus-visible {
+  outline: 2px solid var(--crecs-accent, #c5a044);
+  outline-offset: 2px;
+}
+
+.crecs-card__plus svg {
+  width: 15px;
+  height: 15px;
+}
+
+.crecs-card__plus-check {
+  display: none;
+}
+
+.crecs-card__plus.is-loading {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+.crecs-card__plus.is-added {
+  border-color: #174f3a;
+  background: #174f3a;
+  color: #fff;
+}
+
+.crecs-card__plus.is-added .crecs-card__plus-icon {
+  display: none;
+}
+
+.crecs-card__plus.is-added .crecs-card__plus-check {
+  display: block;
+}
+
+/* Body */
+.crecs-card__body {
+  padding-top: 11px;
+  text-align: center;
+}
+
+.crecs-card__name {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.crecs-card__name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.crecs-card__name a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.crecs-card__price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 7px;
+}
+
+.crecs-card__now {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.crecs-card__was {
+  color: var(--crecs-muted);
+  font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crecs-card__plus {
+    transition: none;
+  }
+}

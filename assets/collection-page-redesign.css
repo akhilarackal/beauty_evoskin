@@ -1,0 +1,431 @@
+/* ==========================================================================
+   Collection Page Redesign
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Hero Banner
+   ========================================================================== */
+.col-hero__banner {
+  background: #c8a951;
+  padding: 5rem 0 4rem;
+  text-align: center;
+}
+
+.col-hero__inner {
+  max-width: 70rem;
+  margin: 0 auto;
+}
+
+.col-hero__subtitle {
+  display: inline-block;
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+}
+
+.col-hero__title {
+  font-family: var(--font-heading-family);
+  font-size: 3.6rem;
+  font-weight: 500;
+  color: #fff;
+  margin: 0 0 1.5rem;
+  line-height: 1.2;
+}
+
+.col-hero__description {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 55rem;
+  margin: 0 auto;
+}
+
+.col-hero__description p {
+  margin: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .col-hero__banner {
+    padding: 3.5rem 0 3rem;
+  }
+
+  .col-hero__title {
+    font-size: 2.6rem;
+  }
+
+  .col-hero__description {
+    font-size: 1.4rem;
+  }
+}
+
+/* ==========================================================================
+   2. Featured Product Spotlight
+   ========================================================================== */
+.col-featured-product {
+  padding: 5rem 0;
+}
+
+.col-featured-product__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media screen and (max-width: 749px) {
+  .col-featured-product__layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.col-featured-product__image {
+  display: flex;
+  justify-content: center;
+}
+
+.col-featured-product__image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.col-featured-product__title {
+  font-family: var(--font-heading-family);
+  font-size: 3rem;
+  font-weight: 400;
+  font-style: italic;
+  margin: 0 0 0.5rem;
+  color: rgb(var(--color-foreground));
+}
+
+.col-featured-product__variant-info {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.5);
+  margin: 0 0 1.5rem;
+}
+
+.col-featured-product__description {
+  font-size: 1.4rem;
+  line-height: 1.7;
+  color: rgba(var(--color-foreground), 0.7);
+  margin-bottom: 2rem;
+}
+
+.col-featured-product__description p {
+  margin: 0 0 1rem;
+}
+
+.col-featured-product__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.col-featured-product__features li {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+.col-featured-product__features li svg {
+  color: #c8a951;
+  flex-shrink: 0;
+}
+
+.col-featured-product__btn {
+  display: inline-block;
+  padding: 1.3rem 2.5rem;
+  background: #1a1a1a;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: 4px;
+  transition: opacity 0.2s;
+}
+
+.col-featured-product__btn:hover {
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   3. Curated Rituals
+   ========================================================================== */
+.col-rituals {
+  padding: 4rem 0;
+}
+
+.col-rituals__heading {
+  font-family: var(--font-heading-family);
+  font-size: 2.2rem;
+  font-weight: 400;
+  font-style: italic;
+  text-align: center;
+  margin: 0 0 2.5rem;
+  color: rgb(var(--color-foreground));
+}
+
+.col-rituals__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media screen and (max-width: 749px) {
+  .col-rituals__grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.col-rituals__card {
+  display: block;
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.col-rituals__card:hover {
+  transform: translateY(-3px);
+}
+
+.col-rituals__card-image {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+.col-rituals__card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.col-rituals__card:hover .col-rituals__card-image img {
+  transform: scale(1.03);
+}
+
+.col-rituals__card-content {
+  padding: 1.5rem 0;
+}
+
+.col-rituals__card-title {
+  font-family: var(--font-heading-family);
+  font-size: 1.8rem;
+  font-weight: 500;
+  font-style: italic;
+  margin: 0 0 0.5rem;
+}
+
+.col-rituals__card-desc {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.6);
+  margin: 0 0 0.8rem;
+  line-height: 1.5;
+}
+
+.col-rituals__card-price {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   4. Featured This Month
+   ========================================================================== */
+.col-featured-month {
+  padding: 4rem 0;
+  border-top: 1px solid rgba(var(--color-foreground), 0.06);
+}
+
+.col-featured-month__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.col-featured-month__heading {
+  font-family: var(--font-heading-family);
+  font-size: 2.2rem;
+  font-weight: 400;
+  font-style: italic;
+  margin: 0;
+  color: rgb(var(--color-foreground));
+}
+
+.col-featured-month__nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.col-featured-month__nav-btn {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgb(var(--color-foreground));
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.col-featured-month__nav-btn:hover {
+  background: rgba(var(--color-foreground), 0.05);
+  border-color: rgba(var(--color-foreground), 0.3);
+}
+
+.col-featured-month__track {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.5rem;
+}
+
+.col-featured-month__track::-webkit-scrollbar {
+  display: none;
+}
+
+.col-featured-month__card {
+  flex: 0 0 calc(33.333% - 1.4rem);
+  scroll-snap-align: start;
+  min-width: 22rem;
+}
+
+@media screen and (max-width: 989px) {
+  .col-featured-month__card {
+    flex: 0 0 calc(50% - 1rem);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .col-featured-month__card {
+    flex: 0 0 70%;
+  }
+}
+
+.col-featured-month__card-link {
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+  display: block;
+}
+
+.col-featured-month__card-image {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f8f8f8;
+  margin-bottom: 1.2rem;
+}
+
+.col-featured-month__card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.col-featured-month__card-link:hover .col-featured-month__card-image img {
+  transform: scale(1.04);
+}
+
+.col-featured-month__card-vendor {
+  display: block;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(var(--color-foreground), 0.5);
+  margin-bottom: 0.3rem;
+}
+
+.col-featured-month__card-title {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
+}
+
+.col-featured-month__card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.col-featured-month__price-current {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.col-featured-month__price-compare {
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.4);
+}
+
+/* ==========================================================================
+   5. Brand Story
+   ========================================================================== */
+.col-brand-story {
+  padding: 5rem 0;
+  border-top: 1px solid rgba(var(--color-foreground), 0.06);
+}
+
+.col-brand-story__inner {
+  text-align: center;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.col-brand-story__logo {
+  margin-bottom: 2rem;
+}
+
+.col-brand-story__logo img {
+  width: 6rem;
+  height: auto;
+}
+
+.col-brand-story__logo-icon {
+  margin-bottom: 2rem;
+  color: rgba(var(--color-foreground), 0.3);
+}
+
+.col-brand-story__title {
+  font-family: 'Libre Caslon Text', 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 41.6px;
+  letter-spacing: 0;
+  font-style: normal;
+  margin: 0 0 1.5rem;
+  color: rgb(var(--color-foreground));
+}
+
+.col-brand-story__text {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 29.25px;
+  letter-spacing: 0;
+  color: #4D4637;
+  max-width: 724px;
+  margin: 0 auto;
+  text-align: center;
+}

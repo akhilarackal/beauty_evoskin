@@ -1,0 +1,159 @@
+{{ 'section-collection-hero-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign banner_image = section.settings.banner_image
+  if banner_image == blank
+    assign banner_image = collection.image
+  endif
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+-%}
+
+{%- style -%}
+  #CollectionHeroBanner-{{ section.id }} {
+    --chb-height: {{ section.settings.banner_height }}px;
+    --chb-height-mobile: {{ section.settings.banner_height_mobile }}px;
+    --chb-overlay-opacity: {{ overlay_opacity }};
+    --chb-overlay-color: {{ section.settings.overlay_color }};
+    --chb-title-color: {{ section.settings.title_color }};
+    --chb-desc-color: {{ section.settings.description_color }};
+    --chb-eyebrow-color: {{ section.settings.eyebrow_color }};
+  }
+{%- endstyle -%}
+
+<div id="CollectionHeroBanner-{{ section.id }}" class="chb">
+  {%- if banner_image != blank -%}
+    <img
+      class="chb__bg"
+      src="{{ banner_image | image_url: width: 1800 }}"
+      srcset="
+        {{ banner_image | image_url: width: 800 }} 800w,
+        {{ banner_image | image_url: width: 1200 }} 1200w,
+        {{ banner_image | image_url: width: 1800 }} 1800w
+      "
+      sizes="100vw"
+      alt="{{ banner_image.alt | default: collection.title | escape }}"
+      width="{{ banner_image.width }}"
+      height="{{ banner_image.height }}"
+      loading="eager"
+      fetchpriority="high"
+    >
+  {%- else -%}
+    <div class="chb__bg chb__bg--placeholder"></div>
+  {%- endif -%}
+
+  <div class="chb__overlay"></div>
+
+  <div class="chb__content">
+    {%- if section.settings.eyebrow_text != blank -%}
+      <span class="chb__eyebrow">{{ section.settings.eyebrow_text }}</span>
+    {%- endif -%}
+
+    {%- if section.settings.show_collection_title -%}
+      <h1 class="chb__title">{{ collection.title }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.show_collection_description and collection.description != blank -%}
+      <p class="chb__desc">{{ collection.description | strip_html | truncate: 200 }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Hero Banner",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_title",
+      "label": "Show collection title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "BOTANICAL PRECISION"
+    },
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image",
+      "info": "Recommended: 1800 × 600px. Falls back to the collection image if not set."
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "label": "Desktop height",
+      "min": 300,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "banner_height_mobile",
+      "label": "Mobile height",
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "default": 320
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#E0B655"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#FFFFFF"
+    }
+  ]
+}
+{% endschema %}

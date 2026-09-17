@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Collection Hero Banner — Pixel-Perfect Figma Match
+   ========================================================================== */
+
+.chb {
+  position: relative;
+  width: 100%;
+  height: var(--chb-height, 480px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chb__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+}
+
+.chb__bg--placeholder {
+  background: linear-gradient(135deg, #c8a951 0%, #8b6914 100%);
+}
+
+.chb__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--chb-overlay-color, #000000);
+  opacity: var(--chb-overlay-opacity, 0.3);
+  z-index: 1;
+}
+
+.chb__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 24px;
+}
+
+/* Eyebrow */
+.chb__eyebrow {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--chb-eyebrow-color, #E0B655);
+  margin-bottom: 20px;
+}
+
+/* Title */
+.chb__title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 70.4px;
+  letter-spacing: -1.28px;
+  color: var(--chb-title-color, #FFFFFF);
+  margin: 0 0 20px;
+}
+
+/* Description */
+.chb__desc {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28.8px;
+  color: var(--chb-desc-color, #FFFFFF);
+  max-width: 518px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media screen and (max-width: 989px) {
+  .chb {
+    height: var(--chb-height-mobile, 320px);
+  }
+
+  .chb__title {
+    font-size: 42px;
+    line-height: 48px;
+    letter-spacing: -0.84px;
+  }
+
+  .chb__desc {
+    font-size: 16px;
+    line-height: 25.6px;
+    max-width: 420px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .chb__eyebrow {
+    font-size: 11px;
+    margin-bottom: 14px;
+  }
+
+  .chb__title {
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.64px;
+  }
+
+  .chb__desc {
+    font-size: 14px;
+    line-height: 22.4px;
+    max-width: 100%;
+  }
+}

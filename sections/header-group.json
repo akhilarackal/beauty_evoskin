@@ -1,0 +1,77 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "badge": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "BEST OFFER",
+            "badge_background": "#ffffff",
+            "badge_text_color": "#1F3B73"
+          }
+        },
+        "announcement": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free Shipping on Orders Over $230"
+          }
+        },
+        "cta": {
+          "type": "cta",
+          "settings": {
+            "cta_label": "Shop Now",
+            "cta_link": "/collections/all",
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": ["badge", "announcement", "cta"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "background_color": "#D4AF37",
+        "text_color": "#ffffff",
+        "bar_height": 36,
+        "gap_desktop": 12,
+        "gap_mobile": 8,
+        "show_badge_mobile": false,
+        "show_cta_mobile": false,
+        "mobile_text": ""
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_position": "middle-left",
+        "mobile_logo_position": "center",
+        "menu": "main-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_customer_avatar": true,
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

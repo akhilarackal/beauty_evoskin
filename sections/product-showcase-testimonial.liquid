@@ -1,0 +1,199 @@
+{{ 'product-showcase-testimonial.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #pst-{{ section.id }} {
+    --pst-bg: {{ section.settings.background_color }};
+    --pst-accent: {{ section.settings.accent_color }};
+    --pst-text-color: {{ section.settings.text_color }};
+    --pst-subtext-color: {{ section.settings.subtext_color }};
+    --pst-img-radius: {{ section.settings.image_radius }}px;
+    --pst-pad-top: {{ section.settings.padding_top }}px;
+    --pst-pad-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="pst-{{ section.id }}" class="pst-section" aria-label="Customer testimonial">
+  <div class="pst-container">
+    <div class="pst-layout">
+
+      {%- comment -%} ── Quote ── {%- endcomment -%}
+      <div class="pst-quote">
+        <svg class="pst-quote__icon" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true">
+          <path d="M12.6 22.8C8.4 22.8 5.4 19.8 5.4 15.6 5.4 8.4 10.2 3 17.4 3l.6 3C13.8 6.6 11.4 9.6 10.8 13.2c.6-.6 1.8-.6 2.4-.6 3.6 0 6 2.4 6 6 0 3.6-2.4 4.2-6.6 4.2zm19.2 0c-4.2 0-7.2-3-7.2-7.2 0-7.2 4.8-12.6 12-12.6l.6 3c-4.2.6-6.6 3.6-7.2 7.2.6-.6 1.8-.6 2.4-.6 3.6 0 6 2.4 6 6 0 3.6-2.4 4.2-6.6 4.2z" transform="translate(0 12)"/>
+        </svg>
+
+        <blockquote class="pst-quote__text">
+          {{ section.settings.quote | default: "After using this serum for just two weeks, my skin feels incredibly soft and hydrated. My fine lines have visibly reduced, and the golden glow is absolutely remarkable." }}
+        </blockquote>
+
+        <div class="pst-quote__author">
+          <span class="pst-quote__author-name">{{ section.settings.author_name | default: 'Sarah Mitchell' }}</span>
+          <span class="pst-quote__author-title">{{ section.settings.author_title | default: 'Verified Customer' }}</span>
+        </div>
+      </div>
+
+      {%- comment -%} ── Images ── {%- endcomment -%}
+      <div class="pst-images">
+        {%- if section.settings.image_1 != blank -%}
+          <div class="pst-images__item">
+            <img
+              src="{{ section.settings.image_1 | image_url: width: 500 }}"
+              srcset="{{ section.settings.image_1 | image_url: width: 350 }} 350w, {{ section.settings.image_1 | image_url: width: 500 }} 500w"
+              sizes="(max-width: 749px) 45vw, 22vw"
+              alt="{{ section.settings.image_1_alt | default: 'Customer testimonial' | escape }}"
+              width="500"
+              height="667"
+              loading="lazy"
+            >
+          </div>
+        {%- else -%}
+          <div class="pst-images__item" style="display:flex;align-items:center;justify-content:center;">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.image_2 != blank -%}
+          <div class="pst-images__item">
+            <img
+              src="{{ section.settings.image_2 | image_url: width: 500 }}"
+              srcset="{{ section.settings.image_2 | image_url: width: 350 }} 350w, {{ section.settings.image_2 | image_url: width: 500 }} 500w"
+              sizes="(max-width: 749px) 45vw, 22vw"
+              alt="{{ section.settings.image_2_alt | default: 'Product result' | escape }}"
+              width="500"
+              height="667"
+              loading="lazy"
+            >
+          </div>
+        {%- else -%}
+          <div class="pst-images__item" style="display:flex;align-items:center;justify-content:center;">
+            {{ 'product-5' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Testimonial",
+  "tag": "section",
+  "class": "product-showcase-testimonial",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Quote"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote text",
+      "default": "After using this serum for just two weeks, my skin feels incredibly soft and hydrated. My fine lines have visibly reduced, and the golden glow is absolutely remarkable."
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Author name",
+      "default": "Sarah Mitchell"
+    },
+    {
+      "type": "text",
+      "id": "author_title",
+      "label": "Author title",
+      "default": "Verified Customer"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Left image"
+    },
+    {
+      "type": "text",
+      "id": "image_1_alt",
+      "label": "Left image alt text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Right image"
+    },
+    {
+      "type": "text",
+      "id": "image_2_alt",
+      "label": "Right image alt text"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1a1a2e"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (quote icon)",
+      "default": "#C5A044"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Subtext color",
+      "default": "#a1a1aa"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Testimonial"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,740 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Flash Deals Section — Production-Ready
+   
+   Fonts:
+     • Playfair Display (section heading) — loaded globally in theme.liquid
+     • Poppins (subtitle, labels, prices, badge) — loaded globally
+   
+   Layout: 2-column CSS Grid (left = product cards, right = promo banner)
+   Fully responsive: desktop 2-col → tablet banner-below → mobile single-col
+   Slider: native scroll-snap with GPU-accelerated transforms
+   AJAX add-to-cart: vanilla JS custom element
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Dawn theme animation suppression
+   Block 3D-lift, vertical-lift and entrance animations globally applied
+   by Dawn's body classes so they never interfere with our section.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.animate--hover-3d-lift .section-flash-deals .fd-card::before,
+.animate--hover-3d-lift .section-flash-deals .fd-card::after {
+  display: none !important;
+  content: none !important;
+}
+.animate--hover-vertical-lift .section-flash-deals .fd-card,
+.animate--hover-3d-lift .section-flash-deals .fd-card {
+  transform: none !important;
+  transition: none !important;
+}
+.section-flash-deals,
+.section-flash-deals .fd-card,
+.section-flash-deals .fd-header {
+  animation: none !important;
+  opacity: 1 !important;
+}
+/* Restore our own card hover */
+.section-flash-deals .fd-card {
+  transition: box-shadow 0.25s ease, transform 0.25s ease !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Section wrapper
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section-flash-deals-wrapper {
+  transition: none !important; /* suppress dark-mode color flash */
+}
+
+.section-flash-deals {
+  width: 100%;
+  padding-top: var(--fd-pad-top, 64px);
+  padding-bottom: var(--fd-pad-bottom, 64px);
+  background: var(--fd-section-bg, transparent);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Inner container
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Matches the theme page container so the heading and the cards
+   line up with the header and every other section. */
+.fd-container {
+  max-width: var(--page-width, 128rem);
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media screen and (min-width: 750px) {
+  .fd-container {
+    padding-inline: 5rem;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Section header row (heading + subtitle left, nav arrows right)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fd-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.fd-header__left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fd-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--fd-heading-color, #222222);
+  margin: 0;
+}
+
+.fd-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--fd-subtitle-color, #6B7280);
+  margin: 0;
+}
+
+/* Navigation arrows (only visible when slider enabled) */
+.fd-nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.fd-nav--hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.fd-nav__btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #E5E7EB;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #374151;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.fd-nav__btn:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #f9fafb;
+}
+
+.fd-nav__btn:focus-visible {
+  outline: 2px solid #EC4899;
+  outline-offset: 2px;
+}
+
+.fd-nav__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+.fd-nav__btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Main 2-column layout
+   Left: product cards (≈50%) | Right: promo banner (≈50%)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fd-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--fd-gap, 24px);
+  /* stretch keeps the cards and the banner on one line at equal height */
+  align-items: stretch;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Products column (left)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fd-products-col {
+  min-width: 0;
+  overflow: hidden; /* contains the slider */
+}
+
+/* Slider viewport — clips overflowing cards */
+.fd-slider {
+  overflow: hidden;
+}
+
+/* Cards fill their grid cell so both cards match height */
+.fd-track--grid .fd-slide,
+.fd-track--grid .fd-card {
+  height: 100%;
+}
+
+/* Track — flex row; transforms done via JS for GPU-accelerated sliding.
+   This is a <ul>, so the browser's default list indent must be cleared
+   or the whole track sits ~40px in from the left. */
+.fd-track {
+  display: flex;
+  gap: var(--fd-gap, 24px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* When slider is disabled, show as CSS grid */
+.fd-track--grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--fd-gap, 24px);
+  align-items: stretch;
+  transition: none;
+  transform: none !important;
+}
+
+/* Each card is a flex child (slider) or grid child (grid mode) */
+.fd-slide {
+  flex: 0 0 calc(50% - var(--fd-gap, 12px));
+  min-width: 0;
+  list-style: none;
+}
+
+.fd-track--grid .fd-slide {
+  flex: unset;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Product card
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fd-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: var(--fd-card-radius, 8px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.fd-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Image container */
+/* Images fill the square edge to edge (object-fit: cover further down)
+   so every product renders at the same size and sits flush with the
+   card, regardless of the source image's aspect ratio. */
+.fd-card__image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: 0;
+  padding-bottom: 100%; /* fallback for browsers without aspect-ratio */
+  background: #f3ece2;
+  border-radius: var(--fd-card-radius, 8px) var(--fd-card-radius, 8px) 0 0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Modern browsers: use aspect-ratio, reset padding-bottom */
+@supports (aspect-ratio: 1) {
+  .fd-card__image-wrap {
+    aspect-ratio: 1 / 1;
+    height: auto;
+    padding: 0;
+    padding-bottom: 0;
+  }
+}
+
+.fd-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* cover, not contain: every product fills its square at the same
+     size instead of being letterboxed to a different size each time */
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+@supports (aspect-ratio: 1) {
+  .fd-card__img {
+    position: static;
+    inset: unset;
+  }
+}
+
+.fd-card:hover .fd-card__img {
+  transform: scale(1.04);
+}
+
+/* Discount badge — top-left */
+.fd-card__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--fd-badge-bg, #EC4899);
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* Add button — bottom-right */
+.fd-card__add-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #1F2937;
+  z-index: 2;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+}
+
+.fd-card__add-btn:hover {
+  background: #f9fafb;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  transform: scale(1.05);
+}
+
+.fd-card__add-btn:focus-visible {
+  outline: 2px solid #EC4899;
+  outline-offset: 2px;
+}
+
+.fd-card__add-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+
+.fd-card__add-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* Loading state — spinner replaces icon */
+.fd-card__add-btn .fd-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d1d5db;
+  border-top-color: #EC4899;
+  border-radius: 50%;
+  animation: fd-spin 0.7s linear infinite;
+}
+
+.fd-card__add-btn.is-loading svg {
+  display: none;
+}
+
+.fd-card__add-btn.is-loading .fd-spinner {
+  display: block;
+}
+
+@keyframes fd-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Card body (below image) */
+.fd-card__body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+/* Price row */
+.fd-card__price-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.fd-card__price {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}
+
+.fd-card__price--current {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--fd-price-color, #EC4899);
+}
+
+.fd-card__price--compare {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #9CA3AF;
+  text-decoration: line-through;
+}
+
+.fd-card__vendor {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #6B7280;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fd-card__title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #1F2937;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Inventory label */
+.fd-card__inventory {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #EC4899;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fd-card__inventory::before {
+  content: '•';
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Promotional Banner column (right)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fd-banner-col {
+  display: flex;
+  min-width: 0;
+}
+
+.fd-banner {
+  position: relative;
+  /* Fill the row so the banner lines up with the product cards
+     instead of standing taller than them. */
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  border-radius: var(--fd-banner-radius, 8px);
+  overflow: hidden;
+  background: #1e3a5f; /* fallback colour while image loads */
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Background image */
+.fd-banner__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+/* Overlay content — aligned left by default */
+.fd-banner__overlay {
+  position: relative;
+  z-index: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+}
+
+/* Right alignment variant */
+.fd-banner--align-right .fd-banner__overlay {
+  align-items: flex-end;
+  margin-left: auto;
+  text-align: right;
+}
+
+/* Center alignment variant */
+.fd-banner--align-center .fd-banner__overlay {
+  align-items: center;
+  margin-inline: auto;
+  text-align: center;
+  max-width: 100%;
+}
+
+/* Face Care tag / badge */
+.fd-banner__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #000000;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Banner heading */
+.fd-banner__heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 37.5px;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Banner description */
+.fd-banner__desc {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #E5E7EB;
+  margin: 0;
+}
+
+/* Banner CTA button */
+.fd-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 24px;
+  border-radius: 4px;
+  background: var(--fd-banner-btn-bg, #2563EB);
+  color: var(--fd-banner-btn-color, #ffffff);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-top: 4px;
+}
+
+.fd-banner__btn:hover,
+.fd-banner__btn:focus-visible {
+  background: var(--fd-banner-btn-hover-bg, #1d4ed8);
+  transform: translateY(-2px);
+}
+
+.fd-banner__btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Demo hint banner (Theme Editor only)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fd-demo-hint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1f2937;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 6px;
+  margin: 0;
+}
+
+.fd-demo-hint svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #f59e0b;
+}
+
+.shopify-design-mode .fd-demo-hint {
+  display: flex;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Empty state
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fd-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 20px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  text-align: center;
+  min-height: 200px;
+}
+
+.fd-empty-state svg {
+  width: 40px;
+  height: 40px;
+  color: #9ca3af;
+}
+
+.fd-empty-state p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Tablet (≤ 989px)
+   Banner moves below the product cards
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 989px) {
+  .fd-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Single column from here down, so a set height is fine again */
+  .fd-banner {
+    height: 360px;
+    min-height: 0;
+  }
+
+  .fd-track--grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Mobile (≤ 599px)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 599px) {
+  .fd-container {
+    padding-inline: 1.5rem;
+    gap: 20px;
+  }
+
+  .fd-heading {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  /* Keep the layout inside the container gutters */
+  .fd-layout {
+    gap: 16px;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .fd-banner {
+    height: 280px;
+    min-height: 0;
+  }
+
+  .fd-banner__overlay {
+    padding: 20px;
+    gap: 10px;
+  }
+
+  .fd-banner__heading {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .fd-track--grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .fd-card__badge {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  .fd-card__add-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .fd-nav {
+    display: none;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Visually hidden utility (screen-reader only)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fd-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

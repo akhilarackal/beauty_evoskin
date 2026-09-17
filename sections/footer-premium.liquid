@@ -1,0 +1,655 @@
+{{ 'footer-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-localization-form.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .footer-premium--{{ section.id }} {
+    --fp-bg-color: {{ section.settings.background_color }};
+    --fp-heading-color: {{ section.settings.heading_color }};
+    --fp-text-color: {{ section.settings.text_color }};
+    --fp-link-color: {{ section.settings.link_color }};
+    --fp-link-hover-color: {{ section.settings.link_hover_color }};
+    --fp-divider-color: {{ section.settings.divider_color }};
+    --fp-icon-color: {{ section.settings.icon_color }};
+    --fp-btn-bg-color: {{ section.settings.button_bg }};
+    --fp-btn-text-color: {{ section.settings.button_text_color }};
+    --fp-input-bg-color: {{ section.settings.input_bg }};
+    --fp-input-border-color: {{ section.settings.input_border }};
+    --fp-input-text-color: {{ section.settings.input_text_color }};
+    --fp-padding-top: {{ section.settings.padding_top }}px;
+    --fp-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --fp-padding-left: {{ section.settings.padding_left }}px;
+    --fp-padding-right: {{ section.settings.padding_right }}px;
+    --fp-column-gap: {{ section.settings.column_gap }}px;
+    --fp-row-gap: {{ section.settings.row_gap }}px;
+    --fp-max-width: {{ section.settings.container_width }}px;
+    --fp-logo-width: {{ section.settings.logo_width }}px;
+  }
+{%- endstyle -%}
+
+{%- comment -%}
+  NOTE: The schema declares "tag": "footer" so Shopify auto-wraps this
+  content in a <footer> element. We do NOT add another <footer> tag here.
+{%- endcomment -%}
+
+<div class="footer-premium footer-premium--{{ section.id }}" id="FooterPremium-{{ section.id }}">
+  <div class="footer-premium__container">
+    {%- comment -%} ---- Main 5-Column Grid ---- {%- endcomment -%}
+    <div class="footer-premium__grid">
+
+      {%- comment -%} ==== Column 1: Brand ==== {%- endcomment -%}
+      <div class="footer-premium__col footer-premium__col--brand">
+        {%- if section.settings.brand_logo != blank -%}
+          <a href="{{ routes.root_url }}" class="footer-premium__brand-logo" aria-label="{{ shop.name | escape }}">
+            {{
+              section.settings.brand_logo
+              | image_url: width: 400
+              | image_tag:
+                loading: 'lazy',
+                widths: '100, 200, 400',
+                alt: section.settings.brand_logo.alt | default: shop.name,
+                width: section.settings.logo_width,
+                height: section.settings.brand_logo.height
+            }}
+          </a>
+        {%- else -%}
+          <a href="{{ routes.root_url }}" class="footer-premium__brand-logo footer-premium__brand-logo--text">
+            <span class="footer-premium__shop-name">{{ shop.name }}</span>
+          </a>
+        {%- endif -%}
+        <div class="footer-premium__brand-description rte">
+          {{ section.settings.brand_description }}
+        </div>
+      </div>
+
+      {%- comment -%} ==== Column 2: Company ==== {%- endcomment -%}
+      <div class="footer-premium__col footer-premium__col--menu">
+        <h2 class="footer-premium__heading">{{ section.settings.company_heading }}</h2>
+        {%- if section.settings.company_menu != blank -%}
+          <ul class="footer-premium__menu-list" role="list">
+            {%- for link in section.settings.company_menu.links -%}
+              <li><a href="{{ link.url }}" class="footer-premium__menu-link">{{ link.title | escape }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ==== Column 3: Collections ==== {%- endcomment -%}
+      <div class="footer-premium__col footer-premium__col--menu">
+        <h2 class="footer-premium__heading">{{ section.settings.collections_heading }}</h2>
+        {%- if section.settings.collections_menu != blank -%}
+          <ul class="footer-premium__menu-list" role="list">
+            {%- for link in section.settings.collections_menu.links -%}
+              <li><a href="{{ link.url }}" class="footer-premium__menu-link">{{ link.title | escape }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ==== Column 4: Customer Support ==== {%- endcomment -%}
+      <div class="footer-premium__col footer-premium__col--menu">
+        <h2 class="footer-premium__heading">{{ section.settings.support_heading }}</h2>
+        {%- if section.settings.support_menu != blank -%}
+          <ul class="footer-premium__menu-list" role="list">
+            {%- for link in section.settings.support_menu.links -%}
+              <li><a href="{{ link.url }}" class="footer-premium__menu-link">{{ link.title | escape }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ==== Column 5: Newsletter + Social ==== {%- endcomment -%}
+      <div class="footer-premium__col footer-premium__col--newsletter">
+        {%- if section.settings.newsletter_heading != blank -%}
+          <h2 class="footer-premium__heading">{{ section.settings.newsletter_heading }}</h2>
+        {%- endif -%}
+        {%- form 'customer', id: 'FooterPremiumForm', class: 'footer-premium__newsletter' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="footer-premium__newsletter-form">
+            <div class="field">
+              <label class="visually-hidden" for="FooterPremiumEmail-{{ section.id }}">{{ section.settings.newsletter_placeholder | default: 'Email' }}</label>
+              <input
+                id="FooterPremiumEmail-{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                class="footer-premium__newsletter-input"
+                value="{{ form.email }}"
+                placeholder="{{ section.settings.newsletter_placeholder }}"
+                aria-required="true"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                required
+                {%- if form.errors %}
+                  autofocus
+                  aria-invalid="true"
+                  aria-describedby="FooterPremium-error"
+                {%- elsif form.posted_successfully? %}
+                  aria-describedby="FooterPremium-success"
+                {%- endif %}
+              >
+              <button
+                type="submit"
+                class="footer-premium__newsletter-button"
+                name="commit"
+                id="SubscribeFooterPremium"
+                aria-label="{{ section.settings.newsletter_button }}"
+              >
+                {{ section.settings.newsletter_button }}
+              </button>
+            </div>
+          </div>
+
+          {%- if form.errors -%}
+            <div class="footer-premium__form-message footer-premium__form-message--error" id="FooterPremium-error" role="alert">
+              {{- form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email -}}
+            </div>
+          {%- endif -%}
+
+          {%- if form.posted_successfully? -%}
+            <div class="footer-premium__form-message footer-premium__form-message--success" id="FooterPremium-success" role="status" tabindex="-1" autofocus>
+              {{- 'newsletter.success' | t -}}
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- if section.settings.consent_text != blank -%}
+          {%- liquid
+            assign consent_output = section.settings.consent_text
+            if section.settings.privacy_link != blank
+              assign consent_output = consent_output | replace: '[privacy]', '<a href="' | append: section.settings.privacy_link | append: '">' | append: section.settings.privacy_label | append: '</a>'
+            else
+              assign consent_output = consent_output | replace: '[privacy]', section.settings.privacy_label
+            endif
+            if section.settings.terms_link != blank
+              assign consent_output = consent_output | replace: '[terms]', '<a href="' | append: section.settings.terms_link | append: '">' | append: section.settings.terms_label | append: '</a>'
+            else
+              assign consent_output = consent_output | replace: '[terms]', section.settings.terms_label
+            endif
+          -%}
+          <div class="footer-premium__consent rte">
+            {{ consent_output }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_social -%}
+          {%- liquid
+            assign has_social = false
+            if settings.social_facebook_link != blank or settings.social_instagram_link != blank or settings.social_youtube_link != blank or settings.social_tiktok_link != blank or settings.social_twitter_link != blank or settings.social_pinterest_link != blank or settings.social_snapchat_link != blank or settings.social_tumblr_link != blank or settings.social_vimeo_link != blank
+              assign has_social = true
+            endif
+          -%}
+          {%- if has_social -%}
+            <p class="footer-premium__social-heading">{{ 'sections.footer_premium.follow_us' | t }}</p>
+            <ul class="footer-premium__social-icons" role="list">
+              {%- if settings.social_facebook_link != blank -%}
+                <li>
+                  <a href="{{ settings.social_facebook_link }}" aria-label="{{ 'general.social.links.facebook' | t }}" target="_blank" rel="noopener noreferrer">
+                    {{ 'icon-facebook.svg' | inline_asset_content }}
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_instagram_link != blank -%}
+                <li>
+                  <a href="{{ settings.social_instagram_link }}" aria-label="{{ 'general.social.links.instagram' | t }}" target="_blank" rel="noopener noreferrer">
+                    {{ 'icon-instagram.svg' | inline_asset_content }}
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_twitter_link != blank -%}
+                <li>
+                  <a href="{{ settings.social_twitter_link }}" aria-label="{{ 'general.social.links.twitter' | t }}" target="_blank" rel="noopener noreferrer">
+                    {{ 'icon-twitter.svg' | inline_asset_content }}
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_youtube_link != blank -%}
+                <li>
+                  <a href="{{ settings.social_youtube_link }}" aria-label="{{ 'general.social.links.youtube' | t }}" target="_blank" rel="noopener noreferrer">
+                    {{ 'icon-youtube.svg' | inline_asset_content }}
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_pinterest_link != blank -%}
+                <li>
+                  <a href="{{ settings.social_pinterest_link }}" aria-label="{{ 'general.social.links.pinterest' | t }}" target="_blank" rel="noopener noreferrer">
+                    {{ 'icon-pinterest.svg' | inline_asset_content }}
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_tiktok_link != blank -%}
+                <li>
+                  <a href="{{ settings.social_tiktok_link }}" aria-label="{{ 'general.social.links.tiktok' | t }}" target="_blank" rel="noopener noreferrer">
+                    {{ 'icon-tiktok.svg' | inline_asset_content }}
+                  </a>
+                </li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+    </div>
+    {%- comment -%} end grid {%- endcomment -%}
+
+    {%- comment -%} ---- Bottom Bar ---- {%- endcomment -%}
+    {%- if section.settings.show_bottom_bar -%}
+      <div class="footer-premium__bottom">
+        <div class="footer-premium__bottom-inner">
+
+          {%- comment -%} Localization {%- endcomment -%}
+          <div class="footer-premium__localization">
+            {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
+              <localization-form>
+                {%- form 'localization', id: 'FooterPremiumCountryForm', class: 'localization-form' -%}
+                  <div>
+                    <h2 class="visually-hidden" id="FooterPremiumCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                    {%- render 'country-localization', localPosition: 'FooterPremiumCountry' -%}
+                  </div>
+                {%- endform -%}
+              </localization-form>
+            {%- endif -%}
+
+            {%- if section.settings.show_language_selector and localization.available_languages.size > 1 -%}
+              <localization-form>
+                {%- form 'localization', id: 'FooterPremiumLanguageForm', class: 'localization-form' -%}
+                  <div>
+                    <h2 class="visually-hidden" id="FooterPremiumLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                    {%- render 'language-localization', localPosition: 'FooterPremiumLanguage' -%}
+                  </div>
+                {%- endform -%}
+              </localization-form>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} Payment Icons {%- endcomment -%}
+          {%- if section.settings.show_payment -%}
+            <div class="footer-premium__payment" role="list" aria-label="{{ 'sections.footer.payment' | t }}">
+              {%- for type in shop.enabled_payment_types -%}
+                <span class="list-payment__item">
+                  {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                </span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Copyright {%- endcomment -%}
+          {%- if section.settings.show_copyright -%}
+            <small class="footer-premium__copyright">
+              &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }}
+            </small>
+          {%- endif -%}
+
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.footer_premium.name",
+  "tag": "footer",
+  "class": "section section-footer-premium",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.footer_premium.headers.brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_logo",
+      "label": "t:sections.footer_premium.settings.logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 60,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer_premium.settings.logo_width",
+      "default": 144
+    },
+    {
+      "type": "richtext",
+      "id": "brand_description",
+      "label": "t:sections.footer_premium.settings.brand_description",
+      "default": "<p>Special thanks to <a href=\"#\">MADARA Organic Skincare</a> for generously providing us with their stunning product imagery. Kindly visit their website to make real purchases of their products.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer_premium.headers.company"
+    },
+    {
+      "type": "text",
+      "id": "company_heading",
+      "label": "t:sections.footer_premium.settings.heading_label",
+      "default": "Company"
+    },
+    {
+      "type": "link_list",
+      "id": "company_menu",
+      "label": "t:sections.footer_premium.settings.menu_label",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer_premium.headers.collections"
+    },
+    {
+      "type": "text",
+      "id": "collections_heading",
+      "label": "t:sections.footer_premium.settings.heading_label",
+      "default": "Collections"
+    },
+    {
+      "type": "link_list",
+      "id": "collections_menu",
+      "label": "t:sections.footer_premium.settings.menu_label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer_premium.headers.support"
+    },
+    {
+      "type": "text",
+      "id": "support_heading",
+      "label": "t:sections.footer_premium.settings.heading_label",
+      "default": "Customer Support"
+    },
+    {
+      "type": "link_list",
+      "id": "support_menu",
+      "label": "t:sections.footer_premium.settings.menu_label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer_premium.headers.newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "t:sections.footer_premium.settings.heading_label",
+      "default": "Subscribe to Our Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "t:sections.footer_premium.settings.placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "t:sections.footer_premium.settings.button_label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "richtext",
+      "id": "consent_text",
+      "label": "t:sections.footer_premium.settings.consent_text",
+      "info": "t:sections.footer_premium.settings.consent_info",
+      "default": "<p>By clicking on the \"Subscribe\" button, I confirm my agreement with the [privacy] and [terms].</p>"
+    },
+    {
+      "type": "text",
+      "id": "privacy_label",
+      "label": "t:sections.footer_premium.settings.privacy_label",
+      "default": "Privacy Policy"
+    },
+    {
+      "type": "url",
+      "id": "privacy_link",
+      "label": "t:sections.footer_premium.settings.privacy_link"
+    },
+    {
+      "type": "text",
+      "id": "terms_label",
+      "label": "t:sections.footer_premium.settings.terms_label",
+      "default": "Terms of Use"
+    },
+    {
+      "type": "url",
+      "id": "terms_link",
+      "label": "t:sections.footer_premium.settings.terms_link"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer_premium.headers.social"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "t:sections.footer_premium.settings.show_social",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer_premium.headers.bottom_bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_bar",
+      "label": "t:sections.footer_premium.settings.show_bottom_bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "t:sections.footer_premium.settings.show_country_selector",
+      "info": "t:sections.footer_premium.settings.show_country_info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language_selector",
+      "label": "t:sections.footer_premium.settings.show_language_selector",
+      "info": "t:sections.footer_premium.settings.show_language_info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment",
+      "label": "t:sections.footer_premium.settings.show_payment",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_copyright",
+      "label": "t:sections.footer_premium.settings.show_copyright",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.colors.label"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.footer_premium.settings.bg_color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:sections.footer_premium.settings.heading_color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.footer_premium.settings.text_color",
+      "default": "#6b7280"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "t:sections.footer_premium.settings.link_color",
+      "default": "#6b7280"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "t:sections.footer_premium.settings.link_hover_color",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "t:sections.footer_premium.settings.button_bg",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:sections.footer_premium.settings.button_text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "t:sections.footer_premium.settings.input_bg",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "t:sections.footer_premium.settings.input_border",
+      "default": "#d1d5db"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "t:sections.footer_premium.settings.input_text",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "t:sections.footer_premium.settings.icon_color",
+      "default": "#6b7280"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "t:sections.footer_premium.settings.divider_color",
+      "default": "#e5e7eb"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer_premium.headers.layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer_premium.settings.padding_left",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer_premium.settings.padding_right",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer_premium.settings.column_gap",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer_premium.settings.row_gap",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 720,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "t:sections.footer_premium.settings.container_width",
+      "default": 1280
+    }
+  ],
+  "default": {
+    "settings": {
+      "logo_width": 144,
+      "brand_description": "<p>Special thanks to <a href=\"#\">MADARA Organic Skincare</a> for generously providing us with their stunning product imagery. Kindly visit their website to make real purchases of their products.</p>",
+      "company_heading": "Company",
+      "collections_heading": "Collections",
+      "support_heading": "Customer Support",
+      "newsletter_heading": "Subscribe to Our Newsletter",
+      "newsletter_placeholder": "Enter your email",
+      "newsletter_button": "Subscribe",
+      "consent_text": "<p>By clicking on the \"Subscribe\" button, I confirm my agreement with the [privacy] and [terms].</p>",
+      "privacy_label": "Privacy Policy",
+      "terms_label": "Terms of Use",
+      "show_social": true,
+      "show_bottom_bar": true,
+      "show_country_selector": true,
+      "show_language_selector": true,
+      "show_payment": true,
+      "show_copyright": true,
+      "background_color": "#ffffff",
+      "heading_color": "#000000",
+      "text_color": "#6b7280",
+      "link_color": "#6b7280",
+      "link_hover_color": "#111827",
+      "button_bg": "#111827",
+      "button_text_color": "#ffffff",
+      "input_bg": "#ffffff",
+      "input_border": "#d1d5db",
+      "input_text_color": "#111827",
+      "icon_color": "#6b7280",
+      "divider_color": "#e5e7eb",
+      "padding_top": 64,
+      "padding_bottom": 32,
+      "padding_left": 32,
+      "padding_right": 32,
+      "column_gap": 32,
+      "row_gap": 32
+    }
+  }
+}
+{% endschema %}

@@ -1,0 +1,346 @@
+{{ 'section-premium-cart.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign threshold = s.free_shipping_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  assign progress = 0
+  if threshold > 0
+    assign progress = cart.total_price | times: 100.0 | divided_by: threshold
+    if progress > 100
+      assign progress = 100
+    endif
+  endif
+-%}
+
+{%- style -%}
+  #pcart-{{ section.id }} {
+    --pcart-accent: {{ s.accent_color }};
+    --pcart-ink: {{ s.text_color }};
+    --pcart-bg: {{ s.background_color }};
+    --pcart-pad-top: {{ s.padding_top }}px;
+    --pcart-pad-bottom: {{ s.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="pcart-{{ section.id }}" class="pcart" data-pcart>
+  <div class="pcart__inner">
+
+    {%- comment -%} ===== Header ===== {%- endcomment -%}
+    <header class="pcart__head">
+      <div>
+        {%- if s.eyebrow != blank -%}
+          <p class="pcart__eyebrow">{{ s.eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="pcart__title">{{ s.heading | default: 'Your cart' }}</h1>
+      </div>
+      <p class="pcart__count" data-pcart-count>
+        {{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}
+      </p>
+    </header>
+
+    {%- if cart.item_count == 0 -%}
+      {%- comment -%} ===== Empty state ===== {%- endcomment -%}
+      <div class="pcart__empty">
+        <span class="pcart__empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M9 14h30l-2.6 20a3 3 0 01-3 2.6H14.6a3 3 0 01-3-2.6L9 14z" stroke-linejoin="round"/>
+            <path d="M17.5 14a6.5 6.5 0 0113 0" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <h2 class="pcart__empty-title">{{ s.empty_heading | default: 'Your cart is empty' }}</h2>
+        <p class="pcart__empty-text">{{ s.empty_text | default: 'Once you add something, it will appear here.' }}</p>
+        <a class="pcart__empty-btn" href="{{ s.empty_button_link | default: routes.all_products_collection_url }}">
+          {{ s.empty_button_label | default: 'Start shopping' }}
+        </a>
+      </div>
+
+    {%- else -%}
+      <div class="pcart__layout">
+
+        {%- comment -%} ===== Line items ===== {%- endcomment -%}
+        <div class="pcart__items">
+
+          {%- if s.show_free_shipping_bar and threshold > 0 -%}
+            <div class="pcart__ship" data-pcart-ship>
+              <p class="pcart__ship-text">
+                {%- if remaining > 0 -%}
+                  You are <strong>{{ remaining | money }}</strong> away from free shipping
+                {%- else -%}
+                  <strong>Free shipping unlocked.</strong> Nice one.
+                {%- endif -%}
+              </p>
+              <span class="pcart__ship-track">
+                <span class="pcart__ship-fill" style="width: {{ progress }}%"></span>
+              </span>
+            </div>
+          {%- endif -%}
+
+          <ul class="pcart__list" role="list">
+            {%- for item in cart.items -%}
+              <li class="pcart-line" data-pcart-line data-key="{{ item.key }}">
+                <a class="pcart-line__media" href="{{ item.url }}" aria-label="{{ item.product.title | escape }}">
+                  {%- if item.image -%}
+                    <img
+                      src="{{ item.image | image_url: width: 220 }}"
+                      alt="{{ item.image.alt | default: item.product.title | escape }}"
+                      width="110"
+                      height="110"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+                </a>
+
+                <div class="pcart-line__info">
+                  <a class="pcart-line__name" href="{{ item.url }}">{{ item.product.title }}</a>
+
+                  {%- unless item.product.has_only_default_variant -%}
+                    <p class="pcart-line__variant">
+                      {%- for opt in item.options_with_values -%}
+                        {{ opt.name }}: {{ opt.value }}{% unless forloop.last %} &middot; {% endunless %}
+                      {%- endfor -%}
+                    </p>
+                  {%- endunless -%}
+
+                  {%- if item.selling_plan_allocation -%}
+                    <p class="pcart-line__variant">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                  {%- endif -%}
+
+                  {%- if item.line_level_discount_allocations.size > 0 -%}
+                    <ul class="pcart-line__discounts" role="list">
+                      {%- for alloc in item.line_level_discount_allocations -%}
+                        <li>{{ alloc.discount_application.title }} (&minus;{{ alloc.amount | money }})</li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+
+                  <p class="pcart-line__unit">{{ item.original_price | money }} each</p>
+                </div>
+
+                <div class="pcart-line__actions">
+                  <div class="pcart-qty" data-pcart-qty>
+                    <button
+                      class="pcart-qty__btn"
+                      type="button"
+                      data-pcart-minus
+                      aria-label="Decrease quantity of {{ item.product.title | escape }}"
+                    >&minus;</button>
+                    <input
+                      class="pcart-qty__input"
+                      type="number"
+                      min="0"
+                      value="{{ item.quantity }}"
+                      aria-label="Quantity of {{ item.product.title | escape }}"
+                      data-pcart-qty-input
+                    >
+                    <button
+                      class="pcart-qty__btn"
+                      type="button"
+                      data-pcart-plus
+                      aria-label="Increase quantity of {{ item.product.title | escape }}"
+                    >+</button>
+                  </div>
+
+                  <button class="pcart-line__remove" type="button" data-pcart-remove>Remove</button>
+                </div>
+
+                <div class="pcart-line__total">
+                  {%- if item.original_line_price != item.final_line_price -%}
+                    <s class="pcart-line__was">{{ item.original_line_price | money }}</s>
+                  {%- endif -%}
+                  <span class="pcart-line__now">{{ item.final_line_price | money }}</span>
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          <div class="pcart__continue">
+            <a href="{{ routes.all_products_collection_url }}">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M13 8H4M7.5 4.5L4 8l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Continue shopping
+            </a>
+          </div>
+        </div>
+
+        {%- comment -%} ===== Summary ===== {%- endcomment -%}
+        <aside class="pcart__summary">
+          <form action="{{ routes.cart_url }}" method="post" novalidate class="pcart__form">
+            <h2 class="pcart__summary-title">Order summary</h2>
+
+            <dl class="pcart__totals">
+              <div class="pcart__row">
+                <dt>Subtotal</dt>
+                <dd data-pcart-subtotal>{{ cart.items_subtotal_price | money }}</dd>
+              </div>
+
+              {%- if cart.cart_level_discount_applications.size > 0 -%}
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  <div class="pcart__row pcart__row--save">
+                    <dt>{{ discount.title }}</dt>
+                    <dd>&minus;{{ discount.total_allocated_amount | money }}</dd>
+                  </div>
+                {%- endfor -%}
+              {%- endif -%}
+
+              <div class="pcart__row pcart__row--muted">
+                <dt>Shipping</dt>
+                <dd>Calculated at checkout</dd>
+              </div>
+
+              <div class="pcart__row pcart__row--total">
+                <dt>Total</dt>
+                <dd data-pcart-total>{{ cart.total_price | money }}</dd>
+              </div>
+            </dl>
+
+            {%- if s.show_note -%}
+              <details class="pcart__note">
+                <summary>Add order note</summary>
+                <label class="visually-hidden" for="CartNote">Order note</label>
+                <textarea
+                  id="CartNote"
+                  name="note"
+                  rows="3"
+                  placeholder="Anything we should know?"
+                >{{ cart.note }}</textarea>
+              </details>
+            {%- endif -%}
+
+            <button class="pcart__checkout" type="submit" name="checkout">
+              <span>{{ s.checkout_label | default: 'Proceed to checkout' }}</span>
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <p class="pcart__tax">Taxes and shipping calculated at checkout.</p>
+
+            {%- if additional_checkout_buttons -%}
+              <div class="pcart__dynamic">{{ content_for_additional_checkout_buttons }}</div>
+            {%- endif -%}
+          </form>
+
+          {%- if section.blocks.size > 0 -%}
+            <ul class="pcart__trust" role="list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'trust' -%}
+                  <li class="pcart__trust-item" {{ block.shopify_attributes }}>
+                    <span class="pcart__trust-icon" aria-hidden="true">
+                      {%- case block.settings.icon -%}
+                        {%- when 'shipping' -%}
+                          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 4.5h11v8h-11zM12.5 8h3l3 3v1.5h-6M4.5 16a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM14.5 16a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" stroke-linejoin="round"/></svg>
+                        {%- when 'return' -%}
+                          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10a7 7 0 0113.5-2.6M17 3.5v4h-4M17 10a7 7 0 01-13.5 2.6M3 16.5v-4h4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        {%- when 'secure' -%}
+                          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 9V7a5 5 0 0110 0v2M3.5 9h13v8.5h-13z" stroke-linejoin="round"/></svg>
+                        {%- else -%}
+                          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.5"/><path d="M6.6 10.3l2.3 2.3 4.5-4.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      {%- endcase -%}
+                    </span>
+                    <span>
+                      <strong>{{ block.settings.title }}</strong>
+                      {%- if block.settings.text != blank -%}
+                        <span>{{ block.settings.text }}</span>
+                      {%- endif -%}
+                    </span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </aside>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script src="{{ 'section-premium-cart.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Premium Cart",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "YOUR SELECTION" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your cart" },
+    { "type": "text", "id": "checkout_label", "label": "Checkout button label", "default": "Proceed to checkout" },
+    { "type": "header", "content": "Free shipping bar" },
+    {
+      "type": "checkbox",
+      "id": "show_free_shipping_bar",
+      "label": "Show free shipping progress",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free shipping threshold",
+      "info": "In your store currency. Set 0 to disable.",
+      "default": 999
+    },
+    { "type": "header", "content": "Options" },
+    { "type": "checkbox", "id": "show_note", "label": "Allow an order note", "default": true },
+    { "type": "header", "content": "Empty cart" },
+    { "type": "text", "id": "empty_heading", "label": "Heading", "default": "Your cart is empty" },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Text",
+      "default": "Once you add something, it will appear here."
+    },
+    { "type": "text", "id": "empty_button_label", "label": "Button label", "default": "Start shopping" },
+    { "type": "url", "id": "empty_button_link", "label": "Button link" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#C5A044" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1C1A17" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#FDFBF7" },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust badge",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "shipping", "label": "Shipping" },
+            { "value": "return", "label": "Returns" },
+            { "value": "secure", "label": "Secure" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "shipping"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free shipping" },
+        { "type": "text", "id": "text", "label": "Text", "info": "Optional supporting line." }
+      ]
+    }
+  ]
+}
+{% endschema %}

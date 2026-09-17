@@ -1,0 +1,306 @@
+/* ==========================================================================
+   Collection Feature Showcase — BEM Scoped Styles
+   ========================================================================== */
+
+.cfs {
+  background-color: var(--cfs-bg, #FFFFFF) !important;
+  color: inherit;
+  padding-top: var(--cfs-pad-top, 80px);
+  padding-bottom: var(--cfs-pad-bottom, 80px);
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+.cfs__container {
+  max-width: var(--cfs-container-width, 1509px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   Grid Layout
+   ========================================================================== */
+.cfs__grid {
+  display: grid;
+  grid-template-columns: 1fr 626px;
+  gap: var(--cfs-gap, 64px);
+  align-items: center;
+}
+
+/* ==========================================================================
+   Left: Image Panel
+   ========================================================================== */
+.cfs__image-panel {
+  position: relative;
+}
+
+.cfs__image-wrapper {
+  position: relative;
+  background-color: var(--cfs-image-bg, #F2EBE1);
+  padding: 32px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cfs__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.cfs__image-placeholder {
+  aspect-ratio: 4 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cfs__placeholder-svg {
+  width: 60%;
+  height: auto;
+  opacity: 0.4;
+}
+
+/* Floating Label */
+.cfs__floating-label {
+  position: absolute;
+  bottom: 32px;
+  left: 32px;
+  background: #FFFFFF;
+  border: 1px solid #D4AF37;
+  padding: 12px 24px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.8px;
+  color: var(--cfs-label-text, #1F1B15);
+  line-height: 1;
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   Right: Content Area
+   ========================================================================== */
+.cfs__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 626px;
+}
+
+/* Title */
+.cfs__title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 57.6px;
+  color: var(--cfs-heading-color, #1F1B15);
+  margin: 0;
+}
+
+/* Subtitle */
+.cfs__subtitle {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 28.8px;
+  color: var(--cfs-subtitle-color, #C5A046);
+  margin: 0;
+}
+
+/* Description */
+.cfs__description {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--cfs-description-color, #4D4637);
+  max-width: 598px;
+  margin: 0;
+}
+
+/* Divider */
+.cfs__divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(31, 27, 21, 0.15);
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* ==========================================================================
+   Feature List
+   ========================================================================== */
+.cfs__features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cfs__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cfs__feature-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C5A046;
+  margin-top: 4px;
+}
+
+.cfs__feature-icon img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.cfs__feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cfs__feature-heading {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 25.6px;
+  color: #1F1B15;
+  margin: 0;
+}
+
+.cfs__feature-description {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #4D4637;
+  margin: 0;
+}
+
+/* ==========================================================================
+   CTA Button
+   ========================================================================== */
+.cfs__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  background-color: var(--cfs-btn-bg, #D4AF37);
+  color: var(--cfs-btn-text, #FDFCFB);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.7px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.15s ease;
+  width: fit-content;
+}
+
+.cfs__button:hover {
+  background-color: color-mix(in srgb, var(--cfs-btn-bg, #D4AF37) 85%, #000000);
+  transform: translateY(-1px);
+}
+
+.cfs__button:active {
+  transform: translateY(0);
+}
+
+.cfs__button[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Responsive — Tablet (750px – 989px)
+   ========================================================================== */
+@media screen and (max-width: 989px) {
+  .cfs {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .cfs__grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .cfs__content {
+    max-width: 100%;
+  }
+
+  .cfs__title {
+    font-size: 40px;
+    line-height: 48px;
+  }
+}
+
+/* ==========================================================================
+   Responsive — Mobile (< 750px)
+   ========================================================================== */
+@media screen and (max-width: 749px) {
+  .cfs {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .cfs__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .cfs__image-wrapper {
+    padding: 20px;
+  }
+
+  .cfs__floating-label {
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  .cfs__content {
+    max-width: 100%;
+  }
+
+  .cfs__title {
+    font-size: 36px;
+    line-height: 43.2px;
+  }
+
+  .cfs__subtitle {
+    font-size: 16px;
+    line-height: 25.6px;
+  }
+
+  .cfs__description {
+    font-size: 15px;
+    line-height: 24px;
+    max-width: 100%;
+  }
+
+  .cfs__button {
+    width: 100%;
+    justify-content: center;
+  }
+}

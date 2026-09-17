@@ -1,0 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "premium-collection": {
+      "type": "premium-collection",
+      "settings": {
+        "eyebrow": "THE COLLECTION",
+        "show_description": true,
+        "products_per_page": 12,
+        "columns_desktop": 3,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": true,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "accent_color": "#C5A044",
+        "text_color": "#1C1A17",
+        "background_color": "#FDFBF7",
+        "padding_top": 0,
+        "padding_bottom": 72
+      }
+    }
+  },
+  "order": [
+    "premium-collection"
+  ]
+}

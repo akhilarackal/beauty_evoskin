@@ -1,0 +1,585 @@
+{{ 'section-featured-collection-showcase.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign fcs_heading         = section.settings.heading
+  assign fcs_collection      = section.settings.collection
+  assign fcs_count           = section.settings.products_to_show
+  assign fcs_show_nav        = section.settings.show_navigation
+  assign fcs_enable_slider   = section.settings.enable_slider
+  assign fcs_autoplay        = section.settings.enable_autoplay
+  assign fcs_autoplay_speed  = section.settings.autoplay_speed
+  assign fcs_hero_desktop_img = section.settings.hero_desktop_image
+  assign fcs_hero_mobile_img  = section.settings.hero_mobile_image
+  assign fcs_hero_category    = section.settings.hero_category
+  assign fcs_hero_heading     = section.settings.hero_heading
+  assign fcs_hero_btn_text    = section.settings.hero_button_text
+  assign fcs_hero_btn_link    = section.settings.hero_button_link
+  assign fcs_img_ratio        = section.settings.image_ratio
+  assign fcs_card_radius      = section.settings.card_border_radius
+  assign fcs_show_inventory   = section.settings.show_inventory_label
+  assign fcs_show_sale_badge  = section.settings.show_sale_badge
+  assign fcs_enable_quick_add = section.settings.enable_quick_add
+  assign fcs_color_heading    = section.settings.color_heading
+  assign fcs_color_hero_text  = section.settings.color_hero_text
+  assign fcs_color_badge_bg   = section.settings.color_badge_bg
+  assign fcs_color_badge_text = section.settings.color_badge_text
+  assign fcs_color_price      = section.settings.color_price
+  assign fcs_color_compare    = section.settings.color_compare
+  assign fcs_color_title      = section.settings.color_title
+  assign fcs_color_vendor     = section.settings.color_vendor
+  assign fcs_color_btn_bg     = section.settings.color_button_bg
+  assign fcs_color_btn_text   = section.settings.color_button_text
+  assign fcs_cols_desktop     = section.settings.desktop_products_visible
+  assign fcs_cols_tablet      = section.settings.tablet_products_visible
+  assign fcs_cols_mobile      = section.settings.mobile_products_visible
+  assign fcs_pad_top          = section.settings.padding_top
+  assign fcs_pad_bottom       = section.settings.padding_bottom
+  assign fcs_gap              = section.settings.gap
+  assign fcs_mode = 'demo'
+  if fcs_collection != blank
+    if fcs_collection.products_count > 0
+      assign fcs_mode = 'live'
+    else
+      assign fcs_mode = 'empty'
+    endif
+  endif
+  assign fcs_has_hero_img = false
+  if fcs_hero_desktop_img != blank or fcs_hero_mobile_img != blank
+    assign fcs_has_hero_img = true
+  endif
+-%}
+
+{%- style -%}
+  #fcs-{{ section.id }} {
+    --fcs-pad-top        : {{ fcs_pad_top }}px;
+    --fcs-pad-bottom     : {{ fcs_pad_bottom }}px;
+    --fcs-gap            : {{ fcs_gap }}px;
+    --fcs-card-radius    : {{ fcs_card_radius }}px;
+    --fcs-cols           : {{ fcs_cols_desktop }};
+    --fcs-cols-tablet    : {{ fcs_cols_tablet }};
+    --fcs-cols-mobile    : {{ fcs_cols_mobile }};
+    --fcs-heading-color  : {{ fcs_color_heading }};
+    --fcs-hero-text      : {{ fcs_color_hero_text }};
+    --fcs-badge-bg       : {{ fcs_color_badge_bg }};
+    --fcs-badge-text     : {{ fcs_color_badge_text }};
+    --fcs-price-color    : {{ fcs_color_price }};
+    --fcs-compare-color  : {{ fcs_color_compare }};
+    --fcs-title-color    : {{ fcs_color_title }};
+    --fcs-vendor-color   : {{ fcs_color_vendor }};
+    --fcs-btn-bg         : {{ fcs_color_btn_bg }};
+    --fcs-btn-text       : {{ fcs_color_btn_text }};
+  }
+{%- endstyle -%}
+
+<section
+  id="fcs-{{ section.id }}"
+  class="section-fcs"
+  aria-label="{{ fcs_heading | default: 'Featured Collection' | escape }}"
+  data-section-type="featured-collection-showcase"
+  data-fcs-autoplay="{{ fcs_autoplay }}"
+  data-fcs-speed="{{ fcs_autoplay_speed | default: 4 }}"
+  data-fcs-cols-desktop="{{ fcs_cols_desktop }}"
+  data-fcs-cols-tablet="{{ fcs_cols_tablet }}"
+  data-fcs-cols-mobile="{{ fcs_cols_mobile }}"
+  data-no-animate="true"
+>
+  <div class="fcs-container">
+
+    {%- comment -%} ── Section Header ── {%- endcomment -%}
+    <header class="fcs-header">
+      {%- if fcs_heading != blank -%}
+        <h2 class="fcs-heading">{{ fcs_heading | escape }}</h2>
+      {%- endif -%}
+
+      {%- if fcs_show_nav and fcs_enable_slider -%}
+        <nav class="fcs-nav" aria-label="{{ fcs_heading | default: 'Featured Collection' | escape }} carousel navigation">
+          <button
+            type="button"
+            class="fcs-nav__btn"
+            data-fcs-action="prev"
+            aria-label="Previous products"
+            disabled
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12.5 15l-5-5 5-5"/>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="fcs-nav__btn"
+            data-fcs-action="next"
+            aria-label="Next products"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 5l5 5-5 5"/>
+            </svg>
+          </button>
+        </nav>
+      {%- elsif fcs_enable_slider -%}
+        {%- comment -%} Hidden nav placeholder preserves header layout {%- endcomment -%}
+        <nav class="fcs-nav fcs-nav--hidden" aria-hidden="true">
+          <button type="button" class="fcs-nav__btn" disabled aria-hidden="true"></button>
+          <button type="button" class="fcs-nav__btn" aria-hidden="true"></button>
+        </nav>
+      {%- endif -%}
+    </header>
+    {%- comment -%} ── END Header ── {%- endcomment -%}
+
+    {%- comment -%} ── Main body: Hero + Carousel ── {%- endcomment -%}
+    <div class="fcs-body">
+
+      {%- comment -%} ── LEFT: Hero Banner ── {%- endcomment -%}
+      <div class="fcs-hero-col">
+        {%- liquid
+          assign fcs_is_demo = false
+          if fcs_mode == 'demo' and fcs_has_hero_img == false
+            assign fcs_is_demo = true
+          endif
+        -%}
+        {%- render 'featured-hero-banner',
+          fcs_hero_desktop_img: fcs_hero_desktop_img,
+          fcs_hero_mobile_img: fcs_hero_mobile_img,
+          fcs_hero_category: fcs_hero_category,
+          fcs_hero_heading: fcs_hero_heading,
+          fcs_hero_btn_text: fcs_hero_btn_text,
+          fcs_hero_btn_link: fcs_hero_btn_link,
+          fcs_is_demo: fcs_is_demo,
+          fcs_color_hero_text: fcs_color_hero_text,
+          fcs_color_badge_bg: fcs_color_badge_bg,
+          fcs_color_badge_text: fcs_color_badge_text,
+          fcs_color_btn_bg: fcs_color_btn_bg,
+          fcs_color_btn_text: fcs_color_btn_text,
+          fcs_banner_radius: 2,
+          section: section
+        -%}
+      </div>
+      {%- comment -%} ── END Hero Banner ── {%- endcomment -%}
+
+      {%- comment -%} ── RIGHT: Product Carousel ── {%- endcomment -%}
+      <div class="fcs-carousel-col">
+
+        {%- comment -%} ── LIVE MODE ── {%- endcomment -%}
+        {%- if fcs_mode == 'live' -%}
+          <div
+            class="fcs-slider"
+            role="region"
+            aria-label="{{ fcs_heading | default: 'Featured Collection' | escape }} product carousel"
+          >
+            <ul class="fcs-track" role="list">
+              {%- for product in fcs_collection.products limit: fcs_count -%}
+                <li class="fcs-slide" role="listitem">
+                  {%- render 'featured-product-card',
+                    fcs_product: product,
+                    fcs_is_demo: false,
+                    fcs_show_inventory: fcs_show_inventory,
+                    fcs_show_sale_badge: fcs_show_sale_badge,
+                    fcs_enable_quick_add: fcs_enable_quick_add,
+                    fcs_color_price: fcs_color_price,
+                    fcs_color_compare: fcs_color_compare,
+                    fcs_color_title: fcs_color_title,
+                    fcs_color_vendor: fcs_color_vendor,
+                    fcs_card_radius: fcs_card_radius,
+                    fcs_forloop_index: forloop.index
+                  -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+
+        {%- comment -%} ── EMPTY MODE ── {%- endcomment -%}
+        {%- elsif fcs_mode == 'empty' -%}
+          <div class="fcs-empty-state" role="status" aria-live="polite">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+            </svg>
+            <p>This collection doesn&rsquo;t have any products yet.</p>
+          </div>
+
+        {%- comment -%} ── DEMO MODE ── {%- endcomment -%}
+        {%- else -%}
+          {%- liquid
+            assign _demos = "bs-demo-2.svg|Icon|SOS Hydra Repair Intensive Serum|5600|7500|-25%|true,bs-demo-4.svg|Daniels|Retinol Alternative Eye Serum|3900|5200|-25%|false,bs-demo-9.svg|Endure|Plum Product Placeholder|1600|2600|-38%|false,bs-demo-3.svg|Bernhard|After Shave Serum|2290|3200|-28%|false,bs-demo-5.svg|Luminae|Pure Vitamin C Serum|6200|8500|-27%|false,bs-demo-7.svg|Luminae|Brightening Night Cream|7500|9900|-24%|false" | split: ","
+          -%}
+          <div
+            class="fcs-slider"
+            role="region"
+            aria-label="Featured collection demo preview"
+            aria-hidden="true"
+          >
+            <ul class="fcs-track" role="list">
+              {%- for _entry in _demos limit: fcs_count -%}
+                {%- liquid
+                  assign _p          = _entry | split: "|"
+                  assign _img        = _p[0] | strip
+                  assign _vendor     = _p[1] | strip
+                  assign _title      = _p[2] | strip
+                  assign _price      = _p[3] | strip | times: 1
+                  assign _compare    = _p[4] | strip | times: 1
+                  assign _badge      = _p[5] | strip
+                  assign _low        = false
+                  if _p[6] == 'true'
+                    assign _low = true
+                  endif
+                -%}
+                <li class="fcs-slide" role="presentation">
+                  {%- render 'featured-product-card',
+                    fcs_is_demo: true,
+                    fcs_demo_img: _img,
+                    fcs_demo_title: _title,
+                    fcs_demo_vendor: _vendor,
+                    fcs_demo_price: _price,
+                    fcs_demo_compare: _compare,
+                    fcs_demo_badge: _badge,
+                    fcs_demo_low_stock: _low,
+                    fcs_show_inventory: fcs_show_inventory,
+                    fcs_show_sale_badge: fcs_show_sale_badge,
+                    fcs_enable_quick_add: fcs_enable_quick_add,
+                    fcs_card_radius: fcs_card_radius,
+                    fcs_forloop_index: forloop.index
+                  -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+
+          <p class="fcs-demo-hint" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"/>
+            </svg>
+            Demo preview — select a collection in the sidebar to display your real products.
+          </p>
+        {%- endif -%}
+        {%- comment -%} ── END mode switch ── {%- endcomment -%}
+
+      </div>
+      {%- comment -%} ── END Carousel Column ── {%- endcomment -%}
+
+    </div>
+    {%- comment -%} ── END fcs-body ── {%- endcomment -%}
+
+  </div>
+  {%- comment -%} ── END fcs-container ── {%- endcomment -%}
+
+</section>
+
+<script src="{{ 'section-featured-collection-showcase.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "class": "section section-fcs-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Products load automatically — no manual blocks needed. A demo preview shows until you pick a collection."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show Navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Enable Slider",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Hero Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_desktop_image",
+      "label": "Desktop Image",
+      "info": "Recommended: 520 × 520 px. A demo image shows until uploaded."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_mobile_image",
+      "label": "Mobile Image",
+      "info": "Optional. Falls back to desktop image."
+    },
+    {
+      "type": "text",
+      "id": "hero_category",
+      "label": "Category Badge",
+      "default": "FACE CARE"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Heading",
+      "default": "The Best Products for Dry Skin"
+    },
+    {
+      "type": "text",
+      "id": "hero_button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "hero_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Product Cards"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "options": [
+        { "value": "square",   "label": "Square (1:1)" },
+        { "value": "portrait", "label": "Portrait (3:4)" },
+        { "value": "auto",     "label": "Original" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "enable_quick_add",
+      "label": "Quick Add Style",
+      "options": [
+        { "value": "icon",     "label": "Icon button (+ AJAX)" },
+        { "value": "disabled", "label": "Hidden" }
+      ],
+      "default": "icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_inventory_label",
+      "label": "Show Inventory Label",
+      "default": true,
+      "info": "Shows '• X Last Items' when stock ≤ 10."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show Sale Badge",
+      "default": true,
+      "info": "Auto-calculates discount % from compare-at price."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "color_hero_text",
+      "label": "Hero Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_badge_bg",
+      "label": "Badge Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_badge_text",
+      "label": "Badge Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_price",
+      "label": "Price",
+      "default": "#EC4899"
+    },
+    {
+      "type": "color",
+      "id": "color_compare",
+      "label": "Compare Price",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "color_title",
+      "label": "Product Title",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "color_vendor",
+      "label": "Vendor",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "color_button_bg",
+      "label": "Button Background",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "label": "Button Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_products_visible",
+      "label": "Desktop Products Visible",
+      "options": [
+        { "value": "2", "label": "2 cards" },
+        { "value": "3", "label": "3 cards" },
+        { "value": "4", "label": "4 cards" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "tablet_products_visible",
+      "label": "Tablet Products Visible",
+      "options": [
+        { "value": "1", "label": "1 card" },
+        { "value": "2", "label": "2 cards" },
+        { "value": "3", "label": "3 cards" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "mobile_products_visible",
+      "label": "Mobile Products Visible",
+      "options": [
+        { "value": "1", "label": "1 card" },
+        { "value": "2", "label": "2 cards" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection",
+      "settings": {
+        "heading": "Featured Collection",
+        "products_to_show": 9,
+        "show_navigation": true,
+        "enable_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 4,
+        "hero_category": "FACE CARE",
+        "hero_heading": "The Best Products for Dry Skin",
+        "hero_button_text": "Shop Now",
+        "image_ratio": "portrait",
+        "card_border_radius": 8,
+        "enable_quick_add": "icon",
+        "show_inventory_label": true,
+        "show_sale_badge": true,
+        "color_heading": "#222222",
+        "color_hero_text": "#ffffff",
+        "color_badge_text": "#ffffff",
+        "color_price": "#EC4899",
+        "color_compare": "#6B7280",
+        "color_title": "#111827",
+        "color_vendor": "#6B7280",
+        "color_button_bg": "#D4AF37",
+        "color_button_text": "#ffffff",
+        "desktop_products_visible": "3",
+        "tablet_products_visible": "2",
+        "mobile_products_visible": "1",
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "gap": 24
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

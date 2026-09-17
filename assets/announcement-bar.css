@@ -1,0 +1,140 @@
+/* =============================================================
+   Announcement Bar
+   Figma specs:
+   Badge  : Poppins Bold 12px / #1F3B73 / uppercase / ls 0.6px
+            hug 90x20px / radius 4px / pad 2px 8px
+   Text   : Poppins Regular 13px / white
+   CTA    : Poppins Medium 14px / white / underline
+            71x20px
+   ============================================================= */
+
+.announcement-bar-section {
+  background-color: var(--announcement-bg, #D4AF37);
+}
+
+/* Row */
+.announcement-bar-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-desktop, 12px);
+  height: var(--bar-height, 36px);
+}
+
+/* Badge */
+.announcement-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--badge-bg, #ffffff);
+  color: var(--badge-color, #1F3B73);
+  border-radius: 4px;
+  padding: 2px 8px;
+  height: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Announcement text */
+.announcement-text {
+  display: inline;
+  color: var(--announcement-text-color, #ffffff);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* CTA "Shop Now >" */
+.announcement-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 71px;
+  height: 20px;
+  color: var(--announcement-text-color, #ffffff);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-underline-offset: 0px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+}
+
+.announcement-cta:hover {
+  opacity: 0.85;
+}
+
+/* Arrow */
+.announcement-cta-arrow {
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.announcement-cta:hover .announcement-cta-arrow {
+  transform: translateX(2px);
+}
+
+/* Mobile-only text */
+.announcement-text--mobile {
+  display: none;
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+  .announcement-bar-row {
+    gap: var(--gap-mobile, 8px);
+  }
+
+  .announcement-badge {
+    display: none;
+    font-size: 10px;
+    line-height: 14px;
+    padding: 2px 6px;
+    height: 18px;
+  }
+
+  .announcement-text {
+    display: inline;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .announcement-cta {
+    display: none;
+    font-size: 12px;
+    line-height: 16px;
+    width: auto;
+  }
+
+  .show-badge-mobile .announcement-badge {
+    display: inline-flex;
+  }
+
+  .show-cta-mobile .announcement-cta {
+    display: inline-flex;
+  }
+
+  .announcement-bar-section .announcement-text--mobile {
+    display: inline;
+  }
+}

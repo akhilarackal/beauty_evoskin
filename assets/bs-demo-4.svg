@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128" fill="none">
+  <!-- Foaming Salt Scrub – wide frosted jar with rose-gold lid -->
+  <rect width="96" height="128" rx="4" fill="#F3F4F6"/>
+  <!-- jar body -->
+  <ellipse cx="48" cy="100" rx="28" ry="6" fill="#C8A882" opacity=".3"/>
+  <rect x="20" y="68" width="56" height="36" rx="8" fill="#FDF6EE"/>
+  <!-- jar side sheen -->
+  <rect x="22" y="70" width="10" height="32" rx="4" fill="white" opacity=".4"/>
+  <!-- jar label area -->
+  <rect x="22" y="72" width="52" height="28" rx="4" fill="#FAF0E6"/>
+  <!-- label decoration -->
+  <rect x="24" y="74" width="48" height="4" rx="2" fill="#C8956A"/>
+  <!-- label text lines -->
+  <rect x="26" y="82" width="44" height="2.5" rx="1" fill="#7C4A2A" opacity=".8"/>
+  <rect x="28" y="87" width="40" height="1.5" rx=".75" fill="#7C4A2A" opacity=".5"/>
+  <rect x="30" y="91" width="36" height="1.5" rx=".75" fill="#7C4A2A" opacity=".5"/>
+  <!-- lid -->
+  <ellipse cx="48" cy="68" rx="28" ry="7" fill="#D4A57A"/>
+  <!-- lid top -->
+  <ellipse cx="48" cy="63" rx="26" ry="6" fill="#E8BF9A"/>
+  <!-- lid sheen -->
+  <ellipse cx="40" cy="61" rx="8" ry="3" fill="white" opacity=".3"/>
+  <!-- lid top center detail -->
+  <ellipse cx="48" cy="61" rx="10" ry="3" fill="#C8956A" opacity=".4"/>
+  <!-- decorative rose -->
+  <circle cx="48" cy="61" r="4" fill="none" stroke="#9B6040" stroke-width="1" opacity=".6"/>
+  <circle cx="48" cy="61" r="2" fill="#C8956A" opacity=".8"/>
+</svg>

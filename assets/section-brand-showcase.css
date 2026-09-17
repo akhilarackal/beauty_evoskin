@@ -1,0 +1,261 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Brand Showcase Section — Production-Ready
+
+   Fonts:
+     • Playfair Display (heading)   — loaded globally in theme.liquid
+     • Poppins (all other text)     — loaded globally in theme.liquid
+
+   Layout:
+     Desktop       → 5 columns
+     Tablet        → 3 columns
+     Mobile        → 2 columns
+     Small Mobile  → 1 column
+
+   No jQuery. No external libraries.
+   Shopify Online Store 2.0 compatible.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Dawn animation suppression
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.animate--hover-3d-lift .section-brand-showcase .brs-card::before,
+.animate--hover-3d-lift .section-brand-showcase .brs-card::after {
+  display: none !important;
+  content: none !important;
+}
+
+.animate--hover-vertical-lift .section-brand-showcase .brs-card,
+.animate--hover-3d-lift .section-brand-showcase .brs-card {
+  transform: none !important;
+  transition: none !important;
+}
+
+.section-brand-showcase,
+.section-brand-showcase .brs-card,
+.section-brand-showcase .brs-grid {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+.section-brand-showcase-wrapper {
+  transition: none !important;
+}
+
+/* Re-enable our own hover transition */
+.section-brand-showcase .brs-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Section wrapper
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section-brand-showcase {
+  width: 100%;
+  padding-top: var(--brs-pad-top, 64px);
+  padding-bottom: var(--brs-pad-bottom, 64px);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Inner container
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.brs-container {
+  max-width: 1274px;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--brs-section-gap, 24px);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Header
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.brs-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.brs-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: var(--brs-heading-color, #222222);
+  margin: 0;
+}
+
+.brs-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--brs-subtitle-color, #6B7280);
+  margin: 0;
+  max-width: 700px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Brand Logo Grid — CSS Grid
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.brs-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--brs-col-desktop, 5), 1fr);
+  gap: var(--brs-gap, 16px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Brand Card
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.brs-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  background: var(--brs-card-bg, #F5F5F5);
+  border-radius: var(--brs-card-radius, 2px);
+  padding-left: 16px;
+  padding-right: 16px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.brs-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Linked card — full-size clickable */
+.brs-card__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brs-card__link:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+  border-radius: var(--brs-card-radius, 2px);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Logo Image
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.brs-card__logo {
+  display: block;
+  max-height: var(--brs-logo-max-height, 40px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Fallback Brand Name (when no logo is uploaded)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.brs-card__name {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #1F2937;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Tablet (≤ 989px)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 989px) {
+  .brs-grid {
+    grid-template-columns: repeat(var(--brs-col-tablet, 3), 1fr);
+  }
+
+  .brs-container {
+    padding-inline: 24px;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Mobile (≤ 599px)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 599px) {
+  .brs-grid {
+    grid-template-columns: repeat(var(--brs-col-mobile, 2), 1fr);
+  }
+
+  .brs-container {
+    padding-inline: 16px;
+  }
+
+  .brs-heading {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .brs-subtitle {
+    font-size: 13px;
+    line-height: 18px;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Small Mobile (≤ 399px)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 399px) {
+  .brs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Hover animation disabled variant
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section-brand-showcase--no-hover .brs-card {
+  transition: none !important;
+}
+
+.section-brand-showcase--no-hover .brs-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Demo hint (Theme Editor only)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.brs-demo-hint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #1f2937;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 6px;
+  margin: 0;
+}
+
+.brs-demo-hint svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #f59e0b;
+}
+
+.shopify-design-mode .brs-demo-hint {
+  display: flex;
+}

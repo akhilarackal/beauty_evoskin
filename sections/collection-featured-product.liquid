@@ -1,0 +1,114 @@
+{{ 'collection-page-redesign.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign featured_product = section.settings.product
+  if featured_product == blank and collection.products.size > 0
+    assign featured_product = collection.products.first
+  endif
+-%}
+
+{%- if featured_product != blank -%}
+<section class="col-featured-product page-width">
+  <div class="col-featured-product__layout">
+    <!-- Product Image -->
+    <div class="col-featured-product__image">
+      {%- if featured_product.featured_image != blank -%}
+        <img
+          src="{{ featured_product.featured_image | image_url: width: 600 }}"
+          alt="{{ featured_product.featured_image.alt | default: featured_product.title | escape }}"
+          width="600"
+          height="{{ 600 | divided_by: featured_product.featured_image.aspect_ratio | ceil }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'col-featured-product__placeholder' }}
+      {%- endif -%}
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-featured-product__info">
+      <h2 class="col-featured-product__title">{{ featured_product.title }}</h2>
+
+      {%- unless featured_product.has_only_default_variant -%}
+        <p class="col-featured-product__variant-info">
+          {{ featured_product.variants.first.title }}
+        </p>
+      {%- endunless -%}
+
+      {%- if featured_product.description != blank -%}
+        <div class="col-featured-product__description">
+          {{ featured_product.description | truncate: 300 }}
+        </div>
+      {%- endif -%}
+
+      <!-- Feature List -->
+      {%- if section.settings.feature_1 != blank or section.settings.feature_2 != blank or section.settings.feature_3 != blank -%}
+        <ul class="col-featured-product__features">
+          {%- if section.settings.feature_1 != blank -%}
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              {{ section.settings.feature_1 }}
+            </li>
+          {%- endif -%}
+          {%- if section.settings.feature_2 != blank -%}
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              {{ section.settings.feature_2 }}
+            </li>
+          {%- endif -%}
+          {%- if section.settings.feature_3 != blank -%}
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              {{ section.settings.feature_3 }}
+            </li>
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
+
+      <a href="{{ featured_product.url }}" class="col-featured-product__btn">
+        {{ section.settings.button_text | default: 'Explore the range' }}
+      </a>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Featured Spotlight",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Featured Product",
+      "info": "Leave blank to use the first product in the collection."
+    },
+    {
+      "type": "text",
+      "id": "feature_1",
+      "label": "Feature 1",
+      "default": "Pure Cellular Elixir"
+    },
+    {
+      "type": "text",
+      "id": "feature_2",
+      "label": "Feature 2",
+      "default": "Anti-aging Formula"
+    },
+    {
+      "type": "text",
+      "id": "feature_3",
+      "label": "Feature 3",
+      "default": "Dermatologically Tested"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Explore the range"
+    }
+  ]
+}
+{% endschema %}

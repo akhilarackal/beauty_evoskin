@@ -1,0 +1,108 @@
+{% comment %}
+  featured-hero-banner.liquid
+  Reusable hero banner snippet for Featured Collection Showcase.
+  
+  Expected variables (set by parent before render):
+    fcs_hero_desktop_img  — image object or blank
+    fcs_hero_mobile_img   — image object or blank
+    fcs_hero_category     — string
+    fcs_hero_heading      — string
+    fcs_hero_btn_text     — string
+    fcs_hero_btn_link     — url string
+    fcs_is_demo           — boolean
+    fcs_color_hero_text   — color
+    fcs_color_badge_bg    — color
+    fcs_color_badge_text  — color
+    fcs_color_btn_bg      — color
+    fcs_color_btn_text    — color
+    fcs_banner_radius     — number
+    section               — section object (for id)
+{% endcomment %}
+
+{%- liquid
+  assign fcs_has_hero = false
+  if fcs_hero_desktop_img != blank or fcs_hero_mobile_img != blank
+    assign fcs_has_hero = true
+  endif
+-%}
+
+<div
+  class="fcs-hero{% unless fcs_has_hero %} fcs-hero--demo{% endunless %}"
+  role="complementary"
+  aria-label="{{ fcs_hero_heading | default: 'Hero Banner' | escape }}"
+>
+  {%- comment -%} ── Background Image ── {%- endcomment -%}
+  {%- if fcs_has_hero -%}
+    <picture class="fcs-hero__picture">
+      {%- if fcs_hero_mobile_img != blank -%}
+        <source
+          media="(max-width: 599px)"
+          srcset="
+            {{ fcs_hero_mobile_img | image_url: width: 600 }} 600w,
+            {{ fcs_hero_mobile_img | image_url: width: 800 }} 800w
+          "
+          sizes="100vw"
+        >
+      {%- elsif fcs_hero_desktop_img != blank -%}
+        <source
+          media="(max-width: 599px)"
+          srcset="
+            {{ fcs_hero_desktop_img | image_url: width: 600 }} 600w,
+            {{ fcs_hero_desktop_img | image_url: width: 800 }} 800w
+          "
+          sizes="100vw"
+        >
+      {%- endif -%}
+      {%- if fcs_hero_desktop_img != blank -%}
+        <img
+          src="{{ fcs_hero_desktop_img | image_url: width: 520 }}"
+          srcset="
+            {{ fcs_hero_desktop_img | image_url: width: 260 }} 260w,
+            {{ fcs_hero_desktop_img | image_url: width: 520 }} 520w,
+            {{ fcs_hero_desktop_img | image_url: width: 780 }} 780w,
+            {{ fcs_hero_desktop_img | image_url: width: 1040 }} 1040w
+          "
+          sizes="(max-width: 599px) 100vw, (max-width: 989px) 50vw, 520px"
+          width="520"
+          height="520"
+          alt="{{ fcs_hero_desktop_img.alt | default: fcs_hero_heading | escape }}"
+          class="fcs-hero__bg-img"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+      {%- endif -%}
+    </picture>
+  {%- else -%}
+    {%- comment -%} Demo fallback — use existing theme asset {%- endcomment -%}
+    <img
+      src="{{ 'bs-demo-1.svg' | asset_url }}"
+      alt=""
+      aria-hidden="true"
+      width="520"
+      height="520"
+      class="fcs-hero__bg-img fcs-hero__bg-img--demo"
+      loading="eager"
+      decoding="async"
+    >
+  {%- endif -%}
+
+  {%- comment -%} ── Overlay content — aligned bottom-left ── {%- endcomment -%}
+  <div class="fcs-hero__content">
+    {%- if fcs_hero_category != blank -%}
+      <span class="fcs-hero__badge">{{ fcs_hero_category | escape }}</span>
+    {%- endif -%}
+
+    {%- if fcs_hero_heading != blank -%}
+      <h3 class="fcs-hero__heading">{{ fcs_hero_heading | escape }}</h3>
+    {%- endif -%}
+
+    {%- if fcs_hero_btn_text != blank -%}
+      <a
+        href="{{ fcs_hero_btn_link | default: '#' }}"
+        class="fcs-hero__btn"
+        {% if fcs_hero_btn_link == blank %}aria-disabled="true"{% endif %}
+      >{{ fcs_hero_btn_text | escape }}</a>
+    {%- endif -%}
+  </div>
+</div>

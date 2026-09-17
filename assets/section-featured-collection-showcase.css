@@ -1,0 +1,748 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Featured Collection Showcase — Production-Ready CSS
+   
+   Layout  : Container (max 1444px) → Header row → [Hero 520px | Carousel flex]
+   Fonts   : Playfair Display (section heading, hero heading) — theme global
+             Poppins (all other UI text) — theme global
+   Slider  : GPU-accelerated translateX via JS (no jQuery, no libraries)
+   Cards   : 292 × 522px (image: 400px h), gap 16px — 3 vis desktop / 2 tablet / 1 mobile
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Dawn theme animation suppression
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section-fcs,
+.section-fcs .fcs-card,
+.section-fcs .fcs-header,
+.section-fcs .fcs-hero {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+.section-fcs .fcs-card {
+  transition: box-shadow 0.25s ease, transform 0.25s ease !important;
+}
+
+.section-fcs-wrapper {
+  transition: none !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Section wrapper
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section-fcs {
+  width: 100%;
+  padding-top: var(--fcs-pad-top, 64px);
+  padding-bottom: var(--fcs-pad-bottom, 64px);
+  background: transparent;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Inner container  — matches Figma max-width 1444px
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Matches the theme page container so the heading, hero banner and
+   cards all sit within the same gutters as every other section. */
+.fcs-container {
+  max-width: var(--page-width, 128rem);
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fcs-gap, 24px);
+}
+
+@media screen and (min-width: 750px) {
+  .fcs-container {
+    padding-inline: 5rem;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Section header row  (Heading LEFT | Nav arrows RIGHT)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fcs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.fcs-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.6px;
+  color: var(--fcs-heading-color, #222222);
+  margin: 0;
+}
+
+/* Nav arrows */
+.fcs-nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.fcs-nav--hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.fcs-nav__btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #E5E7EB;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #374151;
+  flex-shrink: 0;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.fcs-nav__btn:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #f9fafb;
+}
+
+.fcs-nav__btn:focus-visible {
+  outline: 2px solid #EC4899;
+  outline-offset: 2px;
+}
+
+.fcs-nav__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+.fcs-nav__btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Main body — [Hero 520px fixed] + [Carousel flex]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fcs-body {
+  display: flex;
+  flex-wrap: wrap; /* carousel drops below rather than collapsing to 0 */
+  gap: var(--fcs-gap, 24px);
+  /* stretch so the hero matches the height of the product cards */
+  align-items: stretch;
+}
+
+/* ── Hero column ──
+   480px leaves ~596px for the carousel at the theme's 1200px page
+   width, which lands two cards at ~290px — their designed size — with
+   no third card clipping at the right edge. */
+.fcs-hero-col {
+  flex: 0 1 480px;
+  min-width: 0;
+  max-width: 480px;
+}
+
+/* ── Carousel column — fills remaining space ──────────────────────
+   A basis of 0 with overflow:hidden used to let this collapse to zero
+   width on narrow desktops, which clipped every product out of view.
+   A sensible minimum keeps the cards visible or wraps them below. */
+.fcs-carousel-col {
+  flex: 1 1 320px;
+  min-width: min(320px, 100%);
+  overflow: hidden;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO BANNER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fcs-hero {
+  position: relative;
+  width: 100%;
+  /* Fills the row so its top and bottom line up with the cards */
+  height: 100%;
+  min-height: 522px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #1a1a2e; /* dark fallback before image loads */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* content aligned bottom */
+}
+
+/* Background image */
+.fcs-hero__picture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.fcs-hero__bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.fcs-hero__bg-img--demo {
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.9;
+}
+
+/* Gradient overlay — ensures text legibility */
+.fcs-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.35) 50%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  pointer-events: none;
+}
+
+/* Content — positioned bottom-left, above overlay */
+.fcs-hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px 24px 64px 40px;
+}
+
+/* Category badge */
+.fcs-hero__badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.35);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--fcs-hero-text, #ffffff);
+}
+
+/* Hero heading */
+.fcs-hero__heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 37.5px;
+  color: var(--fcs-hero-text, #ffffff);
+  margin: 0;
+  /* Max 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Shop Now button — matches theme's gold button pattern */
+.fcs-hero__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fcs-btn-bg, #D4AF37);
+  color: var(--fcs-btn-text, #ffffff);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.4;
+  padding: 10px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+}
+
+.fcs-hero__btn:hover,
+.fcs-hero__btn:focus-visible {
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+}
+
+.fcs-hero__btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PRODUCT CAROUSEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fcs-slider {
+  overflow: hidden;
+  cursor: grab;
+}
+
+.fcs-slider:active {
+  cursor: grabbing;
+}
+
+/* Track — horizontal flex; JS drives GPU-accelerated translateX */
+.fcs-track {
+  display: flex;
+  gap: 16px;
+  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-user-select: none;
+  user-select: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fcs-track--no-transition {
+  transition: none !important;
+}
+
+/* Each slide — exactly 1/3 of carousel viewport minus gaps (desktop default 3 vis) */
+.fcs-slide {
+  flex: 0 0 calc((100% - 16px * (var(--fcs-cols, 3) - 1)) / var(--fcs-cols, 3));
+  min-width: 0;
+  list-style: none;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PRODUCT CARD  — 292 × 522px (image 400px h)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fcs-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: var(--fcs-card-radius, 8px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 522px;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.fcs-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Image area — 400px height ──────────────────────────────────── */
+.fcs-card__image-wrap {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  flex-shrink: 0;
+  background: #F3F4F6;
+  border-radius: var(--fcs-card-radius, 8px) var(--fcs-card-radius, 8px) 0 0;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+}
+
+.fcs-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: transform 0.35s ease;
+}
+
+.fcs-card:hover .fcs-card__img {
+  transform: scale(1.04);
+}
+
+/* ── Sale badge — top-left ──────────────────────────────────────── */
+.fcs-card__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #EC4899;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  z-index: 2;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+}
+
+/* ── Quick Add button — bottom-right ────────────────────────────── */
+.fcs-card__add-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #1F2937;
+  z-index: 2;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+}
+
+.fcs-card__add-btn:hover {
+  background: #f9fafb;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  transform: scale(1.06);
+}
+
+.fcs-card__add-btn:focus-visible {
+  outline: 2px solid #EC4899;
+  outline-offset: 2px;
+}
+
+.fcs-card__add-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+
+.fcs-card__add-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* Loading spinner */
+.fcs-card__add-btn .fcs-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d1d5db;
+  border-top-color: #EC4899;
+  border-radius: 50%;
+  animation: fcs-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.fcs-card__add-btn.is-loading > svg {
+  display: none;
+}
+
+.fcs-card__add-btn.is-loading .fcs-spinner {
+  display: block;
+}
+
+/* Success checkmark */
+.fcs-card__add-btn .fcs-check {
+  display: none;
+  color: #10b981;
+}
+
+.fcs-card__add-btn.is-added > svg:not(.fcs-check) {
+  display: none;
+}
+
+.fcs-card__add-btn.is-added .fcs-spinner {
+  display: none;
+}
+
+.fcs-card__add-btn.is-added .fcs-check {
+  display: block;
+}
+
+@keyframes fcs-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Card body ──────────────────────────────────────────────────── */
+.fcs-card__body {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Price row */
+.fcs-card__price-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.fcs-card__price {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}
+
+.fcs-card__price--current {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--fcs-price-color, #EC4899);
+}
+
+.fcs-card__price--sale {
+  color: var(--fcs-price-color, #EC4899);
+}
+
+.fcs-card__price--compare {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--fcs-compare-color, #6B7280);
+  text-decoration: line-through;
+}
+
+/* Vendor */
+.fcs-card__vendor {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--fcs-vendor-color, #6B7280);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Product title */
+.fcs-card__title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19.25px;
+  color: var(--fcs-title-color, #111827);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fcs-card__title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.fcs-card__title-link:hover {
+  text-decoration: underline;
+}
+
+/* Inventory label */
+.fcs-card__inventory {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #EC4899;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fcs-card__inventory::before {
+  content: '•';
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Sold-out state */
+.fcs-card--soldout .fcs-card__image-wrap {
+  opacity: 0.7;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Empty state
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fcs-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  text-align: center;
+  min-height: 200px;
+}
+
+.fcs-empty-state svg {
+  width: 40px;
+  height: 40px;
+  color: #9ca3af;
+}
+
+.fcs-empty-state p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Demo hint  (Theme Editor only)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fcs-demo-hint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1f2937;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 6px;
+  margin: 16px 0 0;
+}
+
+.fcs-demo-hint svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #f59e0b;
+}
+
+.shopify-design-mode .fcs-demo-hint {
+  display: flex;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Tablet  (≤ 1100px) — hero shrinks, carousel adapts
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 1100px) {
+  .fcs-hero-col {
+    flex: 0 1 340px;
+    max-width: 340px;
+    width: auto;
+  }
+
+  /* Keep filling the row so the hero stays level with the cards */
+  .fcs-hero {
+    height: 100%;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Tablet (≤ 989px) — stack to column, 2 visible cards
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 989px) {
+  .fcs-body {
+    flex-direction: column;
+  }
+
+  /* Stacked now, so drop the side-by-side width cap and fill the row */
+  .fcs-hero-col {
+    flex: none;
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Stacked from here down, so a set height is right again */
+  .fcs-hero {
+    height: 380px;
+    min-height: 0;
+  }
+
+  .fcs-carousel-col {
+    width: 100%;
+  }
+
+  .fcs-slide {
+    flex: 0 0 calc((100% - 16px * (var(--fcs-cols-tablet, 2) - 1)) / var(--fcs-cols-tablet, 2));
+  }
+
+  .fcs-card {
+    height: auto;
+    min-height: 400px;
+  }
+
+  .fcs-card__image-wrap {
+    height: 280px;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive — Mobile  (≤ 599px) — 1 visible card
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 599px) {
+  .fcs-container {
+    padding-inline: 1.5rem;
+  }
+
+  .fcs-heading {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .fcs-hero {
+    height: 320px;
+    min-height: 0;
+  }
+
+  .fcs-hero__heading {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .fcs-hero__content {
+    padding: 20px 16px 48px 20px;
+    gap: 10px;
+  }
+
+  .fcs-hero__btn {
+    font-size: 14px;
+    padding: 8px 18px;
+  }
+
+  .fcs-slide {
+    flex: 0 0 calc((100% - 16px * (var(--fcs-cols-mobile, 1) - 1)) / var(--fcs-cols-mobile, 1));
+  }
+
+  .fcs-card {
+    min-height: 350px;
+  }
+
+  .fcs-card__image-wrap {
+    height: 240px;
+  }
+
+  .fcs-nav__btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .fcs-card__badge {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+}

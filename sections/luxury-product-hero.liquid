@@ -1,0 +1,579 @@
+{{ 'section-luxury-product-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign lph_product = section.settings.product
+  if lph_product == blank and product != blank
+    assign lph_product = product
+  endif
+
+  assign lph_mode = 'demo'
+  if lph_product != blank
+    assign lph_mode = 'live'
+  endif
+
+  if lph_mode == 'live'
+    assign lph_p = lph_product
+  endif
+
+  assign lph_enable_zoom = section.settings.enable_zoom
+  assign lph_show_breadcrumb = section.settings.show_breadcrumb
+  assign lph_show_vendor = section.settings.show_vendor
+  assign lph_show_discount = section.settings.show_discount
+  assign lph_show_inventory = section.settings.show_inventory
+  assign lph_show_description = section.settings.show_description
+  assign lph_show_benefits = section.settings.show_benefits
+  assign lph_add_text = section.settings.add_to_bag_text | default: 'ADD TO BAG'
+  assign lph_btn_color = section.settings.button_color
+  assign lph_btn_radius = section.settings.button_radius
+  assign lph_accent = section.settings.accent_color
+  assign lph_pad_top = section.settings.padding_top
+  assign lph_pad_bottom = section.settings.padding_bottom
+  assign lph_gap = section.settings.gap
+
+  assign benefits_blocks = section.blocks | where: "type", "benefit"
+  assign trust_blocks = section.blocks | where: "type", "trust_badge"
+-%}
+
+{%- style -%}
+  #lph-{{ section.id }} {
+    --lph-bg: {{ section.settings.background_color }};
+    --lph-accent: {{ lph_accent }};
+    --lph-btn-bg: {{ lph_btn_color }};
+    --lph-btn-radius: {{ lph_btn_radius }}px;
+    --lph-pad-top: {{ lph_pad_top }}px;
+    --lph-pad-bottom: {{ lph_pad_bottom }}px;
+    --lph-gap: {{ lph_gap }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="lph-{{ section.id }}"
+  class="section-lph"
+  aria-label="{{ lph_p.title | default: 'Luxury Product' | escape }}"
+  data-section-type="luxury-product-hero"
+  data-lph-enable-zoom="{{ lph_enable_zoom }}"
+  data-no-animate="true"
+>
+  <!-- SR live region -->
+  <div data-lph-sr-announce class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="lph-container">
+    <div class="lph-grid">
+
+      {%- comment -%} === LEFT: Gallery === {%- endcomment -%}
+      <div class="lph-gallery">
+
+        {%- comment -%} Thumbnails {%- endcomment -%}
+        <div class="lph-gallery__thumbs" role="list" aria-label="Product image thumbnails">
+          {%- if lph_mode == 'live' and lph_p.images.size > 0 -%}
+            {%- for image in lph_p.images limit: 12 -%}
+              <button
+                type="button"
+                class="lph-gallery__thumb{% if forloop.first %} lph-gallery__thumb--active{% endif %}"
+                role="listitem"
+                data-lph-thumb="{{ image | image_url: width: 800 }}"
+                data-lph-srcset="{{ image | image_url: width: 460 }} 460w, {{ image | image_url: width: 800 }} 800w"
+                aria-label="View image {{ forloop.index }} of {{ lph_p.images.size }}"
+                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+              >
+                <img
+                  src="{{ image | image_url: width: 153 }}"
+                  alt="{{ image.alt | default: lph_p.title | escape }}"
+                  width="153"
+                  height="153"
+                  loading="{% if forloop.index <= 3 %}eager{% else %}lazy{% endif %}"
+                >
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..3) -%}
+              <div class="lph-gallery__thumb{% if forloop.first %} lph-gallery__thumb--active{% endif %}">
+                <svg viewBox="0 0 153 153" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect width="153" height="153" fill="#F2EBE1"/>
+                  <path d="M60 85l15-20 15 20M55 95l25-35 25 35" stroke="#C5A044" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".4"/>
+                </svg>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Main Image {%- endcomment -%}
+        <div class="lph-gallery__main"{% if lph_enable_zoom %} data-lph-zoom{% endif %}>
+          {%- if lph_mode == 'live' and lph_p.featured_image != blank -%}
+            <img
+              src="{{ lph_p.featured_image | image_url: width: 800 }}"
+              srcset="{{ lph_p.featured_image | image_url: width: 460 }} 460w, {{ lph_p.featured_image | image_url: width: 800 }} 800w"
+              sizes="(max-width: 749px) 100vw, 460px"
+              alt="{{ lph_p.featured_image.alt | default: lph_p.title | escape }}"
+              width="460"
+              height="477"
+              class="lph-gallery__main-img"
+              loading="eager"
+              fetchpriority="high"
+              data-lph-main-img
+            >
+          {%- else -%}
+            <svg class="lph-gallery__main-img" viewBox="0 0 460 477" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="460" height="477" fill="#F2EBE1"/>
+              <path d="M180 300l50-70 50 70M160 340l70-100 70 100" stroke="#C5A044" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
+              <circle cx="230" cy="180" r="30" stroke="#C5A044" stroke-width="2" opacity=".3"/>
+            </svg>
+          {%- endif -%}
+        </div>
+
+      </div>
+      {%- comment -%} === END Gallery === {%- endcomment -%}
+
+      {%- comment -%} === RIGHT: Product Information === {%- endcomment -%}
+      <div class="lph-info">
+
+        {%- comment -%} Breadcrumb {%- endcomment -%}
+        {%- if lph_show_breadcrumb -%}
+          <nav aria-label="Breadcrumb">
+            <ol class="lph-breadcrumb">
+              <li class="lph-breadcrumb__item"><a href="/">Shop</a></li>
+              <span class="lph-breadcrumb__separator" aria-hidden="true">/</span>
+              {%- if lph_mode == 'live' and lph_p.collections.size > 0 -%}
+                <li class="lph-breadcrumb__item">
+                  <a href="{{ lph_p.collections.first.url }}">{{ lph_p.collections.first.title }}</a>
+                </li>
+                <span class="lph-breadcrumb__separator" aria-hidden="true">/</span>
+              {%- endif -%}
+              <li class="lph-breadcrumb__item lph-breadcrumb__current" aria-current="page">
+                {%- if lph_mode == 'live' -%}
+                  {{ lph_p.title | upcase }}
+                {%- else -%}
+                  CELLULAR GOLD
+                {%- endif -%}
+              </li>
+            </ol>
+          </nav>
+        {%- endif -%}
+
+        {%- comment -%} Product Title {%- endcomment -%}
+        <h1 class="lph-title">
+          {%- if lph_mode == 'live' -%}
+            {{ lph_p.title }}
+          {%- else -%}
+            Cellular Gold Serum
+          {%- endif -%}
+        </h1>
+
+        {%- comment -%} Price Row {%- endcomment -%}
+        <div class="lph-price-row">
+          {%- if lph_mode == 'live' -%}
+            <span class="lph-price" data-lph-price>{{ lph_p.price | money }}</span>
+            {%- if lph_p.compare_at_price > lph_p.price -%}
+              <span class="lph-price--compare" data-lph-compare-price>{{ lph_p.compare_at_price | money }}</span>
+              {%- if lph_show_discount -%}
+                {%- assign discount_pct = lph_p.compare_at_price | minus: lph_p.price | times: 100 | divided_by: lph_p.compare_at_price -%}
+                <span class="lph-price__discount" data-lph-discount>{{ discount_pct }}% OFF</span>
+              {%- endif -%}
+            {%- else -%}
+              <span class="lph-price--compare" data-lph-compare-price style="display:none;"></span>
+              <span class="lph-price__discount" data-lph-discount style="display:none;"></span>
+            {%- endif -%}
+          {%- else -%}
+            <span class="lph-price">-185.00</span>
+            <span class="lph-price--compare">-220.00</span>
+            <span class="lph-price__discount">16% OFF</span>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Inventory {%- endcomment -%}
+        {%- if lph_show_inventory and lph_mode == 'live' -%}
+          {%- assign current_variant = lph_p.selected_or_first_available_variant -%}
+          {%- if current_variant.inventory_management == 'shopify' -%}
+            {%- if current_variant.inventory_quantity <= 10 and current_variant.inventory_quantity > 0 -%}
+              <p class="lph-inventory lph-inventory--low">
+                <span class="lph-inventory__dot" aria-hidden="true"></span>
+                Only {{ current_variant.inventory_quantity }} left in stock
+              </p>
+            {%- elsif current_variant.inventory_quantity > 10 -%}
+              <p class="lph-inventory lph-inventory--in-stock">
+                <span class="lph-inventory__dot" aria-hidden="true"></span>
+                In Stock
+              </p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%} Description {%- endcomment -%}
+        {%- if lph_show_description -%}
+          <div class="lph-description">
+            {%- if lph_mode == 'live' -%}
+              {{ lph_p.description }}
+            {%- else -%}
+              <p>A luxurious cellular serum formulated with pure 24K gold particles and advanced peptide complexes. Naturally hydrates, firms, and restores youthful radiance to all skin types.</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Key Benefits {%- endcomment -%}
+        {%- if lph_show_benefits -%}
+          {%- assign meta_benefits = lph_p.metafields.custom.benefits.value -%}
+          {%- if meta_benefits != blank and meta_benefits.size > 0 -%}
+            <ul class="lph-benefits" aria-label="Key benefits">
+              {%- for benefit in meta_benefits -%}
+                <li class="lph-benefits__item">
+                  {%- if benefit.icon != blank -%}
+                    <img class="lph-benefits__icon" src="{{ benefit.icon | image_url: width: 32 }}" alt="" width="16" height="16" loading="lazy" aria-hidden="true">
+                  {%- else -%}
+                    <svg class="lph-benefits__icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                      <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM7.25 10.5L4.75 8l.72-.72L7.25 9.06l3.28-3.28.72.72-4 4z"/>
+                    </svg>
+                  {%- endif -%}
+                  <span>{{ benefit.title | escape }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- elsif benefits_blocks.size > 0 -%}
+            <ul class="lph-benefits" aria-label="Key benefits">
+              {%- for block in benefits_blocks -%}
+                <li class="lph-benefits__item" {{ block.shopify_attributes }}>
+                  <svg class="lph-benefits__icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM7.25 10.5L4.75 8l.72-.72L7.25 9.06l3.28-3.28.72.72-4 4z"/>
+                  </svg>
+                  <span>{{ block.settings.text }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%} Variant Picker {%- endcomment -%}
+        {%- if lph_mode == 'live' and lph_p.has_only_default_variant == false -%}
+          <div class="lph-variants">
+            {%- for option in lph_p.options_with_values -%}
+              <div class="lph-variant-group" data-lph-option-group>
+                <span class="lph-variant-group__label">{{ option.name }}</span>
+                <div class="lph-variant-group__options">
+                  {%- for value in option.values -%}
+                    <button
+                      type="button"
+                      class="lph-variant-pill{% if forloop.first %} lph-variant-pill--active{% endif %}"
+                      data-lph-variant-value="{{ value }}"
+                      aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+                      aria-label="{{ option.name }}: {{ value }}"
+                    >{{ value }}</button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Form: Quantity + Add to Bag {%- endcomment -%}
+        <form action="/cart/add" method="post" data-lph-form>
+          {%- if lph_mode == 'live' -%}
+            <input type="hidden" name="id" value="{{ lph_p.selected_or_first_available_variant.id }}">
+          {%- else -%}
+            <input type="hidden" name="id" value="">
+          {%- endif -%}
+
+          {%- comment -%} Quantity {%- endcomment -%}
+          <div class="lph-quantity" data-lph-quantity style="margin-bottom: 16px;">
+            <button type="button" class="lph-quantity__btn" data-lph-qty-minus aria-label="Decrease quantity" disabled>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <input
+              type="number"
+              name="quantity"
+              class="lph-quantity__input"
+              data-lph-qty-input
+              value="1"
+              min="1"
+              max="99"
+              aria-label="Quantity"
+            >
+            <button type="button" class="lph-quantity__btn" data-lph-qty-plus aria-label="Increase quantity">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+
+          {%- comment -%} Add To Bag {%- endcomment -%}
+          <button
+            type="submit"
+            class="lph-add-btn"
+            data-lph-add-btn
+            data-lph-add-text="{{ lph_add_text }}"
+            aria-label="{{ lph_add_text }}"
+            {% if lph_mode == 'live' %}{% unless lph_p.selected_or_first_available_variant.available %}disabled{% endunless %}{% else %}disabled{% endif %}
+          >
+            <span class="lph-add-btn__text">
+              {%- if lph_mode == 'live' and lph_p.selected_or_first_available_variant.available == false -%}
+                Sold Out
+              {%- else -%}
+                {{ lph_add_text }}
+              {%- endif -%}
+            </span>
+            <span class="lph-add-btn__spinner" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" opacity=".3"/><path d="M12 2a10 10 0 019.95 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+            <span class="lph-add-btn__check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+          </button>
+
+          {%- comment -%} Buy Now - direct checkout, bypasses cart {%- endcomment -%}
+          <button
+            type="button"
+            class="lph-buy-now-btn"
+            data-lph-buy-now
+            aria-label="Buy it now"
+            {% if lph_mode == 'live' %}{% unless lph_p.selected_or_first_available_variant.available %}disabled{% endunless %}{% else %}disabled{% endif %}
+          >
+            <span class="lph-buy-now-btn__text">Buy it now</span>
+            <span class="lph-buy-now-btn__spinner" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" opacity=".3"/><path d="M12 2a10 10 0 019.95 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+        </form>
+
+        {%- comment -%} Trust Badges {%- endcomment -%}
+        {%- if trust_blocks.size > 0 -%}
+          <div class="lph-trust" aria-label="Trust badges">
+            {%- for block in trust_blocks -%}
+              <div class="lph-trust__item" {{ block.shopify_attributes }}>
+                {%- if block.settings.icon == 'shipping' -%}
+                  <svg class="lph-trust__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M1 3h12v9H1zM13 8h3l3 3v4h-6M4.5 16a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM14.5 16a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/></svg>
+                {%- elsif block.settings.icon == 'return' -%}
+                  <svg class="lph-trust__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10a7 7 0 0113.46-2.73M17 3v4h-4M17 10a7 7 0 01-13.46 2.73M3 17v-4h4"/></svg>
+                {%- elsif block.settings.icon == 'secure' -%}
+                  <svg class="lph-trust__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 9V7a5 5 0 0110 0v2M3 9h14v9H3z"/><circle cx="10" cy="13.5" r="1.5" fill="currentColor"/></svg>
+                {%- else -%}
+                  <svg class="lph-trust__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10 2l2.09 6.26H18l-4.79 3.48 1.82 5.62L10 14.27l-5.03 3.09 1.82-5.62L2 8.26h5.91z"/></svg>
+                {%- endif -%}
+                <span>{{ block.settings.text }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+      </div>
+      {%- comment -%} === END Product Information === {%- endcomment -%}
+
+    </div>
+    {%- comment -%} === END Grid === {%- endcomment -%}
+
+    {%- comment -%} Variants JSON for JS {%- endcomment -%}
+    {%- if lph_mode == 'live' and lph_p.has_only_default_variant == false -%}
+      <script type="application/json" data-lph-variants-json>
+        {{ lph_p.variants | json }}
+      </script>
+    {%- endif -%}
+
+    {%- comment -%} Demo hint {%- endcomment -%}
+    {%- if lph_mode == 'demo' -%}
+      <p class="lph-demo-hint" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"/>
+        </svg>
+        Demo preview - select a product in the section settings to display live data.
+      </p>
+    {%- endif -%}
+
+  </div>
+</section>
+
+
+<script src="{{ 'section-luxury-product-hero.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Luxury Product Hero",
+  "tag": "section",
+  "class": "section section-lph-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Select a product. All data is pulled dynamically. A demo shows until selected."
+    },
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Enable image zoom on hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discount",
+      "label": "Show discount percentage",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_inventory",
+      "label": "Show inventory status",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_benefits",
+      "label": "Show key benefits",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "add_to_bag_text",
+      "label": "Add to bag text",
+      "default": "ADD TO BAG"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color (gold)",
+      "default": "#C5A044"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between gallery and info",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Key Benefit",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit text",
+          "default": "Reduces fine lines"
+        }
+      ]
+    },
+    {
+      "type": "trust_badge",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "shipping", "label": "Shipping truck" },
+            { "value": "return", "label": "Return arrows" },
+            { "value": "secure", "label": "Lock / Secure" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Badge text",
+          "default": "Complimentary Shipping"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Product Hero",
+      "blocks": [
+        { "type": "benefit", "settings": { "text": "Reduces fine lines" } },
+        { "type": "benefit", "settings": { "text": "Improves elasticity" } },
+        { "type": "benefit", "settings": { "text": "Deep hydration" } },
+        { "type": "benefit", "settings": { "text": "Brightens complexion" } },
+        { "type": "benefit", "settings": { "text": "Restores radiance" } },
+        { "type": "trust_badge", "settings": { "icon": "shipping", "text": "Complimentary Shipping" } },
+        { "type": "trust_badge", "settings": { "icon": "return", "text": "30-Day Ritual Return" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

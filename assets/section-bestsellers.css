@@ -1,0 +1,600 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Bestsellers Section — Production-Ready
+   
+   Fonts:
+     • Playfair Display (heading) — already loaded globally
+     • Poppins (all other text) — already loaded globally
+   
+   This section uses CSS Grid for layout, semantic HTML,
+   and fully responsive images with srcset for optimal performance.
+   Follows Shopify Online Store 2.0 best practices.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Theme animation overrides
+   Dawn applies scroll-reveal and hover-shimmer animations globally
+   via body classes (animate--hover-3d-lift, animate--hover-vertical-lift).
+   We explicitly opt every element inside this section OUT of those
+   systems so the cards never flash, shimmer, or do entrance slides.
+   Also suppress the dark-mode color transition on page load.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* 1 — Block the 3D-lift shimmer pseudo-elements */
+.animate--hover-3d-lift .section-bestsellers .bs-card::before,
+.animate--hover-3d-lift .section-bestsellers .bs-card::after,
+.animate--hover-3d-lift .section-bestsellers .bs-card__link::before,
+.animate--hover-3d-lift .section-bestsellers .bs-card__link::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* 2 — Block the vertical-lift transform from hitting our cards */
+.animate--hover-vertical-lift .section-bestsellers .bs-card,
+.animate--hover-vertical-lift .section-bestsellers .bs-card__link {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* 3 — Block the 3D rotate transform on our cards */
+.animate--hover-3d-lift .section-bestsellers .bs-card,
+.animate--hover-3d-lift .section-bestsellers .bs-card__link {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* 4 — Cancel any scroll-trigger entrance animation on the section or
+        its direct children so there's no fade/slide flash on push */
+.section-bestsellers,
+.section-bestsellers .bs-card,
+.section-bestsellers .bs-grid,
+.section-bestsellers .bs-header {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* 5 — Our own hover transition only — restore after blanket reset above */
+.bs--hover .bs-card {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/* 6 — Suppress dark-mode color-transition flash on page load.
+        The schema class "section" triggers dark-mode.css's
+        transition: background-color 200ms on the section wrapper. */
+.section-bestsellers-wrapper {
+  transition: none !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Section wrapper
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section-bestsellers {
+  width: 100%;
+  padding-top: var(--bs-pad-top, 48px);
+  padding-bottom: var(--bs-pad-bottom, 48px);
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.82) 0%, rgba(255, 255, 255, 0) 54%),
+    #ffffff;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Inner container (1280px max-width, 32px padding)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-container {
+  max-width: 1280px;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Header row (Heading + Shop All link)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.bs-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+  color: #222222;
+  margin: 0;
+}
+
+.bs-heading::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 2px;
+  margin-top: 10px;
+  background: #d4af37;
+}
+
+.bs-shop-all {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #8a6a08;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 9px 14px;
+  border: 1px solid rgba(212, 175, 55, 0.34);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.05);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.bs-shop-all:hover,
+.bs-shop-all:focus-visible {
+  color: #111827;
+  background: #ffffff;
+  border-color: rgba(17, 24, 39, 0.18);
+  text-decoration: none;
+}
+
+.bs-shop-all:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Products grid — CSS Grid with dynamic columns
+   Desktop default: 3 columns | Tablet: 2 columns | Mobile: 1 column
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--bs-col-desktop, 3), 1fr);
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tablet breakpoint */
+@media screen and (max-width: 989px) {
+  .bs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile breakpoint */
+@media screen and (max-width: 599px) {
+  .bs-grid {
+    grid-template-columns: repeat(var(--bs-col-mobile, 1), 1fr);
+  }
+
+  .bs-container {
+    padding-inline: 16px;
+  }
+
+  .bs-heading {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Product card
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-card {
+  position: relative;
+  background: var(--bs-card-bg, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--bs-card-border, #e5e7eb) 72%, #d4af37 28%);
+  border-radius: var(--bs-card-radius, 8px);
+  overflow: hidden;
+  /* Equal-height cards via auto grid layout */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 32px rgba(17, 24, 39, 0.055);
+}
+
+/* Hover animation — only when enabled */
+.bs--hover .bs-card {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.bs--hover .bs-card:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 18px 42px rgba(17, 24, 39, 0.11);
+  transform: translateY(-3px) !important;
+}
+
+/* Sold out state */
+.bs-card--soldout {
+  opacity: 0.7;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Full-card clickable link
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-card__link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  min-height: 162px;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.bs-card__link:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: -4px;
+  border-radius: var(--bs-card-radius, 8px);
+}
+
+/* Demo card link is non-clickable */
+.bs-card__link--demo {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Product image container (96×128px, gray background)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-card__image-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 96px;
+  height: 128px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 42%),
+    var(--bs-img-bg, #f3f4f6);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.06);
+}
+
+.bs-card__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Placeholder SVG — shown when a live product has no image */
+.bs-card__img--placeholder {
+  opacity: 0.3;
+}
+
+/* Demo product illustration — full opacity, crisp rendering */
+.bs-card__img--demo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  image-rendering: crisp-edges;   /* keeps SVG lines sharp */
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Sold Out badge
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-card__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 2px 6px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 3px;
+}
+
+.bs-card__badge--soldout {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Product content (right side of horizontal card)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-card__content {
+  flex: 1;
+  min-width: 0; /* allow text truncation */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Vendor name */
+.bs-card__vendor {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #8a6a08;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Product title — clamp to 2 lines for equal height */
+.bs-card__title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #111827;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Price row
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-card__price-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bs-card__price {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Current price (default: dark gray) */
+.bs-card__price--current {
+  font-weight: 600;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+/* Sale price (pink when compare-at-price exists) */
+.bs-card__price--current.bs-card__price--sale {
+  color: #c99700;
+}
+
+/* Compare-at price (crossed out) */
+.bs-card__price--compare {
+  font-weight: 400;
+  font-size: 14px;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Empty state (collection selected but no products)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  text-align: center;
+  min-height: 240px;
+}
+
+.bs-empty-state svg {
+  width: 48px;
+  height: 48px;
+  color: #9ca3af;
+}
+
+.bs-empty-state p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #6b7280;
+  margin: 0;
+  max-width: 400px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Demo hint banner
+   Only visible in Shopify Theme Editor, hidden on storefront
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-demo-hint {
+  display: none; /* hidden by default (storefront) */
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1f2937;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 6px;
+}
+
+.bs-demo-hint svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #f59e0b;
+}
+
+/* Show hint only in Shopify Theme Editor */
+.shopify-design-mode .bs-demo-hint {
+  display: flex;
+}
+
+/* Dark mode */
+html.dark .section-bestsellers {
+  background:
+    linear-gradient(180deg, rgba(31, 41, 55, 0.5) 0%, rgba(18, 18, 24, 0) 54%),
+    rgb(var(--color-background));
+}
+
+html.dark .bs-heading,
+html.dark .bs-card__title,
+html.dark .bs-card__price--current {
+  color: rgb(var(--color-foreground));
+}
+
+html.dark .bs-card {
+  background: rgb(var(--color-background-contrast));
+  border-color: rgba(var(--color-foreground), 0.12);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+html.dark .bs-card__image-wrap {
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 42%),
+    rgba(var(--color-foreground), 0.06);
+}
+
+html.dark .bs-card__vendor,
+html.dark .bs-shop-all {
+  color: #d4af37;
+}
+
+html.dark .bs-shop-all {
+  background: rgba(31, 41, 55, 0.74);
+  border-color: rgba(212, 175, 55, 0.28);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Mobile refinements
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media screen and (max-width: 599px) {
+  .bs-card__link {
+    min-height: 140px;
+  }
+
+  .bs-card__image-wrap {
+    width: 80px;
+    height: 100px;
+  }
+
+  .bs-header {
+    flex-wrap: wrap;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Quick add button
+   Sits over the card, outside the <a>, so it stays a valid button.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bs-card__add {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1c1a17;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(17, 24, 39, 0.12);
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    transform 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bs-card__add:hover {
+  border-color: #c5a044;
+  background: #c5a044;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.bs-card__add:focus-visible {
+  outline: 2px solid #c5a044;
+  outline-offset: 2px;
+}
+
+.bs-card__add svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Icon swapping between default, success and loading states */
+.bs-card__add-check,
+.bs-card__add-spinner {
+  display: none;
+}
+
+.bs-card__add.is-loading {
+  cursor: progress;
+}
+
+.bs-card__add.is-loading .bs-card__add-icon {
+  display: none;
+}
+
+.bs-card__add.is-loading .bs-card__add-spinner {
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(17, 24, 39, 0.2);
+  border-top-color: #c5a044;
+  border-radius: 50%;
+  animation: bs-add-spin 0.6s linear infinite;
+}
+
+.bs-card__add.is-added {
+  border-color: #174f3a;
+  background: #174f3a;
+  color: #ffffff;
+}
+
+.bs-card__add.is-added .bs-card__add-icon {
+  display: none;
+}
+
+.bs-card__add.is-added .bs-card__add-check {
+  display: block;
+}
+
+@keyframes bs-add-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-card__add {
+    transition: none;
+  }
+
+  .bs-card__add:hover {
+    transform: none;
+  }
+
+  .bs-card__add.is-loading .bs-card__add-spinner {
+    animation: none;
+  }
+}

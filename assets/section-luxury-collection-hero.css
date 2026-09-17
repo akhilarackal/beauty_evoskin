@@ -1,0 +1,114 @@
+/* ==========================================================================
+   Luxury Collection Hero — BEM Scoped Styles
+   ========================================================================== */
+
+.lch {
+  background-color: var(--lch-bg, #FFFFFF);
+  padding-top: var(--lch-pad-top, 96px);
+  padding-bottom: var(--lch-pad-bottom, 96px);
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+.lch__container {
+  max-width: var(--lch-container-width, 1509px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lch__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  max-width: var(--lch-content-width, 900px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Eyebrow */
+.lch__eyebrow {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--lch-eyebrow-color, #C5A046);
+}
+
+/* Main Heading */
+.lch__heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 70.4px;
+  letter-spacing: -1.28px;
+  color: var(--lch-heading-color, #1F1B15);
+  max-width: 709px;
+  margin: 0;
+}
+
+/* Description */
+.lch__description {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--lch-description-color, #4D4637);
+  max-width: 720px;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Responsive — Tablet (750px – 989px)
+   ========================================================================== */
+@media screen and (max-width: 989px) {
+  .lch {
+    padding-top: 64px;
+    padding-bottom: 64px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .lch__heading {
+    font-size: 48px;
+    line-height: 52.8px;
+    letter-spacing: -0.96px;
+  }
+
+  .lch__description {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
+
+/* ==========================================================================
+   Responsive — Mobile (< 750px)
+   ========================================================================== */
+@media screen and (max-width: 749px) {
+  .lch {
+    padding-top: 48px;
+    padding-bottom: 48px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .lch__content {
+    max-width: 100%;
+  }
+
+  .lch__heading {
+    font-size: 36px;
+    line-height: 39.6px;
+    letter-spacing: -0.72px;
+    max-width: 100%;
+  }
+
+  .lch__description {
+    font-size: 16px;
+    line-height: 22px;
+    max-width: 100%;
+  }
+}

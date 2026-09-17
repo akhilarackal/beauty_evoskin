@@ -1,0 +1,251 @@
+{{ 'why-choose-us.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .why-choose-us-section {
+    --wcu-bg: {{ section.settings.background_color }};
+    --wcu-card-bg: {{ section.settings.card_background }};
+    --wcu-border-color: {{ section.settings.border_color }};
+    --wcu-icon-color: {{ section.settings.icon_color }};
+    --wcu-card-radius: {{ section.settings.card_radius }}px;
+    --wcu-grid-gap: {{ section.settings.grid_gap }}px;
+    --wcu-padding-top: {{ section.settings.padding_top }}px;
+    --wcu-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section class="why-choose-us-section" style="background-color: var(--wcu-bg);">
+  <div class="wcu-container">
+    <div class="wcu-layout">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="wcu-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      <div class="wcu-grid">
+        {%- for block in section.blocks -%}
+          <div class="wcu-card" {{ block.shopify_attributes }}
+            {% if section.settings.enable_hover %}data-wcu-hover{% endif %}
+            style="animation-delay: {{ forloop.index0 | times: 100 }}ms;">
+
+            <div class="wcu-card__content">
+              {%- if block.settings.icon != blank -%}
+                <div class="wcu-card__icon">
+                  <img
+                    src="{{ block.settings.icon | image_url: width: 48 }}"
+                    alt="{{ block.settings.heading | escape }}"
+                    width="24"
+                    height="24"
+                    loading="lazy"
+                  >
+                </div>
+              {%- elsif block.settings.icon_svg != blank -%}
+                <div class="wcu-card__icon wcu-card__icon--svg">
+                  {{ block.settings.icon_svg }}
+                </div>
+              {%- endif -%}
+
+              <h3 class="wcu-card__title">{{ block.settings.heading }}</h3>
+
+              {%- if block.settings.description != blank -%}
+                <p class="wcu-card__description">{{ block.settings.description }}</p>
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.cta_label != blank -%}
+              <a href="{{ block.settings.cta_link | default: '#' }}" class="wcu-card__cta"{% if block.settings.cta_link == blank %} aria-disabled="true"{% endif %}>
+                <span class="wcu-card__cta-text">{{ block.settings.cta_label }}</span>
+                <svg class="wcu-card__cta-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3.333 8h9.334M8.667 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    if (!('IntersectionObserver' in window)) return;
+    const cards = document.querySelectorAll('.wcu-card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('wcu-card--visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach(card => observer.observe(card));
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Why Choose Us",
+  "tag": "section",
+  "class": "why-choose-us",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Why More than 10k Customers Choose Us Every Day"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#F3F4F6"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid Gap",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover",
+      "label": "Enable Hover Animation",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_card",
+      "name": "Feature Card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon (PNG/SVG image)"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Custom SVG Code (optional)",
+          "info": "Paste inline SVG markup. Used if no image is uploaded above."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Title",
+          "default": "Worldwide Shipping"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "No matter where you are, we've got you covered. Enjoy fast, reliable delivery across the globe—shop with peace of mind."
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA Label",
+          "default": "View Shipping Info"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Choose Us",
+      "blocks": [
+        {
+          "type": "feature_card",
+          "settings": {
+            "heading": "Worldwide Shipping",
+            "description": "No matter where you are, we've got you covered. Enjoy fast, reliable delivery across the globe—shop with peace of mind.",
+            "cta_label": "View Shipping Info"
+          }
+        },
+        {
+          "type": "feature_card",
+          "settings": {
+            "heading": "30-Days Free Returns",
+            "description": "Experience worry-free shopping with our 30-day free returns policy. Love it or send it back, absolutely free.",
+            "cta_label": "View Return Policy"
+          }
+        },
+        {
+          "type": "feature_card",
+          "settings": {
+            "heading": "Secure Online Payment",
+            "description": "Our state-of-the-art encryption technology keeps your payment details safe, so you can shop with peace of mind every time.",
+            "cta_label": "View Payment Info"
+          }
+        },
+        {
+          "type": "feature_card",
+          "settings": {
+            "heading": "24/7 Friendly Support",
+            "description": "Our dedicated support team is available around the clock to answer your questions and resolve issues—day or night.",
+            "cta_label": "Ask Support"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

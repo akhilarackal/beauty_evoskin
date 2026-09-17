@@ -1,0 +1,329 @@
+{{ 'section-hero-promo.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign bg_image = section.settings.background_image
+  assign has_thumbs = false
+  for block in section.blocks
+    if block.type == 'thumbnail' and block.settings.image != blank
+      assign has_thumbs = true
+    endif
+  endfor
+-%}
+
+<style>
+  #HeroPromo-{{ section.id }} {
+    --hero-promo-overlay: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+    --hero-promo-height: {{ section.settings.section_height }}px;
+  }
+  #shopify-section-{{ section.id }} {
+    --padding-top: {{ section.settings.padding_top }}px;
+    --padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+</style>
+
+<hero-promo
+  class="hero-promo section{% if bg_image == blank %} hero-promo--placeholder{% endif %}"
+  id="HeroPromo-{{ section.id }}"
+  style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  {%- if bg_image != blank -%}
+    <div class="hero-promo__media">
+      {{
+        bg_image
+        | image_url: width: 3840
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+          sizes: '100vw'
+      }}
+    </div>
+  {%- else -%}
+    <div class="hero-promo__media">{{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+  {%- endif -%}
+
+  <div class="hero-promo__overlay"></div>
+
+  <div class="hero-promo__content">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="hero-promo__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.subheading != blank -%}
+      <div class="hero-promo__subheading">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.promo_line != blank -%}
+      <p class="hero-promo__promo-line">{{ section.settings.promo_line }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.promo_code != blank -%}
+      <div class="hero-promo__copy" data-hero-promo-copy>
+        <button
+          type="button"
+          class="hero-promo__copy-button"
+          data-copy-code="{{ section.settings.promo_code | escape }}"
+          aria-label="Copy promo code {{ section.settings.promo_code }}"
+        >
+          <span class="hero-promo__copy-label">{{ section.settings.copy_label | default: 'Copy code' }}</span>
+          <span class="hero-promo__code">{{ section.settings.promo_code }}</span>
+        </button>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if has_thumbs -%}
+    <div class="hero-promo__thumbs" data-hero-promo-thumbs>
+        <button
+          type="button"
+          class="hero-promo__arrow"
+          data-hero-promo-prev
+          aria-label="Previous slide"
+        >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="hero-promo__thumbs-track" data-hero-promo-track>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'thumbnail' and block.settings.image != blank -%}
+            <button
+              type="button"
+              class="hero-promo__thumb{% if forloop.first %} is-active{% endif %}"
+              data-hero-promo-thumb
+              data-thumb-index="{{ forloop.index0 }}"
+              data-thumb-src="{{ block.settings.image | image_url: width: 200 }}"
+              {{ block.shopify_attributes }}
+              aria-label="Show slide {{ forloop.index }}"
+            >
+              {{
+                block.settings.image
+                | image_url: width: 200
+                | image_tag: loading: 'lazy', widths: '100, 200'
+              }}
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <button
+        type="button"
+        class="hero-promo__arrow"
+        data-hero-promo-next
+        aria-label="Next slide"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  {%- endif -%}
+</hero-promo>
+
+<script>
+  (function () {
+    var root = document.getElementById('HeroPromo-{{ section.id }}');
+    if (!root) return;
+
+    /* ---- Copy promo code to clipboard ---- */
+    var copyBtn = root.querySelector('[data-copy-code]');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var code = copyBtn.getAttribute('data-copy-code');
+        var label = copyBtn.querySelector('.hero-promo__copy-label');
+        var original = label ? label.textContent : 'Copy code';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(done).catch(fallback);
+        } else {
+          fallback();
+        }
+        function done() {
+          copyBtn.classList.add('is-copied');
+          if (label) label.textContent = 'Copied!';
+          setTimeout(reset, 2000);
+        }
+        function fallback() {
+          var t = document.createElement('textarea');
+          t.value = code;
+          document.body.appendChild(t);
+          t.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(t);
+          done();
+        }
+        function reset() {
+          copyBtn.classList.remove('is-copied');
+          if (label) label.textContent = original;
+        }
+      });
+    }
+
+    /* ---- Thumbnail carousel: swap background image on click ---- */
+    var thumbs = root.querySelectorAll('[data-hero-promo-thumb]');
+    var bg = root.querySelector('.hero-promo__media img');
+    var bgContainer = root.querySelector('.hero-promo__media');
+    if (thumbs.length && bg) {
+      thumbs.forEach(function (thumb) {
+        thumb.addEventListener('click', function () {
+          var src = thumb.getAttribute('data-thumb-src');
+          thumbs.forEach(function (t) { t.classList.remove('is-active'); });
+          thumb.classList.add('is-active');
+          if (src) {
+            bg.src = src;
+            bg.removeAttribute('srcset');
+          }
+        });
+      });
+    }
+
+    /* ---- Arrow navigation across thumbnails ---- */
+    var track = root.querySelector('[data-hero-promo-track]');
+    var prev = root.querySelector('[data-hero-promo-prev]');
+    var next = root.querySelector('[data-hero-promo-next]');
+    if (track) {
+      var scrollBy = function (dir) {
+        var first = thumbs[0];
+        var step = first ? first.offsetWidth + 12 : 112;
+        track.scrollBy({ left: dir * step, behavior: 'smooth' });
+      };
+      if (prev) prev.addEventListener('click', function () { scrollBy(-1); });
+      if (next) next.addEventListener('click', function () { scrollBy(1); });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Promo",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Large hero background image. Recommended width ≥ 2000px."
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 320,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "label": "Section height (desktop)",
+      "default": 470
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Deeply Nourishing for Everyday Wellbeing"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Organic body care formulated to nurture, soften, and respect your skin—naturally."
+    },
+    {
+      "type": "text",
+      "id": "promo_line",
+      "label": "Promo line",
+      "default": "Use Promo Code MEGA50 & Get an Extra 10% Off Your First Order!"
+    },
+    {
+      "type": "header",
+      "content": "Promo code"
+    },
+    {
+      "type": "text",
+      "id": "promo_code",
+      "label": "Promo code",
+      "default": "MEGA50"
+    },
+    {
+      "type": "text",
+      "id": "copy_label",
+      "label": "Copy button label",
+      "default": "Copy code"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "thumbnail",
+      "name": "Banner thumbnail",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Thumbnail image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Promo",
+      "blocks": [
+        {
+          "type": "thumbnail"
+        },
+        {
+          "type": "thumbnail"
+        },
+        {
+          "type": "thumbnail"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

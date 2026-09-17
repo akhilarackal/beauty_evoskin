@@ -1,0 +1,124 @@
+{{ 'collection-page-redesign.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign ritual_heading = section.settings.heading | default: 'Curated Rituals'
+  assign card_1_product = section.settings.card_1_product
+  assign card_2_product = section.settings.card_2_product
+
+  if card_1_product == blank and collection.products.size > 1
+    assign card_1_product = collection.products[1]
+  endif
+  if card_2_product == blank and collection.products.size > 2
+    assign card_2_product = collection.products[2]
+  endif
+-%}
+
+<section class="col-rituals page-width">
+  <h2 class="col-rituals__heading">{{ ritual_heading }}</h2>
+
+  <div class="col-rituals__grid">
+    {%- if card_1_product != blank -%}
+      <a href="{{ card_1_product.url }}" class="col-rituals__card">
+        <div class="col-rituals__card-image">
+          {%- if card_1_product.featured_image != blank -%}
+            <img
+              src="{{ card_1_product.featured_image | image_url: width: 800 }}"
+              alt="{{ card_1_product.featured_image.alt | default: card_1_product.title | escape }}"
+              loading="lazy"
+              width="800"
+              height="{{ 800 | divided_by: card_1_product.featured_image.aspect_ratio | ceil }}"
+            >
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag }}
+          {%- endif -%}
+        </div>
+        <div class="col-rituals__card-content">
+          <h3 class="col-rituals__card-title">{{ section.settings.card_1_title | default: card_1_product.title }}</h3>
+          <p class="col-rituals__card-desc">{{ section.settings.card_1_description | default: card_1_product.description | strip_html | truncate: 80 }}</p>
+          <span class="col-rituals__card-price">{{ card_1_product.price | money }}</span>
+        </div>
+      </a>
+    {%- endif -%}
+
+    {%- if card_2_product != blank -%}
+      <a href="{{ card_2_product.url }}" class="col-rituals__card">
+        <div class="col-rituals__card-image">
+          {%- if card_2_product.featured_image != blank -%}
+            <img
+              src="{{ card_2_product.featured_image | image_url: width: 800 }}"
+              alt="{{ card_2_product.featured_image.alt | default: card_2_product.title | escape }}"
+              loading="lazy"
+              width="800"
+              height="{{ 800 | divided_by: card_2_product.featured_image.aspect_ratio | ceil }}"
+            >
+          {%- else -%}
+            {{ 'collection-2' | placeholder_svg_tag }}
+          {%- endif -%}
+        </div>
+        <div class="col-rituals__card-content">
+          <h3 class="col-rituals__card-title">{{ section.settings.card_2_title | default: card_2_product.title }}</h3>
+          <p class="col-rituals__card-desc">{{ section.settings.card_2_description | default: card_2_product.description | strip_html | truncate: 80 }}</p>
+          <span class="col-rituals__card-price">{{ card_2_product.price | money }}</span>
+        </div>
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Curated Rituals",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Curated Rituals"
+    },
+    {
+      "type": "header",
+      "content": "Card 1"
+    },
+    {
+      "type": "product",
+      "id": "card_1_product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "Title Override",
+      "info": "Leave blank to use product title"
+    },
+    {
+      "type": "text",
+      "id": "card_1_description",
+      "label": "Description Override",
+      "info": "Leave blank to use product description"
+    },
+    {
+      "type": "header",
+      "content": "Card 2"
+    },
+    {
+      "type": "product",
+      "id": "card_2_product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "label": "Title Override",
+      "info": "Leave blank to use product title"
+    },
+    {
+      "type": "text",
+      "id": "card_2_description",
+      "label": "Description Override",
+      "info": "Leave blank to use product description"
+    }
+  ]
+}
+{% endschema %}

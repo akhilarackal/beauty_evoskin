@@ -1,0 +1,815 @@
+/* ============================================================
+   Sticky Cart Bar — Zomato-style floating bottom bar
+   Appears on every page. On product pages it also shows the
+   quantity stepper + add to cart for the current product.
+   ============================================================ */
+
+.zcart {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 60;
+  padding: 0 10px calc(10px + env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+
+.zcart[hidden] {
+  display: none;
+}
+
+/* Slides up when it appears, e.g. after adding to cart on the home page */
+.zcart__wrap {
+  animation: zcart-rise 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes zcart-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zcart__wrap {
+    animation: none;
+  }
+}
+
+.zcart__wrap {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  pointer-events: auto;
+}
+
+/* ── Expander tab (centered above the card) ── */
+.zcart__tab {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: fit-content;
+  margin: 0 auto -1px;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px 6px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  background: #ffffff;
+  color: #1c1c1c;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.zcart__tab[hidden] {
+  display: none;
+}
+
+.zcart__tab-chevron {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.25s ease;
+}
+
+.zcart.is-open .zcart__tab-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Card ── */
+.zcart__card {
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 24px rgba(28, 28, 28, 0.16);
+}
+
+/* ── Expandable mini cart panel ── */
+.zcart__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s ease;
+}
+
+.zcart.is-open .zcart__panel {
+  grid-template-rows: 1fr;
+}
+
+.zcart__panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.zcart__list {
+  max-height: 42vh;
+  margin: 0;
+  padding: 6px 12px 0;
+  overflow-y: auto;
+  list-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.zcart__line {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.zcart__line:last-child {
+  border-bottom: none;
+}
+
+.zcart__line-img {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f4f4f4;
+}
+
+.zcart__line-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zcart__line-info {
+  display: block;
+  min-width: 0;
+}
+
+.zcart__line-name {
+  display: block;
+  overflow: hidden;
+  color: #1c1c1c;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zcart__line-price {
+  display: block;
+  margin-top: 2px;
+  color: #686b78;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+}
+
+.zcart__line-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Quantity stepper (shared) ── */
+.zcart__qty {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(168, 126, 37, 0.45);
+  border-radius: 8px;
+  background: #fffdf7;
+}
+
+.zcart__qty-btn {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #8a6617;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.zcart__qty-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.zcart__qty-val {
+  min-width: 24px;
+  color: #1c1c1c;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.zcart__qty-input {
+  width: 30px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1c1c1c;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.zcart__qty-input::-webkit-outer-spin-button,
+.zcart__qty-input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.zcart__line-remove {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  color: #686b78;
+  cursor: pointer;
+}
+
+.zcart__line-remove svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ── Panel footer (checkout) ── */
+.zcart__panel-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 12px;
+}
+
+.zcart__total {
+  display: grid;
+  gap: 1px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.zcart__total-label {
+  color: #686b78;
+  font-size: 11px;
+}
+
+.zcart__total-value {
+  color: #1c1c1c;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.zcart__checkout {
+  flex: 1;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 10px;
+  background: #174f3a;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.zcart__divider {
+  height: 1px;
+  margin: 0 12px;
+  background: rgba(0, 0, 0, 0.07);
+}
+
+/* ── Main row ── */
+.zcart__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.zcart__thumb {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f4f4f4;
+}
+
+.zcart__thumb[data-stack-count="2"] {
+  width: 49px;
+  overflow: visible;
+  background: transparent;
+}
+
+.zcart__thumb[data-stack-count="3"] {
+  width: 54px;
+  overflow: visible;
+  background: transparent;
+}
+
+.zcart__thumb[data-stack-count="4"] {
+  width: 59px;
+  overflow: visible;
+  background: transparent;
+}
+
+.zcart__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zcart__thumb-stack {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.zcart__thumb-img {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  top: 0;
+  overflow: hidden;
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  background: #f4f4f4;
+  box-shadow: 0 2px 8px rgba(28, 28, 28, 0.16);
+  width: 44px;
+  height: 44px;
+}
+
+.zcart__thumb-img--1 {
+  left: 0;
+  z-index: 1;
+}
+
+.zcart__thumb-img--2 {
+  left: 5px;
+  z-index: 2;
+}
+
+.zcart__thumb-img--3 {
+  left: 10px;
+  z-index: 3;
+}
+
+.zcart__thumb-img--4 {
+  left: 15px;
+  z-index: 4;
+}
+
+.zcart__thumb-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zcart__meta {
+  display: block;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.zcart__title {
+  display: block;
+  overflow: hidden;
+  color: #1c1c1c;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zcart__sub {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  overflow: hidden;
+  color: #686b78;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.zcart__sub-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zcart__sub svg {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+/* Right-hand action cluster.
+   margin-left: auto pins this group to the right edge and opens up the
+   gap after the thumbnail. Needed because the product text is hidden on
+   narrower screens, so there is nothing else to push the buttons over. */
+.zcart__actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.zcart__add {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #d4af37;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.zcart__add:disabled {
+  background: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.4);
+  cursor: not-allowed;
+}
+
+.zcart__add.is-loading {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+/* "Buy it now" — direct checkout for this product */
+.zcart__buy {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border: 1px solid #111827;
+  border-radius: 10px;
+  background: #111827;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 150ms ease;
+}
+
+.zcart__buy:hover:not(:disabled) {
+  background: #ffffff;
+  color: #111827;
+}
+
+.zcart__buy:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.zcart__buy:disabled {
+  border-color: #9ca3af;
+  background: #9ca3af;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+.zcart__buy.is-loading {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+/* Checkout button shown in the row on non-product pages */
+.zcart__checkout--inline {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.zcart__close {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.06);
+  color: #686b78;
+  cursor: pointer;
+}
+
+.zcart__close svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ── Hide pieces contextually ── */
+.zcart__actions [hidden],
+.zcart__row [hidden] {
+  display: none !important;
+}
+
+/* ── Desktop: near full-width bar with larger controls ── */
+@media screen and (min-width: 750px) {
+  .zcart {
+    padding: 0 20px calc(16px + env(safe-area-inset-bottom));
+  }
+
+  .zcart__wrap {
+    max-width: 1720px;
+  }
+
+  .zcart__card {
+    border-radius: 20px;
+  }
+
+  .zcart__row {
+    gap: 16px;
+    padding: 14px 22px;
+  }
+
+  .zcart__thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+  }
+
+  .zcart__thumb[data-stack-count="2"] {
+    width: 62px;
+  }
+
+  .zcart__thumb[data-stack-count="3"] {
+    width: 68px;
+  }
+
+  .zcart__thumb[data-stack-count="4"] {
+    width: 74px;
+  }
+
+  .zcart__thumb-img {
+    border-radius: 12px;
+    width: 56px;
+    height: 56px;
+  }
+
+  .zcart__thumb-img--2 {
+    left: 6px;
+  }
+
+  .zcart__thumb-img--3 {
+    left: 12px;
+  }
+
+  .zcart__thumb-img--4 {
+    left: 18px;
+  }
+
+  .zcart__title {
+    font-size: 16px;
+  }
+
+  .zcart__sub {
+    font-size: 13px;
+  }
+
+  .zcart__actions {
+    gap: 12px;
+  }
+
+  .zcart__qty-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+
+  .zcart__qty-input {
+    width: 40px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  .zcart__add,
+  .zcart__buy,
+  .zcart__checkout--inline {
+    min-height: 48px;
+    padding: 0 28px;
+    font-size: 15px;
+  }
+
+  .zcart__close {
+    width: 32px;
+    height: 32px;
+  }
+
+  .zcart__close svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .zcart__tab {
+    padding: 7px 20px 8px;
+    font-size: 13px;
+  }
+
+  /* Mini cart gets the extra width too */
+  .zcart__list {
+    max-height: 46vh;
+    padding: 8px 22px 0;
+  }
+
+  .zcart__line {
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    gap: 16px;
+    padding: 12px 0;
+  }
+
+  .zcart__line-img {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+  }
+
+  .zcart__line-name {
+    font-size: 14px;
+  }
+
+  .zcart__line-price {
+    font-size: 13px;
+  }
+
+  .zcart__panel-foot {
+    gap: 16px;
+    padding: 14px 22px 18px;
+  }
+
+  .zcart__checkout {
+    flex: 0 0 auto;
+    min-width: 280px;
+    min-height: 48px;
+    margin-left: auto;
+    padding: 0 32px;
+    font-size: 15px;
+  }
+
+  /* The row's inline checkout keeps its own compact sizing */
+  .zcart__checkout--inline {
+    min-width: 0;
+    margin-left: 0;
+  }
+
+  .zcart__total-value {
+    font-size: 17px;
+  }
+
+  .zcart__divider {
+    margin: 0 22px;
+  }
+}
+
+/* ── Narrow screens ──
+   Product pages carry three controls (stepper, add, buy), so the
+   product text is dropped first to stop it colliding with the buttons.
+   The thumbnail stays as the visual reference. */
+@media screen and (max-width: 600px) {
+  .zcart--product .zcart__meta {
+    display: none;
+  }
+
+  /* With the text gone, `margin-left: auto` would dump all the leftover
+     width into a single large gap after the thumbnail. Instead keep a
+     fixed, modest gap and let the two buttons absorb the spare space. */
+  .zcart--product .zcart__actions {
+    flex: 1 1 auto;
+    margin-left: 12px;
+  }
+
+  .zcart--product .zcart__add,
+  .zcart--product .zcart__buy {
+    flex: 1 1 auto;
+  }
+
+  /* Stepper and close button keep their intrinsic size */
+  .zcart--product .zcart__qty,
+  .zcart--product .zcart__close {
+    flex: 0 0 auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .zcart__row {
+    gap: 8px;
+    padding: 9px 10px;
+  }
+
+  .zcart__thumb {
+    width: 40px;
+    height: 40px;
+  }
+
+  .zcart__thumb[data-stack-count="2"] {
+    width: 44px;
+  }
+
+  .zcart__thumb[data-stack-count="3"] {
+    width: 48px;
+  }
+
+  .zcart__thumb[data-stack-count="4"] {
+    width: 52px;
+  }
+
+  .zcart__thumb-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .zcart__thumb-img--2 {
+    left: 4px;
+  }
+
+  .zcart__thumb-img--3 {
+    left: 8px;
+  }
+
+  .zcart__thumb-img--4 {
+    left: 12px;
+  }
+
+  .zcart__title {
+    font-size: 13px;
+  }
+
+  .zcart__actions {
+    gap: 6px;
+  }
+
+  .zcart__add,
+  .zcart__buy {
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .zcart__qty-btn {
+    width: 26px;
+  }
+
+  .zcart__qty-input {
+    width: 26px;
+  }
+}
+
+/* Really tight: drop the thumbnail too so actions never wrap. */
+@media screen and (max-width: 360px) {
+  .zcart--product .zcart__thumb {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zcart__panel,
+  .zcart__tab-chevron {
+    transition: none;
+  }
+}

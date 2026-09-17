@@ -1,0 +1,232 @@
+{{ 'announcement-bar.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign bg_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+  assign bar_height = section.settings.bar_height
+  assign gap_desktop = section.settings.gap_desktop
+  assign gap_mobile = section.settings.gap_mobile
+  assign show_badge_mobile = section.settings.show_badge_mobile
+  assign show_cta_mobile = section.settings.show_cta_mobile
+  assign mobile_text = section.settings.mobile_text
+-%}
+
+{%- capture mobile_classes -%}
+  {%- if show_badge_mobile -%} show-badge-mobile{%- endif -%}
+  {%- if show_cta_mobile -%} show-cta-mobile{%- endif -%}
+  {%- if mobile_text != blank -%} has-mobile-text{%- endif -%}
+{%- endcapture -%}
+
+<div
+  class="announcement-bar-section color-{{ section.settings.color_scheme }} gradient{{ mobile_classes }}"
+  style="--announcement-bg: {{ bg_color }}; --announcement-text-color: {{ text_color }}; --bar-height: {{ bar_height }}px; --gap-desktop: {{ gap_desktop }}px; --gap-mobile: {{ gap_mobile }}px;"
+>
+  <div class="announcement-bar-row page-width">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'badge' -%}
+          {%- if block.settings.badge_text != blank -%}
+            <span
+              class="announcement-badge"
+              style="--badge-bg: {{ block.settings.badge_background }}; --badge-color: {{ block.settings.badge_text_color }};"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.badge_text | escape }}
+            </span>
+          {%- endif -%}
+
+        {%- when 'announcement' -%}
+          {%- if block.settings.text != blank -%}
+            <span class="announcement-text" {{ block.shopify_attributes }}>
+              {{ block.settings.text | escape }}
+            </span>
+          {%- endif -%}
+
+        {%- when 'cta' -%}
+          {%- if block.settings.cta_label != blank -%}
+            <a
+              href="{{ block.settings.cta_link }}"
+              class="announcement-cta"
+              {%- if block.settings.open_new_tab -%} target="_blank" rel="noopener"{%- endif -%}
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.cta_label | escape }}
+              <svg class="announcement-cta-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+
+    {%- if mobile_text != blank -%}
+      <span class="announcement-text announcement-text--mobile">
+        {{ mobile_text | escape }}
+      </span>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "max_blocks": 3,
+  "class": "announcement-bar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#C5A044"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "bar_height",
+      "label": "Bar height",
+      "min": 32,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "label": "Desktop gap",
+      "min": 4,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Mobile gap",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge_mobile",
+      "label": "Show badge on mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta_mobile",
+      "label": "Show CTA on mobile",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "mobile_text",
+      "label": "Mobile announcement text",
+      "default": "Free Shipping on Orders Over $230",
+      "info": "Optional override text for mobile. Leave blank to show the same text as desktop."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "default": "BEST OFFER"
+        },
+        {
+          "type": "color",
+          "id": "badge_background",
+          "label": "Badge background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "badge_text_color",
+          "label": "Badge text color",
+          "default": "#1F3B73"
+        }
+      ]
+    },
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Announcement text",
+          "default": "Free Shipping on Orders Over $230"
+        }
+      ]
+    },
+    {
+      "type": "cta",
+      "name": "CTA Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Button label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement-bar.presets.name",
+      "blocks": [
+        {
+          "type": "badge"
+        },
+        {
+          "type": "announcement"
+        },
+        {
+          "type": "cta"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,44 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "about-page",
+      "blocks": {
+        "mission": {
+          "type": "content_block",
+          "settings": {
+            "heading": "Our Mission",
+            "description": "we are committed to delivering premium skincare products powered by trusted ingredients and advanced formulations, helping every individual achieve healthy, radiant, and youthful looking skin.",
+            "image_position": "left"
+          }
+        },
+        "vision": {
+          "type": "content_block",
+          "settings": {
+            "heading": "Our Vision",
+            "description": "we are committed to delivering premium skincare products powered by trusted ingredients and advanced formulations, helping every individual achieve healthy, radiant, and youthful looking skin.",
+            "image_position": "right"
+          }
+        }
+      },
+      "block_order": ["mission", "vision"],
+      "settings": {
+        "page_title": "About Us",
+        "tagline": "Creating Value. Strengthening Communities. Inspiring Progress.",
+        "padding_top": 48,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

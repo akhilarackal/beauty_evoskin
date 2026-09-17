@@ -1,0 +1,645 @@
+/* ============================================================
+   Section: Item of the Day
+   ============================================================ */
+
+/* ── Google Fonts import (Playfair Display + Poppins) ───────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;600&display=swap');
+
+/* ── Container ──────────────────────────────────────────────── */
+.section-iotd {
+  background-color: var(--iotd-bg, #ffffff);
+  padding-top: var(--iotd-pad-top, 80px);
+  padding-bottom: var(--iotd-pad-bottom, 80px);
+  width: 100%;
+}
+
+/* Matches the theme page container so this section lines up with
+   the header and every other section instead of hugging the left. */
+.iotd-container {
+  max-width: var(--page-width, 128rem);
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media screen and (min-width: 750px) {
+  .iotd-container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+/* ── Heading ─────────────────────────────────────────────────── */
+.iotd-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+  color: #222222;
+  margin: 0;
+}
+
+/* ── Product Card ────────────────────────────────────────────── */
+.iotd-card {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.iotd-card--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.iotd-card__empty-msg {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+  margin: 0;
+}
+
+.iotd-card__inner {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* ── Product Form (removes default browser styles) ──────────── */
+.iotd-product-form {
+  width: 100%;
+}
+
+/* ── Image Gallery ───────────────────────────────────────────── */
+.iotd-gallery {
+  flex: 0 0 560px;
+  max-width: 560px;
+  display: flex;
+  gap: 16px;
+}
+
+.iotd-gallery__thumb-wrap,
+.iotd-gallery__main-wrap {
+  flex: 1 1 50%;
+}
+
+/* Thumbnail */
+.iotd-gallery__thumb {
+  width: 100%;
+  height: 250px;
+  background-color: #f3f4f6;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iotd-gallery__thumb--placeholder {
+  color: #d1d5db;
+}
+
+/* Main image */
+.iotd-gallery__main {
+  width: 100%;
+  height: 250px;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9fafb;
+}
+
+.iotd-gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 300ms ease;
+}
+
+.iotd-gallery__img--main:hover {
+  transform: scale(1.05);
+}
+
+.iotd-gallery__placeholder {
+  width: 80px;
+  height: 80px;
+  color: #d1d5db;
+}
+
+/* ── Badges ──────────────────────────────────────────────────── */
+.iotd-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+}
+
+.iotd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  line-height: 16px;
+}
+
+.iotd-badge--secondary {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* ── Product Details (right column) ─────────────────────────── */
+.iotd-details {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Vendor */
+.iotd-details__vendor {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Title */
+.iotd-details__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  color: #111827;
+  margin: 0;
+}
+
+/* Pricing row */
+.iotd-details__pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.iotd-price {
+  font-family: 'Poppins', sans-serif;
+  display: inline-block;
+}
+
+.iotd-price--current {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ec008c;
+}
+
+.iotd-price--compare {
+  font-size: 18px;
+  font-weight: 400;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+/* Shipping text */
+.iotd-details__shipping {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 19.5px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.iotd-details__shipping-link {
+  color: #6b7280;
+  text-underline-offset: 2px;
+}
+
+/* ── Option groups ───────────────────────────────────────────── */
+.iotd-option {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.iotd-option__label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #6b7280;
+  margin: 0;
+}
+
+.iotd-option__selected-value {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #111827;
+  font-weight: 400;
+}
+
+/* Color swatches */
+.iotd-swatches {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.iotd-swatch {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: border-color 200ms ease;
+}
+
+.iotd-swatch__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.iotd-swatch__dot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+}
+
+.iotd-swatch.is-selected {
+  border-color: #111827;
+  padding: 2px;
+}
+
+.iotd-swatch.is-selected .iotd-swatch__dot {
+  outline: 2px solid #ffffff;
+  outline-offset: -3px;
+}
+
+/* Size buttons */
+.iotd-size-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.iotd-size-btn {
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.iotd-size-btn__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.iotd-size-btn__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 2px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #111827;
+  background-color: #ffffff;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.iotd-size-btn.is-selected .iotd-size-btn__label {
+  background-color: #111827;
+  border-color: #111827;
+  color: #ffffff;
+}
+
+/* Hidden native variant select */
+.iotd-variant-select {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Inventory ───────────────────────────────────────────────── */
+.iotd-inventory {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #2563eb;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.iotd-inventory--hidden {
+  display: none;
+}
+
+.iotd-inventory__dot {
+  font-size: 18px;
+  line-height: 1;
+  color: #2563eb;
+}
+
+/* ── Quantity + Add to Cart row ──────────────────────────────── */
+.iotd-atc-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+/* Quantity selector */
+.iotd-qty {
+  display: flex;
+  align-items: center;
+  width: 120px;
+  height: 42px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.iotd-qty__btn {
+  flex: 0 0 36px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #374151;
+  padding: 0;
+  transition: background-color 150ms ease;
+}
+
+.iotd-qty__btn:hover {
+  background-color: #e5e7eb;
+}
+
+.iotd-qty__input {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  padding: 0;
+}
+
+.iotd-qty__input::-webkit-inner-spin-button,
+.iotd-qty__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Add to Cart button */
+.iotd-atc-btn {
+  flex: 1 1 auto;
+  height: 42px;
+  background-color: #d4af37;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 300ms ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iotd-atc-btn:hover:not(:disabled) {
+  background-color: #c49a1d;
+}
+
+.iotd-atc-btn:disabled,
+.iotd-atc-btn[aria-disabled='true'] {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ── Bottom Actions ──────────────────────────────────────────── */
+.iotd-buy-btn {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #111827;
+  border-radius: 8px;
+  background-color: #111827;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 150ms ease;
+}
+
+.iotd-buy-btn:hover:not(:disabled) {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+.iotd-buy-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.iotd-buy-btn:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 3px;
+}
+
+.iotd-buy-btn:disabled,
+.iotd-buy-btn[aria-disabled='true'] {
+  border-color: #9ca3af;
+  background-color: #9ca3af;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+.iotd-buy-btn.is-loading {
+  opacity: 0.75;
+  cursor: progress;
+}
+
+.iotd-bottom-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.iotd-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #111827;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.iotd-action-link:hover {
+  color: #6b7280;
+}
+
+.iotd-action-link svg {
+  flex-shrink: 0;
+}
+
+/* ── Demo notice (editor only) ──────────────────────────────── */
+.iotd-demo-notice {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: #9ca3af;
+  border: 1px dashed #d1d5db;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-top: 4px;
+}
+
+/* ── Responsive: Tablet ──────────────────────────────────────── */
+@media screen and (max-width: 989px) {
+  .iotd-card__inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .iotd-gallery {
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Stacked layout reads better centred than left hugging */
+  .iotd-details {
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .iotd-details__pricing,
+  .iotd-atc-row,
+  .iotd-bottom-actions,
+  .iotd-inventory,
+  .iotd-swatches,
+  .iotd-size-btns {
+    justify-content: center;
+  }
+
+  .iotd-atc-btn {
+    width: 100%;
+  }
+}
+
+/* ── Responsive: Mobile ──────────────────────────────────────── */
+@media screen and (max-width: 599px) {
+  .iotd-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .iotd-gallery {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .iotd-gallery__thumb,
+  .iotd-gallery__main {
+    width: 100%;
+    height: 220px;
+  }
+
+  .iotd-swatches,
+  .iotd-size-btns {
+    flex-wrap: wrap;
+  }
+
+  .iotd-atc-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .iotd-qty {
+    width: 100%;
+  }
+
+  .iotd-atc-btn {
+    width: 100%;
+  }
+
+  .iotd-bottom-actions {
+    gap: 16px;
+  }
+}

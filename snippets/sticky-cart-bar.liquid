@@ -1,0 +1,138 @@
+{%- comment -%}
+  Sticky Cart Bar — floating bottom bar.
+
+  Product pages : product image, quantity stepper, Add to cart, Buy it now.
+  Other pages   : order summary (items + total) with a Checkout button.
+  Never shown on the cart or checkout pages.
+
+  The tab above the bar opens a mini cart where lines can be changed or
+  removed, with the running total and a checkout action.
+{%- endcomment -%}
+
+{%- liquid
+  assign zc_enabled = true
+  if template.name == 'cart'
+    assign zc_enabled = false
+  endif
+
+  assign is_product_page = false
+  if template.name == 'product' and product != blank
+    assign is_product_page = true
+  endif
+
+  if is_product_page
+    assign zc_variant = product.selected_or_first_available_variant
+    assign zc_image = zc_variant.featured_media.preview_image | default: product.featured_image
+  endif
+-%}
+
+{%- if zc_enabled -%}
+  <div
+    class="zcart{% if is_product_page %} zcart--product{% else %} zcart--summary{% endif %}"
+    data-zcart
+    data-is-product="{% if is_product_page %}true{% else %}false{% endif %}"
+    data-money-format="{{ shop.money_format | escape }}"
+    data-cart-url="{{ routes.cart_url }}"
+    {% if is_product_page %}
+      data-variant-id="{{ zc_variant.id }}"
+    {% endif %}
+    hidden
+  >
+    <div class="zcart__wrap">
+      {%- comment -%} Expander tab — opens the mini cart {%- endcomment -%}
+      <button class="zcart__tab" type="button" data-zcart-tab aria-expanded="false" hidden>
+        <span data-zcart-tab-label>{{ cart.item_count }} items</span>
+        <svg class="zcart__tab-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2.5 7.5L6 4l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="zcart__card">
+        {%- comment -%} Mini cart panel {%- endcomment -%}
+        <div class="zcart__panel">
+          <div class="zcart__panel-inner">
+            <ul class="zcart__list" data-zcart-list></ul>
+            <div class="zcart__panel-foot">
+              <span class="zcart__total">
+                <span class="zcart__total-label">Total</span>
+                <span class="zcart__total-value" data-zcart-total>{{ cart.total_price | money }}</span>
+              </span>
+              <a class="zcart__checkout" href="/checkout" data-zcart-panel-checkout>Checkout</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="zcart__divider" data-zcart-divider hidden></div>
+
+        {%- comment -%} Main row {%- endcomment -%}
+        <div class="zcart__row">
+          <span class="zcart__thumb" data-zcart-thumb>
+            {%- if is_product_page and zc_image != blank -%}
+              <img src="{{ zc_image | image_url: width: 120 }}" alt="{{ product.title | escape }}" width="44" height="44" loading="lazy">
+            {%- endif -%}
+          </span>
+
+          <a class="zcart__meta" href="{% if is_product_page %}{{ product.url }}{% else %}{{ routes.cart_url }}{% endif %}" data-zcart-meta>
+            <span class="zcart__title" data-zcart-title>
+              {%- if is_product_page -%}{{ product.title | escape }}{%- endif -%}
+            </span>
+            <span class="zcart__sub" data-zcart-sub>
+              <span class="zcart__sub-text" data-zcart-sub-text>
+                {%- if is_product_page -%}{{ zc_variant.price | money }}{%- endif -%}
+              </span>
+              <svg viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                <path d="M3.5 1.5L7 5l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+
+          <span class="zcart__actions">
+            {%- if is_product_page -%}
+              <span class="zcart__qty" data-zcart-qty>
+                <button class="zcart__qty-btn" type="button" data-zcart-minus aria-label="Decrease quantity">&minus;</button>
+                <input
+                  class="zcart__qty-input"
+                  type="number"
+                  value="1"
+                  min="1"
+                  max="99"
+                  aria-label="Quantity"
+                  data-zcart-qty-input
+                >
+                <button class="zcart__qty-btn" type="button" data-zcart-plus aria-label="Increase quantity">+</button>
+              </span>
+
+              <button
+                class="zcart__add"
+                type="button"
+                data-zcart-add
+                {% unless zc_variant.available %}disabled{% endunless %}
+              >
+                {%- if zc_variant.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+              </button>
+
+              <button
+                class="zcart__buy"
+                type="button"
+                data-zcart-buy
+                {% unless zc_variant.available %}disabled{% endunless %}
+              >
+                Buy it now
+              </button>
+            {%- else -%}
+              <a class="zcart__checkout zcart__checkout--inline" href="/checkout" data-zcart-checkout>
+                Checkout
+              </a>
+            {%- endif -%}
+
+            <button class="zcart__close" type="button" data-zcart-close aria-label="Hide bar">
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,152 @@
+/* ============================================================
+   Quick Add button — single source of truth
+   ============================================================
+   Every product card across the theme shows the same add-to-cart
+   affordance: a rounded white tile in the bottom-right of the image,
+   based on the Featured Collection design.
+
+   Sections previously each defined their own, so sizes, radii and
+   colours drifted apart and some were invisible against pale product
+   photography.
+
+   The `body` prefix is required: section stylesheets are linked from
+   inside the section markup, so they land in <body> and come after this
+   file in the <head>. Prefixing raises specificity just enough to win
+   without using !important.
+   ============================================================ */
+
+body .fcs-card__add-btn,
+body .sc-card__add-btn,
+body .fd-card__add-btn,
+body .nac-card__add-btn,
+body .bs-card__add,
+body .pcol-card__plus,
+body .crecs-card__plus {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 2;
+  display: flex;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  /* subtle border keeps it readable on white or very light images */
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1c1a17;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(17, 24, 39, 0.14);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease, transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body .fcs-card__add-btn:hover,
+body .sc-card__add-btn:hover,
+body .fd-card__add-btn:hover,
+body .nac-card__add-btn:hover,
+body .bs-card__add:hover,
+body .pcol-card__plus:hover,
+body .crecs-card__plus:hover {
+  border-color: #c5a044;
+  background: #c5a044;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(197, 160, 68, 0.34);
+  transform: translateY(-1px);
+}
+
+body .fcs-card__add-btn:focus-visible,
+body .sc-card__add-btn:focus-visible,
+body .fd-card__add-btn:focus-visible,
+body .nac-card__add-btn:focus-visible,
+body .bs-card__add:focus-visible,
+body .pcol-card__plus:focus-visible,
+body .crecs-card__plus:focus-visible {
+  outline: 2px solid #c5a044;
+  outline-offset: 2px;
+}
+
+body .fcs-card__add-btn:disabled,
+body .sc-card__add-btn:disabled,
+body .fd-card__add-btn:disabled,
+body .nac-card__add-btn:disabled,
+body .bs-card__add:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Icon sizing, shared */
+body .fcs-card__add-btn > svg,
+body .sc-card__add-btn > svg,
+body .fd-card__add-btn > svg,
+body .nac-card__add-btn > svg,
+body .bs-card__add > svg,
+body .pcol-card__plus > svg,
+body .crecs-card__plus > svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* Success state — dark green with a checkmark */
+body .fcs-card__add-btn.is-added,
+body .sc-card__add-btn.is-added,
+body .fd-card__add-btn.is-added,
+body .nac-card__add-btn.is-added,
+body .bs-card__add.is-added,
+body .pcol-card__plus.is-added,
+body .crecs-card__plus.is-added {
+  border-color: #174f3a;
+  background: #174f3a;
+  color: #ffffff;
+}
+
+/* The per-section check icons inherit the button colour rather than
+   using their own green, which is unreadable on a green background. */
+body .fcs-card__add-btn .fcs-check,
+body .sc-card__add-btn .sc-check,
+body .fd-card__add-btn .fd-check,
+body .nac-card__add-btn .nac-check {
+  color: currentColor;
+}
+
+/* Loading spinner, shared look */
+body .fcs-card__add-btn .fcs-spinner,
+body .sc-card__add-btn .sc-spinner,
+body .fd-card__add-btn .fd-spinner,
+body .nac-card__add-btn .nac-spinner,
+body .bs-card__add .bs-card__add-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(17, 24, 39, 0.18);
+  border-top-color: #c5a044;
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body .fcs-card__add-btn,
+  body .sc-card__add-btn,
+  body .fd-card__add-btn,
+  body .nac-card__add-btn,
+  body .bs-card__add,
+  body .pcol-card__plus,
+  body .crecs-card__plus {
+    transition: none;
+  }
+
+  body .fcs-card__add-btn:hover,
+  body .sc-card__add-btn:hover,
+  body .fd-card__add-btn:hover,
+  body .nac-card__add-btn:hover,
+  body .bs-card__add:hover,
+  body .pcol-card__plus:hover,
+  body .crecs-card__plus:hover {
+    transform: none;
+  }
+}

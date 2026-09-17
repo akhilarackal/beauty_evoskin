@@ -1,0 +1,37 @@
+{{ 'collection-page-redesign.css' | asset_url | stylesheet_tag }}
+
+<section class="col-hero">
+  <div class="col-hero__banner">
+    <div class="col-hero__inner page-width">
+      <span class="col-hero__subtitle">COLLECTIONS</span>
+      <h1 class="col-hero__title">{{ collection.title | default: 'The Signature Collections' }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="col-hero__description">{{ collection.description }}</div>
+      {%- else -%}
+        <p class="col-hero__description">Discover our carefully curated collections crafted to deliver pure, premium care for your skin and wellness journey.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Hero",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "banner_bg_color",
+      "label": "Banner Background",
+      "default": "#C8A951"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+  ]
+}
+{% endschema %}

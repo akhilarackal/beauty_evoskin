@@ -1,0 +1,228 @@
+{%- style -%}
+  #catgrid-{{ section.id }} {
+    --catgrid-cols: {{ section.settings.columns_desktop }};
+    --catgrid-cols-mobile: {{ section.settings.columns_mobile }};
+    --catgrid-card-height: {{ section.settings.card_height }}px;
+    --catgrid-radius: {{ section.settings.card_radius }}px;
+    --catgrid-gap: {{ section.settings.gap }}px;
+    --catgrid-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --catgrid-title-color: {{ section.settings.title_color }};
+    --catgrid-btn-color: {{ section.settings.button_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .catgrid { 
+    display: grid;
+    grid-template-columns: repeat(var(--catgrid-cols, 4), 1fr);
+    gap: var(--catgrid-gap, 20px);
+  }
+  .catgrid__card {
+    position: relative;
+    border-radius: var(--catgrid-radius, 12px);
+    overflow: hidden;
+    height: var(--catgrid-card-height, 200px);
+    display: flex;
+    text-decoration: none;
+  }
+  .catgrid__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .catgrid__overlay {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: var(--catgrid-overlay-opacity, 0.2);
+    z-index: 1;
+  }
+  .catgrid__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 24px;
+    width: 100%;
+  }
+  .catgrid__title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.3;
+    color: var(--catgrid-title-color, #fff);
+    margin: 0 0 8px;
+  }
+  .catgrid__btn {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--catgrid-btn-color, #fff);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+  }
+  .catgrid__btn svg {
+    width: 14px; height: 14px;
+    transition: transform 0.2s ease;
+  }
+  .catgrid__card:hover .catgrid__btn svg {
+    transform: translateX(3px);
+  }
+  .catgrid__placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #c8a951 0%, #8b6914 100%);
+    z-index: 0;
+  }
+  @media screen and (max-width: 989px) {
+    .catgrid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media screen and (max-width: 599px) {
+    .catgrid {
+      grid-template-columns: repeat(var(--catgrid-cols-mobile, 2), 1fr);
+      gap: 12px;
+    }
+    .catgrid__card { height: 160px; }
+    .catgrid__content { padding: 16px; }
+    .catgrid__title { font-size: 16px; }
+  }
+{%- endstyle -%}
+
+<div id="catgrid-{{ section.id }}" class="page-width">
+  <div class="catgrid">
+    {%- for collection in collections -%}
+      <a href="{{ collection.url }}" class="catgrid__card" aria-label="{{ collection.title | escape }}">
+        {%- if collection.image != blank -%}
+          <img
+            class="catgrid__img"
+            src="{{ collection.image | image_url: width: 600 }}"
+            srcset="{{ collection.image | image_url: width: 400 }} 400w, {{ collection.image | image_url: width: 600 }} 600w"
+            sizes="(max-width: 599px) 45vw, (max-width: 989px) 45vw, 25vw"
+            alt="{{ collection.image.alt | default: collection.title | escape }}"
+            width="600"
+            height="400"
+            loading="lazy"
+          >
+        {%- else -%}
+          <div class="catgrid__placeholder"></div>
+        {%- endif -%}
+        <div class="catgrid__overlay" aria-hidden="true"></div>
+        <div class="catgrid__content">
+          <h2 class="catgrid__title">{{ collection.title }}</h2>
+          <span class="catgrid__btn">
+            Shop Now
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7.5 5l5 5-5 5"/>
+            </svg>
+          </span>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Categories Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "label": "Card height (desktop)",
+      "min": 150,
+      "max": 350,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between cards",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Shop Now color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ]
+}
+{% endschema %}

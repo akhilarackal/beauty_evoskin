@@ -1,0 +1,360 @@
+{%- style -%}
+  #CFS-{{ section.id }} {
+    --cfs-bg: {{ section.settings.background_color }};
+    --cfs-pad-top: {{ section.settings.padding_top }}px;
+    --cfs-pad-bottom: {{ section.settings.padding_bottom }}px;
+    --cfs-container-width: {{ section.settings.container_width }}px;
+    --cfs-gap: {{ section.settings.column_gap }}px;
+    --cfs-image-bg: {{ section.settings.image_background_color }};
+    --cfs-heading-color: {{ section.settings.heading_color | default: '#1F1B15' }};
+    --cfs-subtitle-color: {{ section.settings.subtitle_color | default: '#C5A046' }};
+    --cfs-description-color: {{ section.settings.description_color | default: '#4D4637' }};
+    --cfs-btn-bg: {{ section.settings.button_background_color }};
+    --cfs-btn-text: {{ section.settings.button_text_color }};
+    --cfs-label-text: {{ section.settings.label_text_color | default: '#1F1B15' }};
+  }
+{%- endstyle -%}
+
+{{ 'section-collection-feature-showcase.css' | asset_url | stylesheet_tag }}
+
+<section
+  id="CFS-{{ section.id }}"
+  class="cfs"
+  aria-label="{{ section.settings.collection_title | default: 'Collection Feature' | escape }}"
+  style="background-color: {{ section.settings.background_color }};"
+>
+  <div class="cfs__container">
+    <div class="cfs__grid">
+
+      <!-- Left: Image Panel -->
+      <div class="cfs__image-panel">
+        <div class="cfs__image-wrapper">
+          {%- if section.settings.image != blank -%}
+            <img
+              class="cfs__image"
+              src="{{ section.settings.image | image_url: width: 800 }}"
+              srcset="
+                {{ section.settings.image | image_url: width: 400 }} 400w,
+                {{ section.settings.image | image_url: width: 600 }} 600w,
+                {{ section.settings.image | image_url: width: 800 }} 800w,
+                {{ section.settings.image | image_url: width: 1000 }} 1000w
+              "
+              sizes="(max-width: 749px) 100vw, (max-width: 989px) 100vw, 50vw"
+              alt="{{ section.settings.image.alt | default: section.settings.collection_title | escape }}"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            <div class="cfs__image-placeholder">
+              {{ 'product-1' | placeholder_svg_tag: 'cfs__placeholder-svg' }}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.enable_floating_label and section.settings.floating_label_text != blank -%}
+            <span class="cfs__floating-label">{{ section.settings.floating_label_text }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Right: Content Area -->
+      <div class="cfs__content">
+        <h2 class="cfs__title">{{ section.settings.collection_title | default: 'Cellular Gold' }}</h2>
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="cfs__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <div class="cfs__description">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        <!-- Divider -->
+        <div class="cfs__divider" aria-hidden="true"></div>
+
+        <!-- Feature List -->
+        {%- if section.blocks.size > 0 -%}
+          <ul class="cfs__features" role="list">
+            {%- for block in section.blocks -%}
+              <li class="cfs__feature" {{ block.shopify_attributes }}>
+                <div class="cfs__feature-icon">
+                  {%- if block.settings.icon_image != blank -%}
+                    <img
+                      src="{{ block.settings.icon_image | image_url: width: 32 }}"
+                      alt=""
+                      width="16"
+                      height="16"
+                      loading="lazy"
+                      aria-hidden="true"
+                    >
+                  {%- else -%}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  {%- endif -%}
+                </div>
+                <div class="cfs__feature-text">
+                  {%- if block.settings.heading != blank -%}
+                    <h3 class="cfs__feature-heading">{{ block.settings.heading }}</h3>
+                  {%- endif -%}
+                  {%- if block.settings.description != blank -%}
+                    <p class="cfs__feature-description">{{ block.settings.description }}</p>
+                  {%- endif -%}
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <!-- CTA Button -->
+        {%- if section.settings.button_text != blank -%}
+          <a
+            href="{{ section.settings.button_link | default: '#' }}"
+            class="cfs__button"
+            {% if section.settings.button_link == blank %}aria-disabled="true"{% endif %}
+          >
+            {{ section.settings.button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Feature Showcase",
+  "tag": "div",
+  "class": "section section-collection-feature-showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container width",
+      "min": 1000,
+      "max": 1500,
+      "step": 50,
+      "unit": "px",
+      "default": 1500
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "color",
+      "id": "image_background_color",
+      "label": "Image background color",
+      "default": "#F2EBE1"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_floating_label",
+      "label": "Enable floating label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "floating_label_text",
+      "label": "Floating label text",
+      "default": "Cellular Vitality"
+    },
+    {
+      "type": "color",
+      "id": "label_text_color",
+      "label": "Label text color",
+      "default": "#1F1B15"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "collection_title",
+      "label": "Collection title",
+      "default": "Cellular Gold"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1F1B15"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "The Essence of Renewal"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#C5A046"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Infused with pure 24k colloidal gold and our proprietary Phyto-Cellular Complex, this collection is designed to dramatically improve skin elasticity and impart an unprecedented, lit-from-within glow. Every drop is a testament to rigorous scientific research and uncompromising luxury."
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#4D4637"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Explore Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#FDFCFB"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon (SVG or image)",
+          "info": "Recommended: 16x16 or 32x32 SVG/PNG"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Swiss Cellular Tech"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Stimulates deep dermal repair."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Showcase",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Swiss Cellular Tech",
+            "description": "Stimulates deep dermal repair."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Rare Botanicals",
+            "description": "Sourced from high-altitude alpine regions."
+          }
+        }
+      ],
+      "settings": {
+        "background_color": "#FFFFFF",
+        "container_width": 1500,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "column_gap": 64,
+        "image_background_color": "#F2EBE1",
+        "enable_floating_label": true,
+        "floating_label_text": "Cellular Vitality",
+        "collection_title": "Cellular Gold",
+        "subtitle": "The Essence of Renewal",
+        "description": "Infused with pure 24k colloidal gold and our proprietary Phyto-Cellular Complex, this collection is designed to dramatically improve skin elasticity and impart an unprecedented, lit-from-within glow. Every drop is a testament to rigorous scientific research and uncompromising luxury.",
+        "button_text": "Explore Collection",
+        "button_background_color": "#D4AF37",
+        "button_text_color": "#FDFCFB",
+        "button_border_radius": 8
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

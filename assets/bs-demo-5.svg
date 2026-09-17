@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128" fill="none">
+  <!-- Pure Vitamin C Serum – bright orange gradient bottle -->
+  <rect width="96" height="128" rx="4" fill="#F3F4F6"/>
+  <!-- bottle body -->
+  <rect x="32" y="48" width="32" height="60" rx="6" fill="url(#vc-grad)"/>
+  <defs>
+    <linearGradient id="vc-grad" x1="32" y1="48" x2="64" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFB347"/>
+      <stop offset="100%" stop-color="#E85D04"/>
+    </linearGradient>
+  </defs>
+  <!-- bottle sheen -->
+  <rect x="34" y="50" width="9" height="56" rx="3" fill="white" opacity=".2"/>
+  <!-- shoulder -->
+  <path d="M32 48 Q32 40 39 38 L57 38 Q64 40 64 48Z" fill="#FFB347"/>
+  <!-- neck -->
+  <rect x="43" y="24" width="10" height="16" rx="2" fill="#FFC870"/>
+  <!-- cap -->
+  <rect x="40" y="14" width="16" height="12" rx="4" fill="#FF6B35"/>
+  <rect x="42" y="16" width="12" height="8" rx="3" fill="#FF8C5A" opacity=".6"/>
+  <!-- label -->
+  <rect x="34" y="57" width="28" height="42" rx="2" fill="white" opacity=".9"/>
+  <!-- vitamin C circle icon -->
+  <circle cx="48" cy="68" r="7" fill="#FF6B35" opacity=".15"/>
+  <text x="48" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" font-weight="bold" fill="#E85D04">VC</text>
+  <!-- label lines -->
+  <rect x="36" y="79" width="24" height="2.5" rx="1" fill="#E85D04" opacity=".8"/>
+  <rect x="37" y="85" width="22" height="1.5" rx=".75" fill="#374151" opacity=".5"/>
+  <rect x="37" y="89" width="22" height="1.5" rx=".75" fill="#374151" opacity=".5"/>
+  <rect x="38" y="93" width="20" height="1.5" rx=".75" fill="#374151" opacity=".4"/>
+</svg>

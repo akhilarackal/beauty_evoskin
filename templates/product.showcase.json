@@ -1,0 +1,247 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "showcase_hero": {
+      "type": "product-showcase-hero",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "text": "Free shipping on orders over $50"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "text": "100% organic ingredients"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "text": "30-day money back guarantee"
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3"],
+      "settings": {
+        "show_breadcrumb": true,
+        "show_rating": true,
+        "rating_text": "4.8 (120 reviews)",
+        "show_badge": true,
+        "badge_text": "SALE",
+        "button_text": "Add to Cart",
+        "background_color": "#ffffff",
+        "accent_color": "#C5A044",
+        "heading_color": "#111827",
+        "button_bg_color": "#C5A044",
+        "button_text_color": "#ffffff",
+        "sale_color": "#C5A044",
+        "badge_bg_color": "#C5A044",
+        "badge_text_color": "#ffffff",
+        "image_bg_color": "#f5f5f5",
+        "image_radius": 12,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "showcase_ritual": {
+      "type": "product-showcase-ritual",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Cleanse",
+            "description": "Start with a gentle cleanser to prepare your skin for the serum."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Apply Serum",
+            "description": "Apply 2-3 drops of the serum onto your fingertips."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Massage",
+            "description": "Gently massage into skin using upward circular motions."
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "title": "Moisturize",
+            "description": "Seal in the serum with your favorite moisturizer."
+          }
+        }
+      },
+      "block_order": ["step_1", "step_2", "step_3", "step_4"],
+      "settings": {
+        "heading": "The Ritual",
+        "subtitle": "Follow these simple steps for a perfect skincare routine that reveals your natural glow.",
+        "background_color": "#FAF8F5",
+        "heading_color": "#111827",
+        "accent_color": "#C5A044",
+        "columns": 4,
+        "card_radius": 12,
+        "gap": 24,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "showcase_ingredients": {
+      "type": "product-showcase-ingredients",
+      "blocks": {
+        "ingredient_1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Vitamin B Gold",
+            "description": "Promotes cellular renewal and helps maintain a youthful, radiant complexion with advanced antioxidant protection."
+          }
+        },
+        "ingredient_2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Deep Liquid Emulsique",
+            "description": "A deep-penetrating emulsion that delivers active ingredients to the deepest layers of your skin for lasting hydration."
+          }
+        },
+        "ingredient_3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Cellular Oil",
+            "description": "Premium cellular oil complex that nourishes and repairs the skin barrier while providing intense moisture retention."
+          }
+        }
+      },
+      "block_order": ["ingredient_1", "ingredient_2", "ingredient_3"],
+      "settings": {
+        "heading": "Ingredients Spotlight",
+        "reverse_layout": false,
+        "background_color": "#ffffff",
+        "heading_color": "#111827",
+        "image_radius": 12,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "showcase_testimonial": {
+      "type": "product-showcase-testimonial",
+      "settings": {
+        "quote": "After using this serum for just two weeks, my skin feels incredibly soft and hydrated. My fine lines have visibly reduced, and the golden glow is absolutely remarkable.",
+        "author_name": "Sarah Mitchell",
+        "author_title": "Verified Customer",
+        "background_color": "#1a1a2e",
+        "accent_color": "#C5A044",
+        "text_color": "#ffffff",
+        "subtext_color": "#a1a1aa",
+        "image_radius": 12,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "showcase_featured": {
+      "type": "product-showcase-featured",
+      "settings": {
+        "section_label": "Loved by Insiders",
+        "section_heading": "Goldwave Night Cream",
+        "custom_title": "Goldwave Night Cream",
+        "custom_price": "$65.00",
+        "custom_description": "A rich night cream that works while you sleep to deeply nourish, repair, and rejuvenate your skin with gold-infused peptides.",
+        "button_text": "Shop Now",
+        "background_color": "#ffffff",
+        "card_bg_color": "#FAF8F5",
+        "heading_color": "#111827",
+        "button_bg_color": "#C5A044",
+        "button_text_color": "#ffffff",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "showcase_related": {
+      "type": "product-showcase-related",
+      "settings": {
+        "heading": "Related Products",
+        "products_to_show": 5,
+        "columns": 5,
+        "background_color": "#ffffff",
+        "heading_color": "#111827",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "showcase_why_choose": {
+      "type": "why-choose-us",
+      "blocks": {
+        "feature_1": {
+          "type": "feature_card",
+          "settings": {
+            "heading": "Worldwide Shipping",
+            "description": "No matter where you are, we've got you covered. Enjoy fast, reliable delivery across the globe.",
+            "cta_label": "View Shipping Info",
+            "cta_link": "/pages/shipping-policy"
+          }
+        },
+        "feature_2": {
+          "type": "feature_card",
+          "settings": {
+            "heading": "30-Days Free Returns",
+            "description": "Experience worry-free shopping with our 30-day free returns policy. Love it or send it back.",
+            "cta_label": "View Return Policy",
+            "cta_link": "/pages/refund-policy"
+          }
+        },
+        "feature_3": {
+          "type": "feature_card",
+          "settings": {
+            "heading": "Secure Payment",
+            "description": "State-of-the-art encryption keeps your payment details safe. Shop with peace of mind.",
+            "cta_label": "View Payment Info",
+            "cta_link": "/pages/payment-info"
+          }
+        },
+        "feature_4": {
+          "type": "feature_card",
+          "settings": {
+            "heading": "24/7 Support",
+            "description": "Our dedicated support team is available around the clock to help with any questions.",
+            "cta_label": "Ask Support",
+            "cta_link": "/pages/contact-us"
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"],
+      "settings": {
+        "heading": "Why More than 10k Customers Choose Us Every Day",
+        "background_color": "#FFFFFF",
+        "card_background": "#FFFFFF",
+        "border_color": "#F3F4F6",
+        "icon_color": "#D4AF37",
+        "card_radius": 8,
+        "grid_gap": 24,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "enable_hover": true
+      }
+    }
+  },
+  "order": [
+    "showcase_hero",
+    "showcase_ritual",
+    "showcase_ingredients",
+    "showcase_testimonial",
+    "showcase_featured",
+    "showcase_related",
+    "showcase_why_choose"
+  ]
+}

@@ -1,0 +1,523 @@
+/* ═══════════════════════════════════════════════════════════
+   Beauty Hero Banner — Swiper/Slider with Pagination & Nav
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Animation suppression for Dawn theme ── */
+.section-beauty-hero-banner,
+.section-beauty-hero-banner .bhb-banner {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+.section-beauty-hero-banner-wrapper {
+  transition: none !important;
+}
+
+/* ── Section wrapper ── */
+.section-beauty-hero-banner-wrapper {
+  padding-top: var(--bhb-pad-top, 40px);
+  padding-bottom: var(--bhb-pad-bottom, 40px);
+}
+
+/* ── Outer container ── */
+.bhb-outer {
+  max-width: 1274px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ── Slider viewport ── */
+.bhb-slider {
+  position: relative;
+  width: 100%;
+  border-radius: var(--bhb-radius, 16px);
+  overflow: hidden;
+}
+
+/* ── Track — stacked slides with fade ── */
+.bhb-track {
+  position: relative;
+  width: 100%;
+  height: var(--bhb-height, 470px);
+  min-height: 400px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Individual slide ── */
+.bhb-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+  z-index: 0;
+}
+
+.bhb-slide--active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+
+/* ── Banner ── */
+.bhb-banner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ── Background image ── */
+.bhb-banner__picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bhb-banner__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--bhb-img-position, center);
+  display: block;
+}
+
+.bhb-banner__img--demo {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ── Overlay ── */
+.bhb-banner__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bhb-banner__overlay--gradient {
+  mix-blend-mode: multiply;
+}
+
+/* ── Content ── */
+.bhb-banner__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 50px;
+  height: 100%;
+  width: 100%;
+  max-width: 55%;
+  box-sizing: border-box;
+  gap: 8px;
+}
+
+/* Alignment variants */
+.bhb-banner--align-left .bhb-banner__content {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.bhb-banner--align-center .bhb-banner__content {
+  align-items: center;
+  text-align: center;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.bhb-banner--align-right .bhb-banner__content {
+  align-items: flex-end;
+  text-align: right;
+  margin-left: auto;
+}
+
+/* ── Small Label ── */
+.bhb-banner__label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--bhb-label-color, #FFFFFF);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  opacity: 0.9;
+}
+
+/* ── Main Heading ── */
+.bhb-banner__heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.25;
+  color: var(--bhb-heading-color, #FFFFFF);
+  margin: 0;
+}
+
+.bhb-banner__heading em {
+  font-style: italic;
+}
+
+/* ── Description ── */
+.bhb-banner__description {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--bhb-desc-color, #FFFFFF);
+  max-width: 400px;
+  margin: 4px 0 0;
+  opacity: 0.9;
+}
+
+/* ── Promo Code Section ── */
+.bhb-banner__promo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.bhb-banner__promo-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--bhb-desc-color, #FFFFFF);
+  opacity: 0.85;
+}
+
+.bhb-banner__promo-code-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bhb-banner__promo-input {
+  width: 120px;
+  padding: 8px 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 1px;
+  cursor: default;
+  outline: none;
+}
+
+.bhb-banner__copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.bhb-banner__copy-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.bhb-banner__copy-btn:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+/* ── CTA Button ── */
+.bhb-banner__btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 24px;
+  background-color: var(--bhb-btn-bg, #4A7C59);
+  color: var(--bhb-btn-color, #FFFFFF);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.bhb-banner__btn:hover {
+  background-color: color-mix(in srgb, var(--bhb-btn-bg, #4A7C59) 85%, #000000);
+  transform: translateY(-1px);
+}
+
+.bhb-banner__btn[aria-disabled="true"] {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Bottom Controls — Dots (left) + Arrows (right)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Pagination dots — bottom left */
+.bhb-pagination {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-70%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bhb-pagination__dot {
+  width: 28px;
+  height: 4px;
+  border-radius: 2px;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.3s ease, width 0.3s ease;
+}
+
+.bhb-pagination__dot--active {
+  background: #FFFFFF;
+  width: 36px;
+}
+
+.bhb-pagination__dot:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.bhb-pagination__dot:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+/* Navigation arrows — bottom right, next to dots */
+.bhb-nav {
+  position: absolute;
+  bottom: 12px;
+  right: 50%;
+  transform: translateX(100%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bhb-nav__btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #FFFFFF;
+  transition: background-color 0.3s ease;
+}
+
+.bhb-nav__btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.bhb-nav__btn:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.bhb-nav__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
+}
+
+.bhb-nav__btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Empty State
+   ═══════════════════════════════════════════════════════════ */
+.bhb-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: var(--bhb-radius, 16px);
+  text-align: center;
+  min-height: 300px;
+}
+
+.bhb-empty-state svg {
+  width: 40px;
+  height: 40px;
+  color: #9ca3af;
+}
+
+.bhb-empty-state p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Responsive — Tablet
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 989px) {
+  .bhb-track {
+    height: 400px;
+    min-height: 350px;
+  }
+
+  .bhb-banner__heading {
+    font-size: 30px;
+  }
+
+  .bhb-banner__content {
+    padding: 32px;
+    max-width: 65%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Responsive — Mobile
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 599px) {
+  .bhb-track {
+    height: auto;
+    min-height: 380px;
+  }
+
+  .bhb-banner__content {
+    padding: 24px;
+    max-width: 100%;
+  }
+
+  .bhb-banner__heading {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  .bhb-banner__label {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .bhb-banner__description {
+    font-size: 13px;
+  }
+
+  .bhb-banner__btn {
+    font-size: 13px;
+    padding: 8px 20px;
+  }
+
+  .bhb-nav__btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .bhb-nav__btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .bhb-nav {
+    bottom: 10px;
+  }
+
+  .bhb-pagination {
+    bottom: 16px;
+  }
+
+  .bhb-pagination__dot {
+    width: 20px;
+    height: 3px;
+  }
+
+  .bhb-pagination__dot--active {
+    width: 28px;
+  }
+
+  .bhb-banner__promo-code-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Reduced motion
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .bhb-slide {
+    transition: none;
+  }
+
+  .bhb-banner__btn,
+  .bhb-nav__btn,
+  .bhb-pagination__dot {
+    transition: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Demo hint (Theme Editor only)
+   ═══════════════════════════════════════════════════════════ */
+.bhb-demo-hint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1f2937;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 6px;
+  margin: 16px 0 0;
+}
+
+.bhb-demo-hint svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #f59e0b;
+}
+
+.shopify-design-mode .bhb-demo-hint {
+  display: flex;
+}

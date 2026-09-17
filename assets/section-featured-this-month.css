@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Featured This Month — BEM Scoped
+   ========================================================================== */
+
+.ftm {
+  padding-top: var(--ftm-pad-top, 64px);
+  padding-bottom: var(--ftm-pad-bottom, 64px);
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+.ftm__container {
+  max-width: var(--ftm-container-width, 1506px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.ftm__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 64px;
+}
+
+.ftm__heading {
+  font-family: 'Libre Caslon Text', 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 41.6px;
+  color: #1F1B15;
+  margin: 0;
+}
+
+.ftm__shop-all {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.7px;
+  color: #1F1B15;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: opacity 0.25s;
+}
+
+.ftm__shop-all:hover {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Grid
+   ========================================================================== */
+.ftm__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ftm-cols, 3), 1fr);
+  gap: 32px;
+}
+
+@media screen and (max-width: 989px) {
+  .ftm__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .ftm {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .ftm__header {
+    margin-bottom: 40px;
+  }
+
+  .ftm__heading {
+    font-size: 26px;
+    line-height: 33.8px;
+  }
+
+  .ftm__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* ==========================================================================
+   Card
+   ========================================================================== */
+.ftm__card {
+  transition: transform 0.3s ease;
+}
+
+.ftm__card:hover {
+  transform: translateY(-6px);
+}
+
+.ftm__card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Image Container */
+.ftm__card-image-container {
+  position: relative;
+  border-radius: 24px;
+  background: #E6E7EB;
+  padding: 62.68px 24px 62.67px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ftm__card-img {
+  display: block;
+  max-width: 100%;
+  max-height: 240px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.ftm__card:hover .ftm__card-img {
+  transform: scale(1.03);
+}
+
+.ftm__card-placeholder {
+  width: 60%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ftm__placeholder-svg {
+  width: 100%;
+  height: auto;
+  opacity: 0.25;
+}
+
+/* Badge */
+.ftm__card-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 4px 12px;
+  background: #FFFFFF;
+  border: 1px solid #C5A046;
+  border-radius: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #C5A046;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* Card Info */
+.ftm__card-info {
+  text-align: center;
+  padding-top: 16px;
+}
+
+.ftm__card-title {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 25.6px;
+  color: #1F1B15;
+  margin: 0;
+}
+
+.ftm__card-subtitle {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #4D4637;
+  margin: 4px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ftm__card-price {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 25.6px;
+  color: #C5A046;
+  margin: 8px 0 0;
+}
+
+/* ==========================================================================
+   Responsive — Tablet adjustments
+   ========================================================================== */
+@media screen and (max-width: 989px) {
+  .ftm {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .ftm__card-image-container {
+    padding: 48px 20px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .ftm__card-image-container {
+    padding: 40px 16px;
+    border-radius: 16px;
+  }
+
+  .ftm__card-img {
+    max-height: 200px;
+  }
+}
